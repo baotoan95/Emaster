@@ -1,0 +1,29 @@
+server:
+  port: 8085
+
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: emaster
+  
+logging:
+  level:
+    com:
+      emaster: debug
+      
+---
+spring:
+  profiles: prod
+
+logging:
+  level:
+    com:
+      emaster: info
