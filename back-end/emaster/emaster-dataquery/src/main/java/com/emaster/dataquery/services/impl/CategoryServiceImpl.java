@@ -2,7 +2,6 @@ package com.emaster.dataquery.services.impl;
 
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Category findOne(ObjectId id) {
+	public Category findOne(String id) {
 		log.debug("Start findOne({})", id);
 		Optional<Category> result = categoryRepository.findById(id);
 		log.debug("Finish findOne");
@@ -60,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void delete(ObjectId id) {
+	public void delete(String id) {
 		log.debug("Start delete with id={}", id);
 		categoryRepository.deleteById(id);
 		log.debug("Finish delete");

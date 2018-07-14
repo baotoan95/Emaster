@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.emaster.common.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +11,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
-@Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
 public class UserDto implements Serializable {
 	/**
 	 * 

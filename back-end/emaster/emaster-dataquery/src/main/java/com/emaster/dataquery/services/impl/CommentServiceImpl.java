@@ -2,7 +2,6 @@ package com.emaster.dataquery.services.impl;
 
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment findOne(ObjectId id) {
+	public Comment findOne(String id) {
 		log.debug("Start findOne({})", id);
 		Optional<Comment> result = commentRepository.findById(id);
 		log.debug("Finish findOne");
@@ -60,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void delete(ObjectId id) {
+	public void delete(String id) {
 		log.debug("Start delete");
 		commentRepository.deleteById(id);
 		log.debug("Finish delete");

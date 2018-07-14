@@ -1,6 +1,5 @@
 package com.emaster.dataquery.services;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +13,7 @@ public interface CategoryService {
 
 	Category update(Category category) throws NotFoundException;
 
-	Category findOne(ObjectId id);
+	Category findOne(String id);
 
-	void delete(ObjectId id);
+	void delete(String id);
 }

@@ -1,16 +1,18 @@
 package com.emaster.dataquery.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.emaster.common.dto.PageDto;
+import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.User;
-import com.emaster.dataquery.exception.NotFoundException;
 import com.emaster.dataquery.repositories.UserRepository;
 import com.emaster.dataquery.services.UserService;
 
@@ -56,14 +58,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User update(User user) throws NotFoundException {
+	public User update(User user) throws DataQueryException {
 		log.debug("Start update with email {}", user.getEmail());
 		if (userRepository.existsById(user.getId())) {
 			User updateUser = userRepository.save(user);
 			log.debug("Finish update");
 			return updateUser;
 		} else {
-			throw new NotFoundException("The given id is not existed");
+			throw DataQueryException.builder()
+				.message("The given id is not existed")
+				.status(HttpStatus.NOT_FOUND)
+				.dateTime(LocalDateTime.now())
+				.debugMessage(log.getName() + " Update user error").build();
 		}
 	}
 

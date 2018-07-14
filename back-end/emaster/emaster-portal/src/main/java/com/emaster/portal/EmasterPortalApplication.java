@@ -17,7 +17,7 @@ public class EmasterPortalApplication {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-	
+
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();

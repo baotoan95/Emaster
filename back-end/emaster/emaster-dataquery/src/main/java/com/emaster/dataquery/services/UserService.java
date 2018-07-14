@@ -3,8 +3,8 @@ package com.emaster.dataquery.services;
 import java.util.Optional;
 
 import com.emaster.common.dto.PageDto;
+import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.User;
-import com.emaster.dataquery.exception.NotFoundException;
 
 public interface UserService {
 	User findOne(String email);
@@ -13,7 +13,7 @@ public interface UserService {
 
 	User create(User user);
 
-	User update(User user) throws NotFoundException;
+	User update(User user) throws DataQueryException;
 
 	void delete(String email);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,16 @@ import com.emaster.common.dto.UserDto;
 import com.emaster.portal.dal.UserDAL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class UserDALImpl implements UserDAL {
+	@Value("${dataquery.baseUrl}")
+	private String dataQueryBaseUrl;
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Override
 	public PageDto<UserDto> getUsers(Optional<Integer> page, Optional<Integer> size) {
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
@@ -32,15 +38,17 @@ public class UserDALImpl implements UserDAL {
 		messageConverters.add(new StringHttpMessageConverter());
 		messageConverters.add(new MappingJackson2HttpMessageConverter());
 		restTemplate.setMessageConverters(messageConverters);
-		
-		ParameterizedTypeReference<PageDto<UserDto>> responseType = new ParameterizedTypeReference<PageDto<UserDto>>() {};
-		ResponseEntity<String> response = restTemplate.exchange("http://localhost:8085/users", HttpMethod.GET, null, String.class);
-		if(response.hasBody()) {
+
+		ParameterizedTypeReference<PageDto<UserDto>> responseType = new ParameterizedTypeReference<PageDto<UserDto>>() {
+		};
+		ResponseEntity<PageDto<UserDto>> response = restTemplate.exchange("http://localhost:8085/users", HttpMethod.GET, null,
+				responseType);
+		if (response.hasBody()) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			PageDto<UserDto> rs = objectMapper.convertValue(response.getBody(), PageDto.class);
-			return rs;
+//			PageDto<UserDto> rs = objectMapper.convertValue(response.getBody(), PageDto.class);
+//			return rs;
 		}
-		return null;
+		return response.getBody();
 	}
 
 }

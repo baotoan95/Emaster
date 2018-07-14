@@ -1,7 +1,26 @@
-spring.data.mongodb.host=localhost
-spring.data.mongodb.port=27017
-spring.data.mongodb.database=emaster
+server:
+  port: 8080
 
+spring:
+  profiles:
+    active: dev
 
-#logger
-logging.level.com.emaster.portal=debug
+---
+spring:
+  profiles: dev
+  
+logging:
+  level:
+    com:
+      emaster: debug
+      
+dataquery:
+  baseUrl: http://localhost:8085/
+---
+spring:
+  profiles: prod
+
+logging:
+  level:
+    com:
+      emaster: info
