@@ -29,7 +29,7 @@ public class UserController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PageDto<User>> getUsers(
 			@RequestParam(value = "page", required = false) Optional<Integer> page,
-			@RequestParam(value = "size", required = false) Optional<Integer> size) {
+			@RequestParam(value = "size", required = false) Optional<Integer> size) throws DataQueryException {
 		return ResponseEntity.ok().body(userService.findAll(page, size));
 	}
 

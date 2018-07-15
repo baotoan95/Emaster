@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.UserDto;
+import com.emaster.common.exception.PortalException;
 import com.emaster.portal.dal.UserDAL;
 import com.emaster.portal.service.UserService;
 
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public PageDto<com.emaster.common.dto.UserDto> getUser(Optional<Integer> page, Optional<Integer> size) {
+	public PageDto<com.emaster.common.dto.UserDto> getUser(Optional<Integer> page, Optional<Integer> size) throws PortalException {
 		return userDAL.getUsers(page, size);
 	}
 

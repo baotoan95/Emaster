@@ -1,9 +1,15 @@
 package com.emaster.common.dto;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
 import com.emaster.common.enums.UserRole;
+import com.emaster.common.utils.JsonMapperUtils;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,4 +61,10 @@ public class UserDto implements Serializable {
 	private Date createDate;
 
 	private UserRole role;
+
+	@JsonCreator
+	public static UserDto Create(String jsonString) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = JsonMapperUtils.getObjectMapper();
+		return mapper.readValue(jsonString, UserDto.class);
+	}
 }

@@ -9,7 +9,7 @@ import com.emaster.dataquery.entities.User;
 public interface UserService {
 	User findOne(String email);
 
-	PageDto<User> findAll(Optional<Integer> page, Optional<Integer> size);
+	PageDto<User> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
 	User create(User user);
 

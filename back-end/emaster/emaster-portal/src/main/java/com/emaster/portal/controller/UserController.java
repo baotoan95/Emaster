@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.UserDto;
+import com.emaster.common.exception.PortalException;
 import com.emaster.portal.service.UserService;
 
 @RestController
@@ -21,7 +22,7 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<PageDto<UserDto>> findOne(@RequestParam(value = "page", required = false) Optional<Integer> page,
-			@RequestParam(value = "size", required = false) Optional<Integer> size) {
+			@RequestParam(value = "size", required = false) Optional<Integer> size) throws PortalException {
 		return ResponseEntity.ok().body(userService.getUser(page, size));
 	}
 }

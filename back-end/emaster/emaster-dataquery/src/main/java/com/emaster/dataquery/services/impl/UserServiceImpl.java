@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.emaster.common.constant.MessageContant;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.User;
@@ -33,10 +34,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public PageDto<User> findAll(Optional<Integer> page, Optional<Integer> size) {
+	public PageDto<User> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
-		int pageSize = page.orElse(Integer.MAX_VALUE);
+		int pageSize = size.orElse(Integer.MAX_VALUE);
 		log.debug("Start findAll (page={}, size={})", pageNum, pageSize);
+		if(pageNum < 0 || pageSize <= 0) {
+			throw DataQueryException.builder()
+				.status(HttpStatus.BAD_REQUEST)
+				.dateTime(LocalDateTime.now())
+				.message(MessageContant.INVALID_PARAM)
+				.build();
+		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<User> userPage = userRepository.findAll(pageable);
 		PageDto<User> pageDto = new PageDto<>();
