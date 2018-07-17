@@ -26,12 +26,12 @@ public class Category implements Serializable {
 
 	@Id
 	private String id;
-
 	private String name;
-
+	private String description;
+	private String icon;
 	private Date createdDate;
-
+	private Date updatedDate;
 	private User createdBy;
-
 	private int forkCount;
+	private boolean isDefault;
 }

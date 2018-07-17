@@ -34,7 +34,7 @@ public class UserController {
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> getUsers(@RequestBody User user) {
+	public ResponseEntity<User> getUsers(@RequestBody User user) throws DataQueryException {
 		return ResponseEntity.ok().body(userService.create(user));
 	}
 

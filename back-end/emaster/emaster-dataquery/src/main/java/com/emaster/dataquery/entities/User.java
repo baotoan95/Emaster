@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.emaster.common.enums.Gender;
+import com.emaster.common.enums.Language;
 import com.emaster.dataquery.enums.UserRole;
 
 import lombok.AllArgsConstructor;
@@ -39,7 +41,7 @@ public class User implements Serializable {
 
 	private String socialNetwork;
 
-	private String gender;
+	private Gender gender;
 
 	private String bio;
 
@@ -53,9 +55,9 @@ public class User implements Serializable {
 
 	private String location;
 
-	private String nativeLang;
+	private Language nativeLang;
 
-	private String learningLang;
+	private Language learningLang;
 
 	private long curentPoint;
 

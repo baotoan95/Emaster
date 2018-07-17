@@ -11,7 +11,7 @@ public interface UserService {
 
 	PageDto<User> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	User create(User user);
+	User create(User user) throws DataQueryException;
 
 	User update(User user) throws DataQueryException;
 

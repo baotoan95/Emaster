@@ -3,6 +3,8 @@ package com.emaster.common.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,5 +26,17 @@ public class PageDto<T> implements Serializable {
 	private int pageSize;
 	private int totalPage;
 	private List<T> content;
+	
+	public PageDto<T> build(Page<T> page) {
+		if(page != null) {
+			PageDto<T> pageDto = new PageDto<>();
+			pageDto.setCurrentPage(page.getNumber());
+			pageDto.setPageSize(page.getSize());
+			pageDto.setTotalPage(page.getTotalPages());
+			pageDto.setContent(page.getContent());
+			return pageDto;
+		}
+		return null;
+	}
 
 }

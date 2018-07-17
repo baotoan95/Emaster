@@ -1,19 +1,9 @@
 package com.emaster.dataquery.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
-import com.emaster.dataquery.entities.Question;
-import com.emaster.dataquery.exception.NotFoundException;
+import com.emaster.dataquery.entities.Statement;
 
 public interface QuestionService {
-	Question create(Question question);
-
-	Page<Question> findAll(Pageable pageable);
-
-	Question update(Question question) throws NotFoundException;
-
-	Question findOne(String id);
-
-	void delete(String id);
+	public List<Statement> generateQuestions(String userId, String categoryId, int limitNumOfQuestions);
 }

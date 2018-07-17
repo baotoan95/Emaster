@@ -1,15 +1,21 @@
 package com.emaster.dataquery.services.impl;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.emaster.common.constant.MessageContant;
+import com.emaster.common.dto.PageDto;
+import com.emaster.common.exception.DataQueryException;
+import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
 import com.emaster.dataquery.entities.Comment;
-import com.emaster.dataquery.exception.NotFoundException;
 import com.emaster.dataquery.repositories.CommentRepository;
 import com.emaster.dataquery.services.CommentService;
 
@@ -22,11 +28,21 @@ public class CommentServiceImpl implements CommentService {
 	private CommentRepository commentRepository;
 
 	@Override
-	public Page<Comment> findAll(Pageable pageable) {
-		log.debug("Start findAll (page={},size={})", pageable.getPageNumber(), pageable.getPageSize());
-		Page<Comment> commentPage = commentRepository.findAll(pageable);
+	public PageDto<Comment> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+		int pageNum = page.orElse(0);
+		int pageSize = size.orElse(Integer.MAX_VALUE);
+		if (!PaginationValidator.validate(pageNum, pageSize)) {
+			throw DataQueryException.builder()
+				.message(MessageContant.INVALID_PARAM)
+				.dateTime(LocalDateTime.now())
+				.status(HttpStatus.BAD_REQUEST).build();
+		}
+		log.debug("Start findAll(page={},size={})", pageNum, pageSize);
+		Pageable pageable = PageRequest.of(pageNum, pageSize);
+		PageDto<Comment> pageDto = new PageDto<Comment>()
+				.build(commentRepository.findAll(pageable));
 		log.debug("Finish findAll");
-		return commentPage;
+		return pageDto;
 	}
 
 	@Override
@@ -38,8 +54,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment create(Comment comment) {
+	public Comment create(Comment comment) throws DataQueryException {
 		log.debug("Start create");
+		if(Objects.isNull(comment)) {
+			throw DataQueryException.builder()
+			.message(MessageContant.INVALID_PARAM)
+			.dateTime(LocalDateTime.now())
+			.status(HttpStatus.BAD_REQUEST).build();
+		}
 		comment.setId(null);
 		Comment createdComment = commentRepository.save(comment);
 		log.debug("Finish create");
@@ -47,14 +69,17 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment update(Comment comment) throws NotFoundException {
+	public Comment update(Comment comment) throws DataQueryException {
 		log.debug("Start update with id={}", comment.getId());
-		if (commentRepository.existsById(comment.getId())) {
+		if (Objects.nonNull(comment) && commentRepository.existsById(comment.getId())) {
 			Comment updatedComment = commentRepository.save(comment);
 			log.debug("Finish update");
 			return updatedComment;
 		} else {
-			throw new NotFoundException(DataQueryMessage.GIVEN_ID_NOT_EXISTED);
+			throw DataQueryException.builder()
+			.message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
+			.status(HttpStatus.BAD_REQUEST)
+			.dateTime(LocalDateTime.now()).build();
 		}
 	}
 

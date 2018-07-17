@@ -19,6 +19,8 @@ logging:
     com:
       emaster: debug
       
+limitQuestionPerSession: 20
+      
 ---
 spring:
   profiles: prod

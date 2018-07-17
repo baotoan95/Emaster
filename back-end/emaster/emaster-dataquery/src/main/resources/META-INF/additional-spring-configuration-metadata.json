@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "limit-question-per-session",
+  "type": "int",
+  "description": "Limit number of question per session"
+}]}

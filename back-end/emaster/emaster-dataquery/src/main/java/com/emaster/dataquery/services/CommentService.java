@@ -1,19 +1,19 @@
 package com.emaster.dataquery.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.Optional;
 
+import com.emaster.common.dto.PageDto;
+import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.Comment;
-import com.emaster.dataquery.exception.NotFoundException;
 
 public interface CommentService {
-	Page<Comment> findAll(Pageable pageable);
+	PageDto<Comment> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
 	Comment findOne(String id);
 
-	Comment create(Comment comment);
+	Comment create(Comment comment) throws DataQueryException;
 
-	Comment update(Comment comment) throws NotFoundException;
+	Comment update(Comment comment) throws DataQueryException;
 
 	void delete(String id);
 }

@@ -1,3 +1,12 @@
 *~
 
-back-end
+back-end/emaster/.settings
+back-end/emaster/.project
+back-end/emaster/emaster-dataquery/target
+back-end/emaster/emaster-portal/target
+back-end/emaster/emaster-common/target
+
+front-end/emaster-ui/node_modules
+front-end/emaster-admin-ui/node_modules
+front-end/emaster-admin-ui/.vscode
+front-end/emaster-ui/.vscode
