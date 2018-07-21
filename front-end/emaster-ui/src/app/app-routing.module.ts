@@ -1,20 +1,27 @@
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { NgModule } from '@angular/core';
+import { LandingComponent } from '../modules/landing/landing.component';
 
-const routesConfig = [
-    { path: '/', component: AppComponent },
-    { path: '/landing', loadChildren: 'app/modules/landing/landing.module#LandingModule' }
-]
+const routes: Routes = [
+    {
+        path: '', redirectTo: 'index', pathMatch: 'full'
+    },
+    {
+        path: 'index',
+        component: LandingComponent,
+        pathMatch: 'full'
+    },
+    {
+        path: 'courses',
+        loadChildren: '../modules/course/course.module#CourseModule',
+        pathMatch: 'full'
+    },
+    {
+        path: '**', redirectTo: 'index'
+    },
+];
 
-@NgModule({
-    imports: [
-        RouterModule.forRoot(routesConfig)
-    ],
-    exports: [
-        RouterModule
-    ]
-})
-export class AppRoutingModule {
-
-}
+export const ROUTES = RouterModule.forRoot(routes,
+    {
+        useHash: true,
+    }
+);

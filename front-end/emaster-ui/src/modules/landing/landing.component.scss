@@ -1,0 +1,165 @@
+:host {
+    .emaster-landing-navbar {
+        background-color: rgba(72, 79, 82, 0.1);
+
+        a {
+            color: white;
+        }
+
+        .nav-item {
+            &.active > a {
+                font-weight: bold;
+                border-radius: 2px;
+                background-color: rgb(245, 236, 224);
+                color: rgb(61, 212, 142);
+            }
+        }
+
+        .btn-group {
+            margin-left: 10px;
+
+            .dropdown-menu {
+                background-color: #b7b5b58f;
+
+                a {
+                    &:hover {
+                        color: rgb(61, 212, 142);
+                        background-color: rgb(245, 236, 224);
+                    }
+                }
+            }
+        }
+    }
+
+    .main-body {
+        section {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &#welcome {
+                background-image: url('../../assets/images/background.jpg');
+
+                .welcome-content {
+                    width: 90%;
+                    height: 80%;
+                    display: flex;
+                    flex-flow: column;
+                    justify-content: center;
+                    align-items: center;
+                    background: rgba(59, 47, 47, 0.253);
+                    color: white;
+        
+                    h1 {
+                        font-size: 3em;
+                        text-transform: uppercase;
+                        font-weight: bold;
+                        padding: 0.2em 0px;
+                    }
+        
+                    span {
+                        font-size: 1.5em;
+                    }
+        
+                    .btn-start {
+                        padding: 3em 0;
+        
+                        a {
+                            padding: 0.2em 3em;
+                            transition: ease-out .3s;
+                            border-radius: 10px;
+                            font-size: 1em;
+                            outline: none;
+                            text-transform: uppercase;
+                            background-color: rgba(90, 86, 86, 0.473);
+        
+                            &:hover {
+                                background-color: green;
+                                border-color: green;
+                            }
+                        }
+                    }
+                }
+            }
+            &#guide {
+                background-image: url('../../assets/images/background2.jpg');
+                overflow: hidden;
+
+                .guide-content {
+                    background: white;
+                    width: 100%;
+                    height: 70%;
+                    display: flex;
+                    justify-content: center;
+                    
+                    .best-learn {
+                        padding: 3rem;
+                        flex-grow: 1;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+                    .text-guide {
+                        flex-grow: 1;
+                        padding: 0 3rem;
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+
+                        p {
+                            font-size: 1.3em;
+                        }
+                    }
+                }
+            }
+            &#about {
+                padding: 0 3rem;
+
+                .about-content {
+                    width: 100%;
+                    height: 80%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+
+                    .content {
+                        flex-grow: 1;
+                        padding-right: 3rem;
+                    }
+
+                    .about-img {
+                        flex-grow: 1;
+                        width: 100%;
+                        height: 80%;
+                        background-image: url('../../assets/images/about.jpg');
+                    }
+                }
+            }
+            &#contact {
+                background-color: #eeeeee;
+
+                .contact-content {
+                    width: 80%;
+
+                    form {
+                        width: 50%;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+            }
+        }
+    }
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}

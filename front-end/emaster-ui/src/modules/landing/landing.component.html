@@ -1,1 +1,111 @@
-Landing
+<div class="container-fluid full dashboard">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top emaster-landing-navbar">
+        <a class="navbar-brand" href="#">
+            <img src="https://png.icons8.com/metro/1600/online.png" width="30" height="30" class="d-inline-block align-top" alt=""> Emaster
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" [class.active]="currentSection === SECTIONS.WELCOME">
+                    <a class="nav-link" href="#welcome" (click)="scrollTo(SECTIONS.WELCOME); false">{{'MENU_HOME' | translate}}
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item" [class.active]="currentSection === SECTIONS.GUIDE">
+                    <a class="nav-link" href="#guide" (click)="scrollTo(SECTIONS.GUIDE); false">{{'MENU_GUIDE' | translate}}</a>
+                </li>
+                <li class="nav-item" [class.active]="currentSection === SECTIONS.ABOUT">
+                    <a class="nav-link" href="#about" (click)="scrollTo(SECTIONS.ABOUT); false">{{'MENU_ABOUT' | translate}}</a>
+                </li>
+                <li class="nav-item" [class.active]="currentSection === SECTIONS.CONTACT">
+                    <a class="nav-link" href="#contact" (click)="scrollTo(SECTIONS.CONTACT); false">{{'MENU_CONTACT' | translate}}</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info">{{'LANG' | translate}}: {{selectedLanguage.display | translate}}</button>
+                        <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <span class="sr-only">Language</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" 
+                                *ngFor="let language of supportedLanguages" 
+                                [class.active]="language.code === selectedLanguage.code"
+                                (click)="switchLanguage(language); false">
+                                {{language.display | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-body full">
+        <section id="welcome" #welcome>
+            <mat-card class="welcome-content">
+                <h1>Welcome To EMaster</h1>
+                <span>Here's We Practice Your English Skills For Free</span>
+                <div class="btn-start">
+                    <a routerLink="/courses" mat-stroked-button color="white">{{'BTN_START_NOW' | translate}}</a>
+                </div>
+            </mat-card>
+        </section>
+
+        <section id="guide" #guide>
+            <div class="guide-content">
+                <div class="best-learn" [@bestLearnAnimation]="guideState">
+                    <img src="../../assets/images/best-learn.png" />
+                </div>
+                <div class="text-guide" [@textGuideAnimation]="guideState">
+                    <h1>What's the best way to learn new language?</h1>
+                    <p>Học cùng Emaster, bạn sẽ thấy rất vui và cuốn hút.
+                        <br/> Dành nhiều điểm từ các câu trả lời đúng, trả lời nhanh trước khi hết thời gian hay lên cấp. Những
+                        bài học nhỏ-gọn của chúng tôi rất hiệu quả, và đã có một nghiên cứu chứng minh điều này.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section id="about">
+            <div class="about-content">
+                <div class="content">
+                    <h1>{{'ABOUT_US' | translate}}</h1>
+                    <mat-list>
+                        <mat-list-item *ngFor="let about of aboutUs">
+                            <mat-icon mat-list-icon>{{about.icon}}</mat-icon>
+                            <h3 mat-line> {{about.title}} </h3>
+                            <p mat-line>
+                                {{about.display}}
+                            </p>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <div class="about-img"></div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-content">
+                <h1>Contact Us</h1>
+                <form>
+                    <mat-form-field>
+                        <input matInput placeholder="Your Name">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Your Email">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Subject">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <textarea matInput placeholder="Message"></textarea>
+                    </mat-form-field>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>

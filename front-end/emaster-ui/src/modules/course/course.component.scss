@@ -1,0 +1,11 @@
+:host {
+    .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .card-wrapper {
+            padding: 10px;
+        }
+    }
+}

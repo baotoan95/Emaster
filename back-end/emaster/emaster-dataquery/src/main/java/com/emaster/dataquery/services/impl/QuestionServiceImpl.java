@@ -19,6 +19,7 @@ public class QuestionServiceImpl implements QuestionService {
 	
 	@Override
 	public List<Statement> generateQuestions(String userId, String categoryId, int limitNumOfQuestions) {
+		log.info("Start generateQuestions({}, {}, {})", userId, categoryId, limitNumOfQuestions);
 		return statementService.getStatementsForASession(userId, categoryId);
 	}
 

@@ -23,6 +23,12 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<PageDto<UserDto>> findOne(@RequestParam(value = "page", required = false) Optional<Integer> page,
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws PortalException {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ResponseEntity.ok().body(userService.getUser(page, size));
 	}
 }
