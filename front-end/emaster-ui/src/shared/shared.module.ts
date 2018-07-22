@@ -17,7 +17,8 @@ import {
     MatProgressBarModule,
     MatListModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
 } from '@angular/material';
 
 const MATERIALNG_DEPENDENCIES = [
@@ -31,7 +32,8 @@ const MATERIALNG_DEPENDENCIES = [
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
-    HttpClientModule
+    MatSnackBarModule,
+    MatProgressBarModule
 ];
 
 export function createTranslateLoader(http: HttpClient) {
@@ -44,7 +46,8 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         ...MATERIALNG_DEPENDENCIES,
         TranslateModule.forChild({}),
-        NgProgressModule
+        NgProgressModule,
+        HttpClientModule
     ],
     exports: [
         ...MATERIALNG_DEPENDENCIES

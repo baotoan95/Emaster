@@ -31,7 +31,7 @@ public class Category implements Serializable {
 	private String icon;
 	private Date createdDate;
 	private Date updatedDate;
-	private User createdBy;
+	private String createdBy;
 	private int forkCount;
 	private boolean isDefault;
 }

@@ -16,8 +16,13 @@ const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: '**', redirectTo: 'index'
+        path: 'learn',
+        loadChildren: '../modules/course/pages/learning/learning.module#LearningModule',
+        pathMatch: 'full'
     },
+    {
+        path: '**', redirectTo: 'index'
+    }
 ];
 
 export const ROUTES = RouterModule.forRoot(routes,

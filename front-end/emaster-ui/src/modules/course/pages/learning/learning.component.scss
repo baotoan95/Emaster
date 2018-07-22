@@ -1,0 +1,51 @@
+:host {
+    .learning {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #f0f0f0;
+
+        .learning-header {
+            flex-grow: 4;
+            position: relative;
+
+            mat-progress-bar {
+                position: absolute;
+                bottom: 0px;
+                left: 0;
+                right: 0;
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+
+        .learning-container {
+            flex-grow: 8;
+            margin: 4% auto 0;
+        }
+
+        .learning-footer {
+            flex-grow: 2;
+            background-color: #ececec;
+            padding: 50px 100px;
+
+            .actions {
+                display: flex;
+
+                .ignore {
+                    flex-grow: 10;
+                }
+
+                .check {
+                    flex-grow: 1;
+                    text-align: right;
+                }
+
+                button {
+                    padding: 5px 50px;
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+}

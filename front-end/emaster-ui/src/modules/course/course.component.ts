@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PortalService } from '../../shared/services/portal.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'emaster-course',
@@ -16,7 +17,8 @@ export class CourseComponent implements OnInit {
 
     constructor(
         private portalSerivce: PortalService,
-        private spinner: SpinnerService
+        private spinner: SpinnerService,
+        private snackBar: MatSnackBar
     ) {
 
     }
@@ -25,10 +27,12 @@ export class CourseComponent implements OnInit {
         this.spinner.show();
         this.portalSerivce.category.getAll(0, 100).subscribe(data => {
             this.categories = data.content;
-            console.log(this.categories);
             this.spinner.hide();
+            this.snackBar.open('Already', 'OK', {
+                duration: 6000
+            });
         }, error => {
-            
+            this.spinner.hide();
         });
     }
 }

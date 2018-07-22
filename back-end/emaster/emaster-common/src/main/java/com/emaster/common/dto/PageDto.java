@@ -24,7 +24,7 @@ public class PageDto<T> implements Serializable {
 
 	private int currentPage;
 	private int pageSize;
-	private int totalPage;
+	private int totalPages;
 	private List<T> content;
 	
 	public PageDto<T> build(Page<T> page) {
@@ -32,7 +32,7 @@ public class PageDto<T> implements Serializable {
 			PageDto<T> pageDto = new PageDto<>();
 			pageDto.setCurrentPage(page.getNumber());
 			pageDto.setPageSize(page.getSize());
-			pageDto.setTotalPage(page.getTotalPages());
+			pageDto.setTotalPages(page.getTotalPages());
 			pageDto.setContent(page.getContent());
 			return pageDto;
 		}

@@ -9,20 +9,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emaster.common.dto.CategoryDto;
 import com.emaster.common.dto.PageDto;
-import com.emaster.common.dto.UserDto;
 import com.emaster.common.exception.PortalException;
-import com.emaster.portal.service.UserService;
+import com.emaster.portal.service.CategoryService;
 
 @RestController
-@RequestMapping("users")
-public class UserController {
+@RequestMapping("categories")
+public class CategoryController {
 	@Autowired
-	private UserService userService;
-
+	private CategoryService categoryService;
+	
 	@GetMapping
-	public ResponseEntity<PageDto<UserDto>> findOne(@RequestParam(value = "page", required = false) Optional<Integer> page,
+	public ResponseEntity<PageDto<CategoryDto>> findAll(
+			@RequestParam(value = "page", required = false) Optional<Integer> page,
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws PortalException {
-		return ResponseEntity.ok().body(userService.getUser(page, size));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().body(categoryService.findAll(page, size));
 	}
 }

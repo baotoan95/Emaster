@@ -1,11 +1,20 @@
 :host {
-    .container {
+    .categories {
+        padding-top: 100px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
 
         .card-wrapper {
             padding: 10px;
+            min-width: 200px;
+            cursor: pointer;
+
+            .header-image {
+                background-image: url('../../assets/images/leaf.svg');
+            }
         }
     }
 }

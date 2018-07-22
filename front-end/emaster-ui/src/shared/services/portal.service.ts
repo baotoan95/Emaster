@@ -19,6 +19,6 @@ class CategoryService {
     }
 
     getAll(page: number, size: number): Observable<any> {
-        return this._u.req.get('http://localhost:8080/users', {page: page, size: size});
+        return this._u.req.get('http://localhost:8080/categories', {page: page, size: size});
     }
 }

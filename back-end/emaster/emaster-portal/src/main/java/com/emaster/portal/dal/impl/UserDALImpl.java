@@ -27,10 +27,7 @@ import com.emaster.common.utils.HttpQueryUtils;
 import com.emaster.portal.dal.UserDAL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
-@Slf4j
 public class UserDALImpl implements UserDAL {
 	@Value("${dataquery.baseUrl}")
 	private String dataQueryBaseUrl;
@@ -60,13 +57,9 @@ public class UserDALImpl implements UserDAL {
 
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
-			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(),
-					EmasterException.class);
-			throw PortalException.builder()
-				.status(exception.getStatus())
-				.dateTime(exception.getDateTime())
-				.message(exception.getMessage())
-				.debugMessage(exception.getDebugMessage()).build();
+			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
+			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
+					.message(exception.getMessage()).debugMessage(exception.getDebugMessage()).build();
 		}
 	}
 

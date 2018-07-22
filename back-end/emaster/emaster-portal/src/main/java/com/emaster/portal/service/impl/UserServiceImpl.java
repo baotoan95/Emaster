@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public PageDto<com.emaster.common.dto.UserDto> getUser(Optional<Integer> page, Optional<Integer> size) throws PortalException {
+	public PageDto<UserDto> getUser(Optional<Integer> page, Optional<Integer> size) throws PortalException {
 		return userDAL.getUsers(page, size);
 	}
 

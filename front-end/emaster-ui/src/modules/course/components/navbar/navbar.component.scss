@@ -1,0 +1,9 @@
+:host {
+    .navbar {
+        background-color: blue;
+        
+        & > a {
+            color: white;
+        }
+    }
+}

@@ -17,14 +17,14 @@ public class HttpQueryUtils {
 				builder.queryParam(param.getKey(), param.getValue());
 			}
 		}
-		log.info("Build URL finished");
+		log.info("Build URL finished {}", builder.toUriString());
 		return builder.toUriString();
 	}
 	
 	public static URI buildURI(String uri, Map<String, Object> params) {
 		log.info("Build URI: {}", uri);
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(uri);
-		log.info("Buil URL finished");
+		log.info("Buil URL finished {}", builder.buildAndExpand(params).toUriString());
 		return builder.buildAndExpand(params).toUri();
 	}
 }

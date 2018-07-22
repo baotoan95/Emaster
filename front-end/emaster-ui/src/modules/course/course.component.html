@@ -1,17 +1,15 @@
 <div class="container">
-    <div class="card-wrapper col-3">
-        <mat-card></mat-card>
-    </div>
-    <div class="card-wrapper col-3">
-        <mat-card></mat-card>
-    </div>
-    <div class="card-wrapper col-3">
-        <mat-card></mat-card>
-    </div>
-    <div class="card-wrapper col-3">
-        <mat-card></mat-card>
-    </div>
-    <div class="card-wrapper col-3">
-        <mat-card></mat-card>
+    <emaster-navbar></emaster-navbar>
+
+    <div class="categories">
+        <div class="card-wrapper" *ngFor="let category of categories">
+            <mat-card>
+                <mat-card-header>
+                    <div mat-card-avatar class="header-image"></div>
+                    <mat-card-title><a routerLink="/learn">{{category.name}}</a></mat-card-title>
+                    <mat-card-subtitle>{{category.description}}</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
+        </div>
     </div>
 </div>
