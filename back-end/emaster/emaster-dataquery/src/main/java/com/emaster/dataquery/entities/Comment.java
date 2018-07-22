@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -27,11 +26,10 @@ public class Comment implements Serializable {
 
 	@Id
 	private String id;
-	private User createdBy;
+	private String createdBy;
 	private String content;
 	private Date createdDate;
 	private int voteUpCount;
 	private int voteDownCount;
-	@DBRef
-	private Comment parent;
+	private String parent;
 }

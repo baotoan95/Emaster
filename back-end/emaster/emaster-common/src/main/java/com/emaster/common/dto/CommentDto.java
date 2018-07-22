@@ -22,7 +22,7 @@ public class CommentDto implements Serializable {
 
 	private String id;
 
-	private UserDto user;
+	private String createdBy;
 
 	private String content;
 

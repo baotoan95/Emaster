@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.emaster.dataquery.entities.Statement;
+import com.emaster.common.dto.StatementDto;
 import com.emaster.dataquery.services.QuestionService;
 import com.emaster.dataquery.services.StatementService;
 
@@ -18,7 +18,7 @@ public class QuestionServiceImpl implements QuestionService {
 	private StatementService statementService;
 	
 	@Override
-	public List<Statement> generateQuestions(String userId, String categoryId, int limitNumOfQuestions) {
+	public List<StatementDto> generateQuestions(String userId, String categoryId, int limitNumOfQuestions) {
 		log.info("Start generateQuestions({}, {}, {})", userId, categoryId, limitNumOfQuestions);
 		return statementService.getStatementsForASession(userId, categoryId);
 	}

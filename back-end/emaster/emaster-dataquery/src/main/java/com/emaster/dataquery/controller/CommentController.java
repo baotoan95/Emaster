@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emaster.common.dto.CommentDto;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.dataquery.entities.Comment;
 import com.emaster.dataquery.services.CommentService;
 
 @RestController
@@ -26,23 +26,23 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@GetMapping
-	public ResponseEntity<PageDto<Comment>> findAll(@RequestParam(value = "page", required = false) Optional<Integer> page, 
+	public ResponseEntity<PageDto<CommentDto>> findAll(@RequestParam(value = "page", required = false) Optional<Integer> page, 
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws DataQueryException {
 		return ResponseEntity.ok().body(commentService.findAll(page, size));
 	}
 
 	@GetMapping("/{commentId}")
-	public ResponseEntity<Comment> findOne(@PathVariable("commentId") String commentId) {
+	public ResponseEntity<CommentDto> findOne(@PathVariable("commentId") String commentId) {
 		return ResponseEntity.ok().body(commentService.findOne(commentId));
 	}
 
 	@PostMapping
-	public ResponseEntity<Comment> create(@RequestBody Comment comment) throws DataQueryException {
+	public ResponseEntity<CommentDto> create(@RequestBody CommentDto comment) throws DataQueryException {
 		return ResponseEntity.ok().body(commentService.create(comment));
 	}
 
 	@PutMapping
-	public ResponseEntity<Comment> update(@RequestBody Comment comment) throws DataQueryException {
+	public ResponseEntity<CommentDto> update(@RequestBody CommentDto comment) throws DataQueryException {
 		return ResponseEntity.ok().body(commentService.update(comment));
 	}
 

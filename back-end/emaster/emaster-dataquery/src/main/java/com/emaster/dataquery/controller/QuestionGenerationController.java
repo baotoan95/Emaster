@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.emaster.dataquery.entities.Statement;
+import com.emaster.common.dto.StatementDto;
 import com.emaster.dataquery.services.QuestionService;
 
 @RestController
@@ -23,7 +23,7 @@ public class QuestionGenerationController {
 	private int limitQuestionPerSession;
 	
 	@GetMapping("/{userId}")
-	public ResponseEntity<List<Statement>> getQuestionsForASession(@PathVariable("userId") String userId,
+	public ResponseEntity<List<StatementDto>> getQuestionsForASession(@PathVariable("userId") String userId,
 			@RequestParam("cate") String categoryId) {
 		return ResponseEntity.ok().body(questionService.generateQuestions(userId, categoryId, limitQuestionPerSession));
 	}

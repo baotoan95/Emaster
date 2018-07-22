@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emaster.common.dto.PageDto;
+import com.emaster.common.dto.UserDto;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.dataquery.entities.User;
 import com.emaster.dataquery.services.UserService;
 
 @RestController
@@ -27,24 +27,24 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PageDto<User>> getUsers(
+	public ResponseEntity<PageDto<UserDto>> getUsers(
 			@RequestParam(value = "page", required = false) Optional<Integer> page,
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws DataQueryException {
 		return ResponseEntity.ok().body(userService.findAll(page, size));
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> getUsers(@RequestBody User user) throws DataQueryException {
+	public ResponseEntity<UserDto> getUsers(@RequestBody UserDto user) throws DataQueryException {
 		return ResponseEntity.ok().body(userService.create(user));
 	}
 
 	@GetMapping(value = "/{email:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> getUserByEmail(@PathVariable("email") String email) {
+	public ResponseEntity<UserDto> getUserByEmail(@PathVariable("email") String email) {
 		return ResponseEntity.ok().body(userService.findOne(email));
 	}
 
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> updateUser(@RequestBody User user) throws DataQueryException {
+	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto user) throws DataQueryException {
 		return ResponseEntity.ok().body(userService.update(user));
 	}
 

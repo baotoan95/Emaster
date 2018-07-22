@@ -3,17 +3,17 @@ package com.emaster.dataquery.services;
 import java.util.Optional;
 
 import com.emaster.common.dto.PageDto;
+import com.emaster.common.dto.UserDto;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.dataquery.entities.User;
 
 public interface UserService {
-	User findOne(String email);
+	UserDto findOne(String email);
 
-	PageDto<User> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	PageDto<UserDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	User create(User user) throws DataQueryException;
+	UserDto create(UserDto user) throws DataQueryException;
 
-	User update(User user) throws DataQueryException;
+	UserDto update(UserDto user) throws DataQueryException;
 
 	void delete(String email);
 }
