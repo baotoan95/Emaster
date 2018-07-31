@@ -44,6 +44,7 @@ public class Statement implements Serializable {
 	private Language language;
 	private String bestAnswer;
 	private Date createdDate;
-	private String createdBy;
-	private String category;
+	private Date updatedDate;
+	private User createdBy;
+	private Category category;
 }

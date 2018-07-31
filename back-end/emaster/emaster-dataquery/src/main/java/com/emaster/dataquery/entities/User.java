@@ -64,4 +64,6 @@ public class User implements Serializable {
 	private Date createDate;
 
 	private UserRole role;
+	
+	private Date updatedDate;
 }

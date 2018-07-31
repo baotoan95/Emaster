@@ -16,7 +16,6 @@ import org.springframework.util.StringUtils;
 
 import com.emaster.common.constant.MessageContant;
 import com.emaster.common.constant.Point;
-import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.entities.UserMemory;
@@ -47,25 +46,25 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	}
 
 	@Override
-	public UserMemory findByUser(String userId) {
-		log.info("Start findByUser({})", userId);
-		Optional<UserMemory> userMemory = userMemoryRepository.findByUserId(userId);
+	public UserMemory findByUser(String email) {
+		log.info("Start findByUser({})", email);
+		Optional<UserMemory> userMemory = userMemoryRepository.findByUserEmail(email);
 		log.info("Finish findByUser");
 		return userMemory.orElse(null);
 	}
 
 	@Override
-	public List<UserMemory> findByUserAndCategory(String userId, String categoryId) {
-		log.info("Start findByUserAndCategory({}, {})", userId, categoryId);
-		List<UserMemory> users = userMemoryRepository.findByUserAndStatementCategory(userId, categoryId);
+	public List<UserMemory> findByUserAndCategory(String email, String categoryId) {
+		log.info("Start findByUserAndCategory({}, {})", email, categoryId);
+		List<UserMemory> users = userMemoryRepository.findByUserEmailAndStatementCategoryId(email, categoryId);
 		log.info("Finish findByUserAndCategory");
 		return users;
 	}
 
 	@Override
-	public UserMemory findByUserAndStatement(String userId, String statementId) {
-		log.info("Start findByUserAndStatement({}, {})", userId, statementId);
-		Optional<UserMemory> userMemory = userMemoryRepository.findByUserIdAndStatementId(userId, statementId);
+	public UserMemory findByUserAndStatement(String email, String statementId) {
+		log.info("Start findByUserAndStatement({}, {})", email, statementId);
+		Optional<UserMemory> userMemory = userMemoryRepository.findByUserEmailAndStatementId(email, statementId);
 		log.info("Finish findByUserAndStatement");
 		return userMemory.orElse(null);
 	}

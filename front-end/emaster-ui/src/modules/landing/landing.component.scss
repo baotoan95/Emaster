@@ -55,14 +55,14 @@
                     color: white;
         
                     h1 {
-                        font-size: 3em;
+                        font-size: 3rem;
                         text-transform: uppercase;
                         font-weight: bold;
                         padding: 0.2em 0px;
                     }
         
                     span {
-                        font-size: 1.5em;
+                        font-size: 1.5rem;
                     }
         
                     .btn-start {
@@ -72,13 +72,15 @@
                             padding: 0.2em 3em;
                             transition: ease-out .3s;
                             border-radius: 10px;
-                            font-size: 1em;
+                            font-size: 1rem;
                             outline: none;
                             text-transform: uppercase;
                             background-color: rgba(90, 86, 86, 0.473);
+                            text-decoration: none;
+                            color: white;
         
                             &:hover {
-                                background-color: green;
+                                background-color: rgba(35, 141, 35, 0.801);
                                 border-color: green;
                             }
                         }
@@ -113,7 +115,7 @@
                         flex-direction: column;
 
                         p {
-                            font-size: 1.3em;
+                            font-size: 1.3rem;
                         }
                     }
                 }

@@ -26,7 +26,7 @@ public class Comment implements Serializable {
 
 	@Id
 	private String id;
-	private String createdBy;
+	private User createdBy;
 	private String content;
 	private Date createdDate;
 	private int voteUpCount;

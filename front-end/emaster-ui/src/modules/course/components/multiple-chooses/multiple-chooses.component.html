@@ -1,9 +1,12 @@
 <div class="multiple-chooses">
     <h1>Chọn câu đúng nghĩa</h1>
     <h3>Luật sư đã cho rằng đó đã là xe của cô ấy.</h3>
-    <mat-selection-list #shoes>
-        <mat-list-option checkboxPosition="before" *ngFor="let answer of answers">
-            {{answer.content}}
-        </mat-list-option>
-    </mat-selection-list>
+    <div class="selection-list">
+        <ul class="selection-items">
+            <li class="selection-item" *ngFor="let answer of answers; let i = index" [class.selected]="selectedAnswer && selectedAnswer.content === answer.content" (click)="setAnswer(answer)">
+                <span class="index">{{i + 1}}</span>
+                <div class="selection-content">{{answer.content}}</div>
+            </li>
+        </ul>
+    </div>
 </div>

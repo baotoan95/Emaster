@@ -1,16 +1,14 @@
-package com.emaster.dataquery.services;
+package com.emaster.dataquery.facade;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Page;
 
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.UserMemory;
 
-public interface UserMemoryService {
-	Page<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+public interface UserMemoryFacade {
+	PageDto<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
 	UserMemory findByUser(String userId);
 

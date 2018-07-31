@@ -1,10 +1,21 @@
 <div class="translation">
-    <h1>Viết lại bằng tiếng Việt</h1>
-    <h3>
-        <button mat-mini-fab matTooltip="Listen">
-            <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
-        </button>
-        Luật sư đã cho rằng đó đã là xe của cô ấy.</h3>
+    <div class="translation-header">
+        <h1>Viết lại bằng tiếng Việt</h1>
+        <div class="question">
+            <div class="action">
+                <button mat-fab color="accent" matTooltip="Listen">
+                    <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                </button>
+                <button class="btn-slowly" mat-mini-fab matTooltip="Listen slowly">
+                    <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                </button>
+            </div>
+            <div class="question-content">
+                Luật sư đã cho rằng đó đã là xe của cô ấy.
+            </div>
+        </div>
+    </div>
+
     <div class="text-input">
         <mat-form-field>
             <textarea rows="6" res matInput placeholder="Translate"></textarea>

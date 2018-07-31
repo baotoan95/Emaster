@@ -1,48 +1,36 @@
 :host {
     .learning {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        height: 100%;
+        align-items: center;
         background-color: #f0f0f0;
 
         .learning-header {
-            flex-grow: 4;
-            position: relative;
-
-            mat-progress-bar {
-                position: absolute;
-                bottom: 0px;
-                left: 0;
-                right: 0;
-                width: 80%;
-                margin: 0 auto;
-            }
+            flex: 1.5;
+            width: 90%;
         }
 
-        .learning-container {
-            flex-grow: 8;
-            margin: 4% auto 0;
+        .learning-body {
+            width: 90%;
+            justify-content: space-between;
+            flex: 8;
+            max-width: 600px;
+            margin: 0 10%;
         }
 
         .learning-footer {
-            flex-grow: 2;
-            background-color: #ececec;
-            padding: 50px 100px;
+            flex: 2;
+            width: 100%;
+            padding: 0 10%;
+            display: flex;
+            justify-content: space-between;
+            background-color: #8080802b;
+            align-items: center;
 
-            .actions {
-                display: flex;
-
-                .ignore {
-                    flex-grow: 10;
-                }
-
-                .check {
-                    flex-grow: 1;
-                    text-align: right;
-                }
-
+            .ignore, .check {
                 button {
-                    padding: 5px 50px;
+                    padding: 5px 30px;
                     border-radius: 5px;
                 }
             }

@@ -1,14 +1,11 @@
 package com.emaster.dataquery.services.impl;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.emaster.common.constant.MessageContant;
-import com.emaster.common.dto.PageDto;
-import com.emaster.common.dto.StatementDto;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -37,23 +32,19 @@ public class StatementServiceImpl implements StatementService {
 	private StatementRepository statementRepository;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@Override
-	public StatementDto create(StatementDto statementDto) throws DataQueryException {
-		log.debug("Start create");
-		if (Objects.nonNull(statementDto)) {
-			Optional<User> user = userRepository.findByEmail(statementDto.getCreatedBy());
+	public Statement create(Statement statement) throws DataQueryException {
+		log.info("Start create");
+		if (Objects.nonNull(statement)) {
+			Optional<User> user = userRepository.findByEmail(statement.getCreatedBy().getEmail());
 			if (user.isPresent()) {
-				statementDto.setId(null);
-				statementDto.setCreatedDate(new Date());
-				statementDto.setCreatedBy(user.get().getEmail());
-				Statement newStatement = modelMapper.map(statementDto, Statement.class);
-				Statement createdStatement = statementRepository.save(newStatement);
-				StatementDto createdStatementDto = modelMapper.map(createdStatement, StatementDto.class);
-				log.debug("Finish create");
-				return createdStatementDto;
+				statement.setId(null);
+				statement.setCreatedDate(new Date());
+				statement.setCreatedBy(user.get());
+				Statement createdStatement = statementRepository.save(statement);
+				log.info("Finish create");
+				return createdStatement;
 			} else {
 				throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST)
 						.message(DataQueryMessage.DONT_HAVE_PERMIT_CREATE).dateTime(LocalDateTime.now()).build();
@@ -64,65 +55,60 @@ public class StatementServiceImpl implements StatementService {
 	}
 
 	@Override
-	public PageDto<StatementDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+	public Page<Statement> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
-		log.debug("Start findAll(page={},size={})", pageNum, pageSize);
+		log.info("Start findAll(page={},size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
 			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
 					.dateTime(LocalDateTime.now()).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<Statement> pageStatement = statementRepository.findAll(pageable);
-		Type pageSatementDtoType = new TypeToken<PageDto<StatementDto>>() {
-		}.getClass();
-		PageDto<StatementDto> pageDto = modelMapper.map(pageStatement, pageSatementDtoType);
-		log.debug("Finish findAll");
-		return pageDto;
+		log.info("Finish findAll");
+		return pageStatement;
 	}
 
 	@Override
-	public StatementDto update(StatementDto statementDto) throws DataQueryException {
-		Optional<Statement> statement = statementRepository.findById(statementDto.getId());
-		if (statement.isPresent()) {
-			log.debug("Start update with id={}", statementDto.getId());
-			Statement newStatement = modelMapper.map(statementDto, Statement.class);
+	public Statement update(Statement statement) throws DataQueryException {
+		Optional<Statement> existedStatement = statementRepository.findById(statement.getId());
+		if (existedStatement.isPresent()) {
+			log.info("Start update with id={}", statement.getId());
+			Statement newStatement = existedStatement.get();
+			newStatement.setUpdatedDate(new Date());
 			Statement updatedStatement = statementRepository.save(newStatement);
-			StatementDto updatedStatementDto = modelMapper.map(updatedStatement, StatementDto.class);
-			log.debug("Finish update");
-			return updatedStatementDto;
-		}
-		throw DataQueryException.builder().message("The given id is not existed").status(HttpStatus.BAD_REQUEST)
+			log.info("Finish update");
+			return updatedStatement;
+		} else {
+			throw DataQueryException.builder().message("The given id is not existed").status(HttpStatus.BAD_REQUEST)
 				.dateTime(LocalDateTime.now()).build();
+		}
 	}
 
 	@Override
-	public StatementDto findOne(String id) {
-		log.debug("Start findOne ({})", id);
+	public Statement findOne(String id) {
+		log.info("Start findOne ({})", id);
 		Optional<Statement> result = statementRepository.findById(id);
 		if (result.isPresent()) {
-			log.debug("Finish findOne");
-			return modelMapper.map(result.get(), StatementDto.class);
+			log.info("Finish findOne");
+			return result.get();
 		}
 		return null;
 	}
 
 	@Override
 	public void delete(String id) {
-		log.debug("Start delete with id={}", id);
+		log.info("Start delete with id={}", id);
 		statementRepository.deleteById(id);
-		log.debug("Finish delete");
+		log.info("Finish delete");
 	}
 
 	@Override
-	public List<StatementDto> getStatementsForASession(String userId, String categoryId) {
-		log.debug("Start getStatementsForASession({}, {})", userId, categoryId);
-		List<Statement> statements = statementRepository.findByCreatedByAndCategory(userId, categoryId);
-		Type listStatementDtoType = new TypeToken<List<StatementDto>>() {
-		}.getClass();
-		List<StatementDto> statementDtos = modelMapper.map(statements, listStatementDtoType);
-		log.debug("Finished getStatementsForASession() size: {}", statements.size());
-		return statementDtos;
+	public List<Statement> getStatementsForASession(String email, String categoryId) {
+		log.info("Start getStatementsForASession({}, {})", email, categoryId);
+		List<Statement> statements = statementRepository.findByCreatedByEmailAndCategoryId(email, categoryId);
+		log.info("Finished getStatementsForASession() size: {}", statements.size());
+		return statements;
 	}
 
 }

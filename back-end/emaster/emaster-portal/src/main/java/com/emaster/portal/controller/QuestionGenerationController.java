@@ -1,4 +1,4 @@
-package com.emaster.dataquery.controller;
+package com.emaster.portal.controller;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emaster.common.dto.StatementDto;
-import com.emaster.dataquery.services.QuestionService;
+import com.emaster.portal.service.QuestionService;
 
 @RestController
 @RequestMapping("questionGenerator")

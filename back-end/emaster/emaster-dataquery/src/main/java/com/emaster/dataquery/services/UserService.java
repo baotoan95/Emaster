@@ -2,18 +2,18 @@ package com.emaster.dataquery.services;
 
 import java.util.Optional;
 
-import com.emaster.common.dto.PageDto;
-import com.emaster.common.dto.UserDto;
+import org.springframework.data.domain.Page;
 import com.emaster.common.exception.DataQueryException;
+import com.emaster.dataquery.entities.User;
 
 public interface UserService {
-	UserDto findOne(String email);
+	User findOne(String email);
 
-	PageDto<UserDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	Page<User> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	UserDto create(UserDto user) throws DataQueryException;
+	User create(User user) throws DataQueryException;
 
-	UserDto update(UserDto user) throws DataQueryException;
+	User update(User user) throws DataQueryException;
 
 	void delete(String email);
 }
