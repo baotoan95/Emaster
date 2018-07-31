@@ -49,17 +49,17 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	}
 
 	@Override
-	public UserMemory findByUser(String userId) {
-		log.info("Start findByUser({})", userId);
-		Optional<UserMemory> userMemory = userMemoryRepository.findByUserId(userId);
+	public UserMemory findByUser(String email) {
+		log.info("Start findByUser({})", email);
+		Optional<UserMemory> userMemory = userMemoryRepository.findByUserEmail(email);
 		log.info("Finish findByUser");
 		return userMemory.orElse(null);
 	}
 
 	@Override
-	public List<UserMemory> findByUserAndCategory(String userId, String categoryId) {
-		log.info("Start findByUserAndCategory({}, {})", userId, categoryId);
-		List<UserMemory> users = userMemoryRepository.findByUserIdAndStatementCategoryId(userId, categoryId);
+	public List<UserMemory> findByUserAndCategory(String email, String categoryId) {
+		log.info("Start findByUserAndCategory({}, {})", email, categoryId);
+		List<UserMemory> users = userMemoryRepository.findByUserEmailAndStatementCategoryId(email, categoryId);
 		log.info("Finish findByUserAndCategory");
 		return users;
 	}
@@ -67,7 +67,7 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	@Override
 	public UserMemory findByUserAndStatement(String userId, String statementId) {
 		log.info("Start findByUserAndStatement({}, {})", userId, statementId);
-		Optional<UserMemory> userMemory = userMemoryRepository.findByUserIdAndStatementId(userId, statementId);
+		Optional<UserMemory> userMemory = userMemoryRepository.findByUserEmailAndStatementId(userId, statementId);
 		log.info("Finish findByUserAndStatement");
 		return userMemory.orElse(null);
 	}

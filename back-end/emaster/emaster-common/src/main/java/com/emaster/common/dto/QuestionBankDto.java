@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestionDto implements Serializable {
+public class QuestionBankDto implements Serializable {
 	/**
 	 * 
 	 */

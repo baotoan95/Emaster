@@ -26,9 +26,7 @@ public class QuestionBank implements Serializable {
 
 	@DBRef
 	private Statement statement;
-	@DBRef
 	private User createdBy;
-	@DBRef
 	private Category category;
 	private Date createdDate;
 

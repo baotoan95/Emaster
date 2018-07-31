@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto findOne(String email) {
-		log.debug("Start findByEmail ({})", email);
+		log.info("Start findByEmail ({})", email);
 		Optional<User> user = userRepository.findByEmail(email);
 		if(user.isPresent()) {
-			log.debug("Finish findByEmail");
+			log.info("Finish findByEmail");
 			return modelMapper.map(user, UserDto.class);
 		}
 		return null;
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	public PageDto<UserDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
-		log.debug("Start findAll (page={}, size={})", pageNum, pageSize);
+		log.info("Start findAll (page={}, size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now())
 					.message(MessageContant.INVALID_PARAM).build();
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 		Type pageUserDtoType = new TypeToken<PageDto<UserDto>>() {
 		}.getClass();
 		PageDto<UserDto> pageDto = modelMapper.map(pageUser, pageUserDtoType);
-		log.debug("Finish findAll");
+		log.info("Finish findAll");
 		return pageDto;
 	}
 
@@ -70,19 +70,19 @@ public class UserServiceImpl implements UserService {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
 					.dateTime(LocalDateTime.now()).build();
 		}
-		log.debug("Start create with email {}", userDto.getEmail());
+		log.info("Start create with email {}", userDto.getEmail());
 		User user = modelMapper.map(userDto, User.class);
 		user.setId(null);
 		user.setCreateDate(new Date());
 		User createdUser = userRepository.save(user);
 		UserDto createdUserDto = modelMapper.map(createdUser, UserDto.class);
-		log.debug("Finish create");
+		log.info("Finish create");
 		return createdUserDto;
 	}
 
 	@Override
 	public UserDto update(UserDto userDto) throws DataQueryException {
-		log.debug("Start update with email {}", userDto.getEmail());
+		log.info("Start update with email {}", userDto.getEmail());
 		Optional<User> user = userRepository.findByEmail(userDto.getEmail());
 		if (user.isPresent()) {
 			User oldUser = user.get();
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 			newUser.setCreateDate(oldUser.getCreateDate());
 			User updatedUser = userRepository.save(newUser);
 			UserDto updatedUserDto = modelMapper.map(updatedUser, UserDto.class);
-			log.debug("Finish update");
+			log.info("Finish update");
 			return updatedUserDto;
 		} else {
 			throw DataQueryException.builder().message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
@@ -101,9 +101,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void delete(String email) {
-		log.debug("Start delete with email {}", email);
+		log.info("Start delete with email {}", email);
 		userRepository.deleteByEmail(email);
-		log.debug("Finish delete");
+		log.info("Finish delete");
 	}
 
 }

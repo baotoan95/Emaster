@@ -55,7 +55,7 @@ public class CategoryController {
 	}
 
 	@GetMapping("/user")
-	public ResponseEntity<List<CategoryDto>> getListCategories(@RequestParam("id") String userId) {
-		return ResponseEntity.ok().body(categoryService.findForASession(Optional.of(userId)));
+	public ResponseEntity<List<CategoryDto>> getListCategories(@RequestParam("email") String email) {
+		return ResponseEntity.ok().body(categoryService.findForASession(Optional.of(email)));
 	}
 }

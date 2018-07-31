@@ -1,13 +1,50 @@
 :host {
     .multiple-chooses {
         h1 {
-            font-size: 2em;
-            padding: 0 0 10px 0;
+            font-size: 2rem;
         }
+
         h3 {
-            font-style: italic;
+            font-size: 1.3rem;
             font-weight: normal;
-            font-size: 1.5em;
+            font-style: italic;
+            padding: 20px 0 0px 0;
+        }
+
+        .selection-list {
+            display: flex;
+            flex-direction: row;
+
+            .selection-items {
+                flex: 1;
+                margin: 0;
+                padding: 0;
+
+                .selection-item {
+                    border: 2px solid red;
+                    border-radius: 5px;
+                    width: 100%;
+                    display: flex;
+                    margin: 10px 0;
+                    cursor: pointer;
+
+                    .index {
+                        border-right: 2px solid red;
+                        padding: 5px 10px;
+                    }
+
+                    .selection-content {
+                        display: inline-block;
+                        padding: 5px 10px;
+                    }
+                }
+
+                .selected {
+                    background: red;
+                    color: white;
+                }
+            }
         }
     }
 }
+

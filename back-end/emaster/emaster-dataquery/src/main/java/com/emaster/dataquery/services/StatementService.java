@@ -3,20 +3,21 @@ package com.emaster.dataquery.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.emaster.common.dto.PageDto;
-import com.emaster.common.dto.StatementDto;
+import org.springframework.data.domain.Page;
+
 import com.emaster.common.exception.DataQueryException;
+import com.emaster.dataquery.entities.Statement;
 
 public interface StatementService {
-	StatementDto create(StatementDto Statement) throws DataQueryException;
+	Statement create(Statement Statement) throws DataQueryException;
 
-	PageDto<StatementDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	Page<Statement> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	StatementDto update(StatementDto Statement) throws DataQueryException;
+	Statement update(Statement Statement) throws DataQueryException;
 
-	StatementDto findOne(String id);
+	Statement findOne(String id);
 
 	void delete(String id);
 
-	List<StatementDto> getStatementsForASession(String userId, String categoryId);
+	List<Statement> getStatementsForASession(String email, String categoryId);
 }

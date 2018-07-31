@@ -3,20 +3,21 @@ package com.emaster.dataquery.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.emaster.common.dto.CategoryDto;
-import com.emaster.common.dto.PageDto;
+import org.springframework.data.domain.Page;
+
 import com.emaster.common.exception.DataQueryException;
+import com.emaster.dataquery.entities.Category;
 
 public interface CategoryService {
-	PageDto<CategoryDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	Page<Category> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	CategoryDto create(CategoryDto category) throws DataQueryException;
+	Category create(Category category) throws DataQueryException;
 
-	CategoryDto update(CategoryDto category) throws DataQueryException;
+	Category update(Category category) throws DataQueryException;
 
-	CategoryDto findOne(String id);
+	Category findOne(String id);
 
 	void delete(String id);
 
-	List<CategoryDto> findForASession(Optional<String> userId);
+	List<Category> findForASession(Optional<String> userId);
 }

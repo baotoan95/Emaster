@@ -18,8 +18,10 @@ import {
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule
 } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 const MATERIALNG_DEPENDENCIES = [
     MatDialogModule,
@@ -33,7 +35,9 @@ const MATERIALNG_DEPENDENCIES = [
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatRadioModule,
+    FormsModule
 ];
 
 export function createTranslateLoader(http: HttpClient) {

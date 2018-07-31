@@ -1,6 +1,5 @@
 package com.emaster.dataquery.services.impl;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +9,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.emaster.common.constant.MessageContant;
-import com.emaster.common.dto.CategoryDto;
-import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -40,14 +35,12 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@Override
-	public PageDto<CategoryDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+	public Page<Category> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
-		log.debug("Start findAll (page={},size={})", pageNum, pageSize);
+		log.info("Start findAll (page={},size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now())
 					.message(MessageContant.INVALID_PARAM).build();
@@ -55,27 +48,23 @@ public class CategoryServiceImpl implements CategoryService {
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<Category> categoryPage = categoryRepository.findAll(pageable);
 		
-		Type type = new TypeToken<PageDto<CategoryDto>>() {}.getType();
-		PageDto<CategoryDto> pageResult = modelMapper.map(categoryPage, type);
-		log.debug("Finish findAll");
-		return pageResult;
+		log.info("Finish findAll");
+		return categoryPage;
 	}
 
 	@Override
-	public CategoryDto create(CategoryDto categoryDto) throws DataQueryException {
-		if (Objects.nonNull(categoryDto)) {
-			log.debug("Start create with name={}", categoryDto.getName());
-			Optional<User> user = userRepository.findByEmail(categoryDto.getCreatedBy());
+	public Category create(Category category) throws DataQueryException {
+		if (Objects.nonNull(category)) {
+			log.info("Start create with name={}", category.getName());
+			Optional<User> user = userRepository.findByEmail(category.getCreatedBy().getEmail());
 			if (user.isPresent()) {
-				Category category = modelMapper.map(categoryDto, Category.class);
 				category.setId(null);
-				category.setCreatedBy(user.get().getEmail());
+				category.setCreatedBy(user.get());
 				category.setCreatedDate(new Date());
 				category.setUpdatedDate(new Date());
 				Category createdCategory = categoryRepository.save(category);
-				CategoryDto createdCategoryDto = modelMapper.map(createdCategory, CategoryDto.class);
-				log.debug("Finish create");
-				return createdCategoryDto;
+				log.info("Finish create");
+				return createdCategory;
 			} else {
 				throw DataQueryException.builder().message(DataQueryMessage.DONT_HAVE_PERMIT_CREATE)
 						.dateTime(LocalDateTime.now()).status(HttpStatus.FORBIDDEN).build();
@@ -87,22 +76,21 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto update(CategoryDto categoryDto) throws DataQueryException {
-		if (Objects.nonNull(categoryDto)) {
-			log.debug("Start update category with id={}", categoryDto.getId());
-			Optional<Category> category = categoryRepository.findById(categoryDto.getId());
-			if (category.isPresent()) {
-				Category oldCategory = category.get();
+	public Category update(Category category) throws DataQueryException {
+		if (Objects.nonNull(category)) {
+			log.info("Start update category with id={}", category.getId());
+			Optional<Category> existedCategory = categoryRepository.findById(category.getId());
+			if (existedCategory.isPresent()) {
+				Category oldCategory = existedCategory.get();
 				oldCategory.setUpdatedDate(new Date());
-				oldCategory.setDefault(categoryDto.isDefault());
-				oldCategory.setDescription(categoryDto.getDescription());
-				oldCategory.setForkCount(categoryDto.getForkCount());
-				oldCategory.setIcon(categoryDto.getIcon());
-				oldCategory.setName(categoryDto.getName());
+				oldCategory.setDefault(category.isDefault());
+				oldCategory.setDescription(category.getDescription());
+				oldCategory.setForkCount(category.getForkCount());
+				oldCategory.setIcon(category.getIcon());
+				oldCategory.setName(category.getName());
 				Category updatedCategory = categoryRepository.save(oldCategory);
-				CategoryDto updatedCategoryDto = modelMapper.map(updatedCategory, CategoryDto.class);
-				log.debug("Finish update");
-				return updatedCategoryDto;
+				log.info("Finish update");
+				return updatedCategory;
 			} else {
 				throw DataQueryException.builder().message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
 						.dateTime(LocalDateTime.now()).status(HttpStatus.BAD_REQUEST).build();
@@ -114,39 +102,35 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto findOne(String id) {
-		log.debug("Start findOne({})", id);
+	public Category findOne(String id) {
+		log.info("Start findOne({})", id);
 		Optional<Category> category = categoryRepository.findById(id);
 		if (category.isPresent()) {
-			CategoryDto categoryDto = modelMapper.map(category.get(), CategoryDto.class);
-			return categoryDto;
+			return category.get();
 		}
-		log.debug("Finish findOne");
+		log.info("Finish findOne");
 		return null;
 	}
 
 	@Override
 	public void delete(String id) {
-		log.debug("Start delete with id={}", id);
+		log.info("Start delete with id={}", id);
 		categoryRepository.deleteById(id);
-		log.debug("Finish delete");
+		log.info("Finish delete");
 	}
 
 	@Override
-	public List<CategoryDto> findForASession(Optional<String> userId) {
-		log.debug("Start findForASession({})", userId);
+	public List<Category> findForASession(Optional<String> email) {
+		log.info("Start findForASession({})", email.orElse(null));
 		List<Category> categoriesByUser = new ArrayList<>();
-		if (userId.isPresent()) {
-			categoriesByUser = categoryRepository.findByCreatedBy(userId.get());
+		if (email.isPresent()) {
+			categoriesByUser = categoryRepository.findByCreatedByEmail(email.get());
 		}
 		List<Category> systemCategories = categoryRepository.findByIsDefault(true);
 		List<Category> categories = Stream.concat(categoriesByUser.stream(), systemCategories.stream())
 				.collect(Collectors.toList());
-		Type listCategoryDto = new TypeToken<List<CategoryDto>>() {
-		}.getType();
-		List<CategoryDto> listResult = modelMapper.map(categories, listCategoryDto);
-		log.debug("Finish findForASession() size: {}", categories.size());
-		return listResult;
+		log.info("Finish findForASession() size: {}", categories.size());
+		return categories;
 	}
 
 }
