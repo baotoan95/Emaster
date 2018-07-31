@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,23 +30,20 @@ import lombok.extern.slf4j.Slf4j;
 public class UserMemorySerivceImpl implements UserMemoryService {
 	@Autowired
 	private UserMemoryRepository userMemoryRepository;
-	
+
 	@Override
-	public PageDto<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+	public Page<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		log.info("Start findAll({}, {})", pageNum, pageSize);
-		if(!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder()
-				.status(HttpStatus.BAD_REQUEST)
-				.dateTime(LocalDateTime.now())
-				.message(MessageContant.INVALID_PARAM)
-				.build();
+		if (!PaginationValidator.validate(pageNum, pageSize)) {
+			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now())
+					.message(MessageContant.INVALID_PARAM).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		PageDto<UserMemory> pageDto = new PageDto<UserMemory>().build(userMemoryRepository.findAll(pageable));
+		Page<UserMemory> pageUserMemory = userMemoryRepository.findAll(pageable);
 		log.info("Finish findAll");
-		return pageDto;
+		return pageUserMemory;
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	@Override
 	public List<UserMemory> findByUserAndCategory(String userId, String categoryId) {
 		log.info("Start findByUserAndCategory({}, {})", userId, categoryId);
-		List<UserMemory> users = userMemoryRepository.findByUserIdAndStatementCategoryId(userId, categoryId);
+		List<UserMemory> users = userMemoryRepository.findByUserAndStatementCategory(userId, categoryId);
 		log.info("Finish findByUserAndCategory");
 		return users;
 	}
@@ -74,14 +72,13 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 
 	@Override
 	public UserMemory create(UserMemory userMemory) throws DataQueryException {
-		if(Objects.isNull(userMemory) || StringUtils.isEmpty(userMemory.getStatement().getId()) || 
-				StringUtils.isEmpty(userMemory.getUser().getId())) {
-			throw DataQueryException.builder()
-			.status(HttpStatus.BAD_REQUEST)
-			.message("Statement ID and User ID are required")
-			.dateTime(LocalDateTime.now()).build();
+		if (Objects.isNull(userMemory) || StringUtils.isEmpty(userMemory.getStatement().getId())
+				|| StringUtils.isEmpty(userMemory.getUser().getId())) {
+			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST)
+					.message("Statement ID and User ID are required").dateTime(LocalDateTime.now()).build();
 		}
-		log.info("Start create with statementId = {}, userId = {}", userMemory.getStatement().getId(), userMemory.getUser().getId());
+		log.info("Start create with statementId = {}, userId = {}", userMemory.getStatement().getId(),
+				userMemory.getUser().getId());
 		userMemory.setStartLearnDate(new Date());
 		userMemory.setLastLearnTime(new Date());
 		UserMemory createdUserMemory = userMemoryRepository.save(userMemory);
@@ -93,25 +90,20 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	public void updateCorrectCount(String userId, String statementId, int correctCount) throws DataQueryException {
 		log.info("Start updateCorrectCount({}, {}, {})", userId, statementId, correctCount);
 		UserMemory userMemory = findByUserAndStatement(userId, statementId);
-		if(Objects.nonNull(userMemory)) {
+		if (Objects.nonNull(userMemory)) {
 			userMemory.setCorrectCount(userMemory.getCorrectCount() + correctCount);
-			userMemory.setIncorrectCount(correctCount < 0 ? userMemory.getIncorrectCount() - correctCount : userMemory.getIncorrectCount());
+			userMemory.setIncorrectCount(
+					correctCount < 0 ? userMemory.getIncorrectCount() - correctCount : userMemory.getIncorrectCount());
 			userMemory.setPoint(userMemory.getPoint() + (correctCount * Point.POINT_PER_QUESTION));
 			UserMemory updatedUserMemory = userMemoryRepository.save(userMemory);
-			if(Objects.isNull(updatedUserMemory)) {
-				throw DataQueryException.builder()
-				.message("Can't update correct count")
-				.dateTime(LocalDateTime.now())
-				.debugMessage(log.getName())
-				.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			if (Objects.isNull(updatedUserMemory)) {
+				throw DataQueryException.builder().message("Can't update correct count").dateTime(LocalDateTime.now())
+						.debugMessage(log.getName()).status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 			}
 			log.info("Finish updateCorrectCount");
 		}
-		throw DataQueryException.builder()
-		.message(MessageContant.INVALID_PARAM)
-		.dateTime(LocalDateTime.now())
-		.debugMessage(log.getName())
-		.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+				.debugMessage(log.getName()).status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 }
