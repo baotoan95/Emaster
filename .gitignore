@@ -10,3 +10,6 @@ front-end/emaster-ui/node_modules
 front-end/emaster-admin-ui/node_modules
 front-end/emaster-admin-ui/.vscode
 front-end/emaster-ui/.vscode
+
+.settings
+.project
