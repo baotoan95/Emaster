@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.emaster.common.enums.Gender;
+import com.emaster.common.enums.Language;
 import com.emaster.common.enums.UserRole;
 import com.emaster.common.utils.JsonMapperUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements Serializable {
 	/**
 	 * 
@@ -38,7 +42,7 @@ public class UserDto implements Serializable {
 
 	private String socialNetwork;
 
-	private String gender;
+	private Gender gender;
 
 	private String bio;
 
@@ -52,9 +56,9 @@ public class UserDto implements Serializable {
 
 	private String location;
 
-	private String nativeLang;
+	private Language nativeLang;
 
-	private String learningLang;
+	private Language learningLang;
 
 	private long curentPoint;
 

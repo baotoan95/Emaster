@@ -4,7 +4,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +22,12 @@ import com.emaster.portal.service.CategoryService;
 @RestController
 @RequestMapping("categories")
 public class CategoryController {
-	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	public void setCategoryService(CategoryService categoryService) {
+		this.categoryService = categoryService;
+	}
 	
 	@GetMapping
 	public ResponseEntity<PageDto<CategoryDto>> findAll(
@@ -27,9 +36,30 @@ public class CategoryController {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().body(categoryService.findAll(page, size));
 	}
+	
+	@PostMapping
+	public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto) throws PortalException {
+		return ResponseEntity.ok().body(categoryService.create(categoryDto));
+	}
+
+	@PutMapping
+	public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto category) throws PortalException {
+		return ResponseEntity.ok().body(categoryService.update(category));
+	}
+
+	@GetMapping("/{categoryId}")
+	public ResponseEntity<CategoryDto> findOne(@PathVariable("categoryId") String categoryId) throws PortalException {
+		return ResponseEntity.ok().body(categoryService.findOne(categoryId));
+	}
+
+	@DeleteMapping("/{categoryId}")
+	public ResponseEntity<Void> delete(@PathVariable("categoryId") String categoryId) throws PortalException {
+		categoryService.delete(categoryId);
+		return ResponseEntity.ok().build();
+	}
+
 }

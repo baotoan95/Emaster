@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -64,9 +65,15 @@ public class UserServiceImpl implements UserService {
 		user.setId(null);
 		user.setCreateDate(new Date());
 		user.setUpdatedDate(new Date());
-		User createdUser = userRepository.save(user);
-		log.debug("Finish create");
-		return createdUser;
+		try {
+			User createdUser = userRepository.save(user);
+			log.debug("Finish create");
+			return createdUser;
+		} catch (DuplicateKeyException e) {
+			throw DataQueryException.builder().status(HttpStatus.CONFLICT)
+			.message(MessageContant.INVALID_PARAM)
+			.dateTime(LocalDateTime.now()).build();
+		}
 	}
 
 	@Override

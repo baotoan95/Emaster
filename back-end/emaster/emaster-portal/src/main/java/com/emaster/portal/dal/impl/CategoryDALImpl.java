@@ -60,9 +60,9 @@ public class CategoryDALImpl implements CategoryDAL {
 	}
 
 	@Override
-	public CategoryDto create(CategoryDto category) throws PortalException {
+	public CategoryDto create(CategoryDto categoryDto) throws PortalException {
 		String url = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, null);
-		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(category);
+		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.POST, body, CategoryDto.class);
 			return response.getBody();
@@ -74,11 +74,11 @@ public class CategoryDALImpl implements CategoryDAL {
 	}
 
 	@Override
-	public CategoryDto update(CategoryDto category) throws PortalException {
+	public CategoryDto update(CategoryDto categoryDto) throws PortalException {
 		String url = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, null);
-		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(category);
+		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
 		try {
-			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.POST, body, CategoryDto.class);
+			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.PUT, body, CategoryDto.class);
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
@@ -94,7 +94,7 @@ public class CategoryDALImpl implements CategoryDAL {
 
 		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + ID_PARAM + "}", params);
 		try {
-			ResponseEntity<CategoryDto> response = restTemplate.exchange(uri, HttpMethod.POST, null, CategoryDto.class);
+			ResponseEntity<CategoryDto> response = restTemplate.exchange(uri, HttpMethod.GET, null, CategoryDto.class);
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
@@ -110,7 +110,7 @@ public class CategoryDALImpl implements CategoryDAL {
 
 		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + ID_PARAM + "}", params);
 		try {
-			restTemplate.exchange(uri, HttpMethod.POST, null, CategoryDto.class);
+			restTemplate.exchange(uri, HttpMethod.DELETE, null, CategoryDto.class);
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
 			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
