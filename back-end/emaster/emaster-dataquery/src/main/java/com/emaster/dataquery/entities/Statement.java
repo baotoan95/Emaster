@@ -47,4 +47,5 @@ public class Statement implements Serializable {
 	private Date updatedDate;
 	private User createdBy;
 	private Category category;
+	private boolean actived;
 }

@@ -18,44 +18,48 @@ import org.springframework.web.bind.annotation.RestController;
 import com.emaster.common.dto.CategoryDto;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.dataquery.services.CategoryService;
+import com.emaster.dataquery.facade.CategoryFacade;
 
 @RestController
 @RequestMapping("categories")
 public class CategoryController {
+	private CategoryFacade categoryFacade;
+	
 	@Autowired
-	private CategoryService categoryService;
+	public void setCategoryFacade(CategoryFacade categoryFacade) {
+		this.categoryFacade = categoryFacade;
+	}
 
 	@GetMapping
 	public ResponseEntity<PageDto<CategoryDto>> findAll(
 			@RequestParam(value = "page", required = false) Optional<Integer> page,
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws DataQueryException {
-		return ResponseEntity.ok().body(categoryService.findAll(page, size));
+		return ResponseEntity.ok().body(categoryFacade.findAll(page, size));
 	}
 
 	@PostMapping
-	public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto category) throws DataQueryException {
-		return ResponseEntity.ok().body(categoryService.create(category));
+	public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto) throws DataQueryException {
+		return ResponseEntity.ok().body(categoryFacade.create(categoryDto));
 	}
 
 	@PutMapping
 	public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto category) throws DataQueryException {
-		return ResponseEntity.ok().body(categoryService.update(category));
+		return ResponseEntity.ok().body(categoryFacade.update(category));
 	}
 
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<CategoryDto> findOne(@PathVariable("categoryId") String categoryId) {
-		return ResponseEntity.ok().body(categoryService.findOne(categoryId));
+		return ResponseEntity.ok().body(categoryFacade.findOne(categoryId));
 	}
 
 	@DeleteMapping("/{categoryId}")
 	public ResponseEntity<Void> delete(@PathVariable("categoryId") String categoryId) {
-		categoryService.delete(categoryId);
+		categoryFacade.delete(categoryId);
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/user")
 	public ResponseEntity<List<CategoryDto>> getListCategories(@RequestParam("email") String email) {
-		return ResponseEntity.ok().body(categoryService.findForASession(Optional.of(email)));
+		return ResponseEntity.ok().body(categoryFacade.findForASession(Optional.of(email)));
 	}
 }

@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	@SuppressWarnings({"unused" })
 	@Override
 	public Page<User> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
