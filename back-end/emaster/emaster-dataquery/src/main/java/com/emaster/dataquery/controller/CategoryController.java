@@ -43,8 +43,8 @@ public class CategoryController {
 	}
 
 	@PutMapping
-	public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto category) throws DataQueryException {
-		return ResponseEntity.ok().body(categoryFacade.update(category));
+	public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto categoryDto) throws DataQueryException {
+		return ResponseEntity.ok().body(categoryFacade.update(categoryDto));
 	}
 
 	@GetMapping("/{categoryId}")

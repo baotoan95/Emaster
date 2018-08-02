@@ -37,10 +37,8 @@ public class CommentServiceImpl implements CommentService {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder()
-				.message(MessageContant.INVALID_PARAM)
-				.dateTime(LocalDateTime.now())
-				.status(HttpStatus.BAD_REQUEST).build();
+			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+					.status(HttpStatus.BAD_REQUEST).build();
 		}
 		log.info("Start findAll(page={},size={})", pageNum, pageSize);
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
@@ -53,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
 	public Comment findOne(String id) {
 		log.info("Start findOne({})", id);
 		Optional<Comment> result = commentRepository.findById(id);
-		if(result.isPresent()) {
+		if (result.isPresent()) {
 			log.info("Finish findOne");
 			return result.get();
 		}
@@ -63,25 +61,23 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Comment create(Comment comment) throws DataQueryException {
 		log.info("Start create");
-		if(Objects.isNull(comment)) {
+		if (Objects.nonNull(comment)) {
 			Optional<User> user = userRepository.findByEmail(comment.getCreatedBy().getEmail());
-			if(user.isPresent()) {
+			if (user.isPresent()) {
 				comment.setId(null);
+				comment.setCreatedBy(user.get());
+				
 				comment.setCreatedDate(new Date());
 				Comment createdComment = commentRepository.save(comment);
 				log.info("Finish create");
 				return createdComment;
-			} else {
-				throw DataQueryException.builder()
-				.message(DataQueryMessage.DONT_HAVE_PERMIT_CREATE)
-				.dateTime(LocalDateTime.now())
-				.status(HttpStatus.FORBIDDEN).build();
+			} else { 
+				throw DataQueryException.builder().message(DataQueryMessage.DONT_HAVE_PERMIT_CREATE)
+						.dateTime(LocalDateTime.now()).status(HttpStatus.FORBIDDEN).build();
 			}
 		} else {
-			throw DataQueryException.builder()
-			.message(MessageContant.INVALID_PARAM)
-			.dateTime(LocalDateTime.now())
-			.status(HttpStatus.BAD_REQUEST).build();
+			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+					.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
 
@@ -91,16 +87,14 @@ public class CommentServiceImpl implements CommentService {
 		Optional<Comment> existedComment = commentRepository.findById(comment.getId());
 		if (existedComment.isPresent()) {
 			Comment newComment = existedComment.get();
-			newComment.setCreatedDate(existedComment.get().getCreatedDate());
+			newComment.setCreatedDate(existedComment.get().getCreatedDate()); 
 			newComment.setCreatedBy(existedComment.get().getCreatedBy());
 			Comment updatedComment = commentRepository.save(newComment);
 			log.info("Finish update");
-			return updatedComment;
+			return updatedComment; 
 		} else {
-			throw DataQueryException.builder()
-			.message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
-			.status(HttpStatus.BAD_REQUEST)
-			.dateTime(LocalDateTime.now()).build();
+			throw DataQueryException.builder().message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
+					.status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now()).build();
 		}
 	}
 

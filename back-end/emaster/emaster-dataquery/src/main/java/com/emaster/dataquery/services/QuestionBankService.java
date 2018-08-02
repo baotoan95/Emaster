@@ -8,7 +8,7 @@ import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.QuestionBank;
 
 public interface QuestionBankService {
-	public Page<QuestionBank> finAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	public Page<QuestionBank> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
 	public QuestionBank findOne(String id);
 

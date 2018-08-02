@@ -11,9 +11,9 @@ public interface CommentFacade {
 
 	CommentDto findOne(String id);
 
-	CommentDto create(CommentDto comment) throws DataQueryException;
+	CommentDto create(CommentDto commentDto) throws DataQueryException;
 
-	CommentDto update(CommentDto comment) throws DataQueryException;
+	CommentDto update(CommentDto commentDto) throws DataQueryException;
 
 	void delete(String id);
 }

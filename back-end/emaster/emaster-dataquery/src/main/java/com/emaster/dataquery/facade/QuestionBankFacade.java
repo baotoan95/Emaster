@@ -7,13 +7,13 @@ import com.emaster.common.dto.QuestionBankDto;
 import com.emaster.common.exception.DataQueryException;
 
 public interface QuestionBankFacade {
-	public PageDto<QuestionBankDto> finAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	public PageDto<QuestionBankDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
 	public QuestionBankDto findOne(String id);
 
-	public QuestionBankDto create(QuestionBankDto questionBankDto);
+	public QuestionBankDto create(QuestionBankDto questionBankDto) throws DataQueryException;
 
 	public void delete(String id);
 
-	public QuestionBankDto update(QuestionBankDto questionBankDto);
+	public QuestionBankDto update(QuestionBankDto questionBankDto) throws DataQueryException; 
 }

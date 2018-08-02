@@ -3,6 +3,8 @@ package com.emaster.common.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,8 +23,9 @@ public class CommentDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String id;
-
-	private String createdBy;
+	
+	@JsonProperty("createdBy")
+	private String createdByEmail;
 
 	private String content;
 

@@ -26,16 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionBankServiceImpl implements QuestionBankService {
 	@Autowired
 	private QuestionBankRepository questionBankRepository;
-	
+
 	@Override
-	public Page<QuestionBank> finAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+	public Page<QuestionBank> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		log.info("Start findAll(page={}, size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder()
-			.status(HttpStatus.BAD_REQUEST)
-				.message(MessageContant.INVALID_PARAM)
+			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
 					.dateTime(LocalDateTime.now()).build();
 		}
 
@@ -49,7 +47,7 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 	public QuestionBank findOne(String id) {
 		log.info("Start findOne({})", id);
 		Optional<QuestionBank> questionBank = questionBankRepository.findById(id);
-		if(questionBank.isPresent()) {
+		if (questionBank.isPresent()) {
 			log.info("Finish findOne()");
 			return questionBank.get();
 		}
@@ -58,29 +56,26 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 
 	@Override
 	public QuestionBank create(QuestionBank questionBank) throws DataQueryException {
-		if(isValid(questionBank)) {
+		if (isValid(questionBank)) {
 			log.info("Start create by {} with statement {}", 
-					questionBank.getCreatedBy().getEmail(), 
+					questionBank.getCreatedBy().getEmail(),
 					questionBank.getStatement().getId());
 			
-			questionBank.setCreatedDate(new Date());
-			QuestionBank createdQuestionBank = questionBankRepository.save(questionBank);
-			
+					questionBank.getCategory().getId();
+					questionBank.setCreatedDate(new Date());
+					QuestionBank createdQuestionBank = questionBankRepository.save(questionBank);
+
 			log.info("End create");
 			return createdQuestionBank;
 		} else {
-			throw DataQueryException.builder()
-			.status(HttpStatus.BAD_REQUEST)
-			.message(MessageContant.INVALID_PARAM)
-			.dateTime(LocalDateTime.now())
-			.build();
+			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
+					.dateTime(LocalDateTime.now()).build();
 		}
 	}
-	
+
 	private boolean isValid(QuestionBank questionBank) {
 		return Objects.nonNull(questionBank) && Objects.nonNull(questionBank.getCategory())
-				&& Objects.nonNull(questionBank.getStatement()) 
-				&& Objects.nonNull(questionBank.getCreatedBy());
+				&& Objects.nonNull(questionBank.getStatement()) && Objects.nonNull(questionBank.getCreatedBy());
 	}
 
 	@Override
@@ -93,18 +88,17 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 	@Override
 	public QuestionBank update(QuestionBank questionBank) throws DataQueryException {
 		// TODO: try update without primary key
-		if(isValid(questionBank)) {
-			log.info("Start update createdBy={} statement={} category={}", 
-					questionBank.getCreatedBy(), 
-					questionBank.getStatement().getId(), 
+		if (isValid(questionBank)) {
+			log.info("Start update createdBy={} statement={} category={}",
+					questionBank.getCreatedBy().getEmail(),
+					questionBank.getStatement().getId(),
 					questionBank.getCategory().getId());
+			questionBank.setCreatedDate(questionBank.getCreatedDate());
 			QuestionBank updatedQuestionBank = questionBankRepository.save(questionBank);
 			return updatedQuestionBank;
 		} else {
-			throw DataQueryException.builder()
-			.message(MessageContant.INVALID_PARAM)
-			.status(HttpStatus.BAD_REQUEST)
-			.dateTime(LocalDateTime.now()).build();
+			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
+					.dateTime(LocalDateTime.now()).build();
 		}
 	}
 

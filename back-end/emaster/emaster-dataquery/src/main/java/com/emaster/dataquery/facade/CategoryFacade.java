@@ -10,9 +10,9 @@ import com.emaster.common.exception.DataQueryException;
 public interface CategoryFacade {
 	PageDto<CategoryDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	CategoryDto create(CategoryDto category) throws DataQueryException;
+	CategoryDto create(CategoryDto categoryDto) throws DataQueryException;
 
-	CategoryDto update(CategoryDto category) throws DataQueryException;
+	CategoryDto update(CategoryDto categoryDto) throws DataQueryException;
 
 	CategoryDto findOne(String id);
 
