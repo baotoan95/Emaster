@@ -23,32 +23,27 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto create(CategoryDto category) throws PortalException {
-		// TODO Auto-generated method stub
-		return null;
+	public CategoryDto create(CategoryDto categoryDto) throws PortalException {
+		return categoryDAL.create(categoryDto);
 	}
 
 	@Override
-	public CategoryDto update(CategoryDto category) throws PortalException {
-		// TODO Auto-generated method stub
-		return null;
+	public CategoryDto update(CategoryDto categoryDto) throws PortalException {
+		return categoryDAL.update(categoryDto);
 	}
 
 	@Override
 	public CategoryDto findOne(String id) throws PortalException {
-		// TODO Auto-generated method stub
-		return null;
+		return categoryDAL.findOne(id);
 	}
 
 	@Override
 	public void delete(String id) throws PortalException {
-		// TODO Auto-generated method stub
-		
+		categoryDAL.delete(id);
 	}
 
 	@Override
 	public List<CategoryDto> findForASession(Optional<String> userId) throws PortalException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

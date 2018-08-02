@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category create(Category category) throws DataQueryException {
-		if (Objects.nonNull(category)) {
+		if (Objects.nonNull(category) && Objects.nonNull(category.getCreatedBy())) {
 			log.info("Start create with name={}", category.getName());
 			Optional<User> user = userRepository.findByEmail(category.getCreatedBy().getEmail());
 			if (user.isPresent()) {
