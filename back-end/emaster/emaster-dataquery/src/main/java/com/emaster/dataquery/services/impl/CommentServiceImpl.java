@@ -66,12 +66,12 @@ public class CommentServiceImpl implements CommentService {
 			if (user.isPresent()) {
 				comment.setId(null);
 				comment.setCreatedBy(user.get());
-				
+
 				comment.setCreatedDate(new Date());
 				Comment createdComment = commentRepository.save(comment);
 				log.info("Finish create");
 				return createdComment;
-			} else { 
+			} else {
 				throw DataQueryException.builder().message(DataQueryMessage.DONT_HAVE_PERMIT_CREATE)
 						.dateTime(LocalDateTime.now()).status(HttpStatus.FORBIDDEN).build();
 			}
@@ -87,11 +87,15 @@ public class CommentServiceImpl implements CommentService {
 		Optional<Comment> existedComment = commentRepository.findById(comment.getId());
 		if (existedComment.isPresent()) {
 			Comment newComment = existedComment.get();
-			newComment.setCreatedDate(existedComment.get().getCreatedDate()); 
+			newComment.setCreatedDate(existedComment.get().getCreatedDate());
 			newComment.setCreatedBy(existedComment.get().getCreatedBy());
+			newComment.setContent(comment.getContent());
+			newComment.setParent(comment.getParent());
+			newComment.setVoteDownCount(comment.getVoteDownCount());
+			newComment.setVoteUpCount(comment.getVoteUpCount());
 			Comment updatedComment = commentRepository.save(newComment);
 			log.info("Finish update");
-			return updatedComment; 
+			return updatedComment;
 		} else {
 			throw DataQueryException.builder().message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
 					.status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now()).build();

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.emaster.common.constant.EmasterURL;
 import com.emaster.common.dto.CommentDto;
 import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.PageDto;
@@ -25,23 +26,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class CommentDALImpl implements CommentDAL {
-	@Value("${dataquery.baseUrl}")
-	private String dataQueryBaseUrl;
-	@Autowired
 	private RestTemplate restTemplate;
-	@Autowired
 	private ObjectMapper objectMapper;
 
-	private String endPointPrefix = "/comments";
-
-	private final String ID_PARAM = "commentId";
+	@Autowired
+	public void setRestTemplate(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+	
+	@Autowired
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	@Override
 	public PageDto<CommentDto> findAll(Optional<Integer> page, Optional<Integer> size) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
 		params.put("page", page.orElse(null));
-		params.put("size", size.orElse(null));
-		String uri = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, params);
+		params.put("size", size.orElse(Integer.MAX_VALUE));
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.COMMENT.GET_ALL.build(), params);
 		ParameterizedTypeReference<PageDto<CommentDto>> responseType = new ParameterizedTypeReference<PageDto<CommentDto>>() {
 		};
 
@@ -60,7 +63,7 @@ public class CommentDALImpl implements CommentDAL {
 
 	@Override
 	public CommentDto create(CommentDto commentDto) throws PortalException {
-		String url = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, null);
+		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.COMMENT.CREATE.build(),null);
 		HttpEntity<CommentDto> body = new HttpEntity<CommentDto>(commentDto);
 		try {
 			ResponseEntity<CommentDto> response = restTemplate.exchange(url, HttpMethod.POST, body, CommentDto.class);
@@ -75,7 +78,7 @@ public class CommentDALImpl implements CommentDAL {
 
 	@Override
 	public CommentDto update(CommentDto commentDto) throws PortalException {
-		String url = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, null);
+		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.COMMENT.UPDATE.build(), null);
 		HttpEntity<CommentDto> body = new HttpEntity<CommentDto>(commentDto);
 		try {
 			ResponseEntity<CommentDto> response = restTemplate.exchange(url, HttpMethod.PUT, body, CommentDto.class);
@@ -91,9 +94,9 @@ public class CommentDALImpl implements CommentDAL {
 	@Override
 	public CommentDto findOne(String id) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put(ID_PARAM, id);
+		params.put(EmasterURL.DataQuery.ID, id);
 
-		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + ID_PARAM + "}", params);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.COMMENT.GET_BY_ID.build(), params);
 		try {
 			ResponseEntity<CommentDto> response = restTemplate.exchange(uri, HttpMethod.GET, null, CommentDto.class);
 			return response.getBody();
@@ -108,9 +111,9 @@ public class CommentDALImpl implements CommentDAL {
 	@Override
 	public void delete(String id) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put(ID_PARAM, id);
+		params.put(EmasterURL.DataQuery.ID, id);
 
-		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + ID_PARAM + "}", params);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.COMMENT.DELETE.build(), params);
 		try {
 			restTemplate.exchange(uri, HttpMethod.DELETE, null, CommentDto.class);
 
