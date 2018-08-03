@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.emaster.common.constant.EmasterURL;
 import com.emaster.common.dto.CategoryDto;
 import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.PageDto;
@@ -26,23 +26,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class CategoryDALImpl implements CategoryDAL {
-	@Value("${dataquery.baseUrl}")
-	private String dataQueryBaseUrl;
-	@Autowired
 	private RestTemplate restTemplate;
-	@Autowired
 	private ObjectMapper objectMapper;
-	private String endPointPrefix = "/categories";
-
-	private final String ID_PARAM = "categoryId";
-	private final String USER_ID_PARAM = "userId";
+	
+	@Autowired
+	public void setRestTemplate(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+	
+	@Autowired
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	@Override
 	public PageDto<CategoryDto> findAll(Optional<Integer> page, Optional<Integer> size) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put("page", page.orElse(null));
-		params.put("size", size.orElse(null));
-		String uri = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, params);
+		params.put("page", page.orElse(0));
+		params.put("size", size.orElse(Integer.MAX_VALUE));
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.CATEGORY.GET_ALL.build(), params);
 
 		ParameterizedTypeReference<PageDto<CategoryDto>> responseType = new ParameterizedTypeReference<PageDto<CategoryDto>>() {
 		};
@@ -54,14 +56,17 @@ public class CategoryDALImpl implements CategoryDAL {
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
-			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
-					.message(exception.getMessage()).debugMessage(exception.getDebugMessage()).build();
+			throw PortalException.builder()
+			.status(exception.getStatus())
+			.dateTime(exception.getDateTime())
+					.message(exception.getMessage())
+					.debugMessage(exception.getDebugMessage()).build();
 		}
 	}
 
 	@Override
 	public CategoryDto create(CategoryDto categoryDto) throws PortalException {
-		String url = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, null);
+		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.CATEGORY.CREATE.build(), null);
 		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.POST, body, CategoryDto.class);
@@ -75,7 +80,7 @@ public class CategoryDALImpl implements CategoryDAL {
 
 	@Override
 	public CategoryDto update(CategoryDto categoryDto) throws PortalException {
-		String url = HttpQueryUtils.buildUrl(dataQueryBaseUrl + endPointPrefix, null);
+		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.CATEGORY.UPDATE.build(), null);
 		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.PUT, body, CategoryDto.class);
@@ -90,9 +95,9 @@ public class CategoryDALImpl implements CategoryDAL {
 	@Override
 	public CategoryDto findOne(String id) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put(ID_PARAM, id);
+		params.put(EmasterURL.DataQuery.ID, id);
 
-		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + ID_PARAM + "}", params);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.CATEGORY.GET_BY_ID.build(), params);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(uri, HttpMethod.GET, null, CategoryDto.class);
 			return response.getBody();
@@ -106,9 +111,9 @@ public class CategoryDALImpl implements CategoryDAL {
 	@Override
 	public void delete(String id) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put(ID_PARAM, id);
+		params.put(EmasterURL.DataQuery.ID, id);
 
-		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + ID_PARAM + "}", params);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.CATEGORY.DELETE.build(), params);
 		try {
 			restTemplate.exchange(uri, HttpMethod.DELETE, null, CategoryDto.class);
 		} catch (HttpClientErrorException e) {
@@ -121,9 +126,9 @@ public class CategoryDALImpl implements CategoryDAL {
 	@Override
 	public List<CategoryDto> findForASession(Optional<String> userId) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put(USER_ID_PARAM, userId.orElse(null));
+		params.put("userId", userId.orElse(null));
 
-		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + USER_ID_PARAM + "}", params);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.CATEGORY.GET_BY_ID.build(), params);
 		try {
 			ParameterizedTypeReference<List<CategoryDto>> listCategoryDtoType = new ParameterizedTypeReference<List<CategoryDto>>() {
 			};

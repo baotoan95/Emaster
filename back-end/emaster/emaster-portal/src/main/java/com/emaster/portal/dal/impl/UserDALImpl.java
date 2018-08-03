@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.emaster.common.constant.EmasterURL;
 import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.UserDto;
@@ -31,12 +31,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class UserDALImpl implements UserDAL {
-	@Value("${dataquery.baseUrl}")
-	private String dataQueryBaseUrl;
-	@Autowired
 	private RestTemplate restTemplate;
-	@Autowired
 	private ObjectMapper objectMapper;
+	
+	@Autowired
+	public void setRestTemplate(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+	
+	@Autowired
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	@Override
 	public PageDto<UserDto> getUsers(Optional<Integer> page, Optional<Integer> size) throws PortalException {
@@ -47,9 +53,9 @@ public class UserDALImpl implements UserDAL {
 		restTemplate.setMessageConverters(messageConverters);
 
 		Map<String, Object> params = new HashMap<>();
-		params.put("page", page.orElse(null));
-		params.put("size", size.orElse(null));
-		String uri = HttpQueryUtils.buildUrl("http://localhost:8085/users", params);
+		params.put("page", page.orElse(0));
+		params.put("size", size.orElse(Integer.MAX_VALUE));
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.USER.GET_ALL.build(), params);
 
 		ParameterizedTypeReference<PageDto<UserDto>> responseType = new ParameterizedTypeReference<PageDto<UserDto>>() {
 		};
@@ -68,8 +74,8 @@ public class UserDALImpl implements UserDAL {
 	@Override
 	public UserDto findOne(String email) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put("email", email);
-		URI uri = HttpQueryUtils.buildURI("http://localhost:8085/users/{email}", params);
+		params.put(EmasterURL.DataQuery.ID, email);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.USER.GET_BY_ID.build(), params);
 
 		try {
 			ResponseEntity<UserDto> response = restTemplate.exchange(uri, HttpMethod.GET, null, UserDto.class);
@@ -84,7 +90,7 @@ public class UserDALImpl implements UserDAL {
 	@Override
 	public UserDto create(UserDto userDto) throws PortalException {
 		HttpEntity<UserDto> body = new HttpEntity<UserDto>(userDto);
-		String url = HttpQueryUtils.buildUrl("http://localhost:8085/users", null);
+		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.USER.CREATE.build(), null);
 		
 		try {
 			ResponseEntity<UserDto> response = restTemplate.exchange(url, HttpMethod.POST, body, UserDto.class);
@@ -99,7 +105,7 @@ public class UserDALImpl implements UserDAL {
 	@Override
 	public UserDto update(UserDto userDto) throws PortalException {
 		HttpEntity<UserDto> body = new HttpEntity<UserDto>(userDto);
-		String url = HttpQueryUtils.buildUrl("http://localhost:8085/users", null);
+		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.USER.UPDATE.build(), null);
 		
 		try {
 			ResponseEntity<UserDto> response = restTemplate.exchange(url, HttpMethod.PUT, body, UserDto.class);
@@ -114,8 +120,8 @@ public class UserDALImpl implements UserDAL {
 	@Override
 	public void delete(String email) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put("email", email);
-		URI uri = HttpQueryUtils.buildURI("http://localhost:8085/users/{email}", params);
+		params.put(EmasterURL.DataQuery.ID, email);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.USER.DELETE.build(), params);
 		
 		try {
 			restTemplate.exchange(uri, HttpMethod.DELETE, null, Void.class);

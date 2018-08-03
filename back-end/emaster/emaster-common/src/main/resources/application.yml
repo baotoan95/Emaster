@@ -2,3 +2,6 @@ logging:
   level:
     com:
       emaster: debug
+      
+dataquery:
+  baseUrl: http://localhost:8085/dataquery

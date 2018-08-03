@@ -1,5 +1,7 @@
 server:
   port: 8085
+  servlet:
+    context-path: /dataquery
 
 spring:
   profiles:
@@ -21,12 +23,12 @@ logging:
   level:
     com:
       emaster: debug
-    org:
-      springframework:
-        data:
-          mongodb:
-            core:
-              MongoTemplate: debug
+#    org:
+#      springframework:
+#        data:
+#          mongodb:
+#            core:
+#              MongoTemplate: debug
       
 limitQuestionPerSession: 20
       

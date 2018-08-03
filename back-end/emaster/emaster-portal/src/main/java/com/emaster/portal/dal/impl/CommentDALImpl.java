@@ -2,7 +2,6 @@ package com.emaster.portal.dal.impl;
 
 import java.net.URI;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,7 +35,6 @@ public class CommentDALImpl implements CommentDAL {
 	private String endPointPrefix = "/comments";
 
 	private final String ID_PARAM = "commentId";
-	private final String USER_ID_PARAM = "userId";
 
 	@Override
 	public PageDto<CommentDto> findAll(Optional<Integer> page, Optional<Integer> size) throws PortalException {
@@ -116,26 +114,6 @@ public class CommentDALImpl implements CommentDAL {
 		try {
 			restTemplate.exchange(uri, HttpMethod.DELETE, null, CommentDto.class);
 
-		} catch (HttpClientErrorException e) {
-			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
-			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
-					.message(exception.getMessage()).debugMessage(exception.getDebugMessage()).build();
-		}
-
-	}
-
-	@Override
-	public List<CommentDto> findForASession(Optional<String> userId) throws PortalException {
-		Map<String, Object> params = new HashMap<>();
-		params.put(USER_ID_PARAM, userId.orElse(null));
-
-		URI uri = HttpQueryUtils.buildURI(dataQueryBaseUrl + endPointPrefix + "/{" + USER_ID_PARAM + "}", params);
-		try {
-			ParameterizedTypeReference<List<CommentDto>> listCommentDtoType = new ParameterizedTypeReference<List<CommentDto>>() {
-			};
-			ResponseEntity<List<CommentDto>> response = restTemplate.exchange(uri, HttpMethod.POST, null,
-					listCommentDtoType);
-			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
 			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())

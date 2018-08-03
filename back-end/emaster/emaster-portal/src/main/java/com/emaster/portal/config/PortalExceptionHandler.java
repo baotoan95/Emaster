@@ -1,4 +1,4 @@
-package com.emaster.portal;
+package com.emaster.portal.config;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -18,14 +18,10 @@ import com.emaster.common.dto.CommentDto;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.facade.CommentFacade;
-import com.emaster.dataquery.services.CommentService;
 
 @RestController
 @RequestMapping("comments")
 public class CommentController {
-	// @Autowired
-	// private CommentService commentService;
-
 	private CommentFacade commentFacade;
 
 	@Autowired
@@ -49,17 +45,15 @@ public class CommentController {
 	public ResponseEntity<CommentDto> create(@RequestBody CommentDto commentDto) throws DataQueryException {
 		return ResponseEntity.ok().body(commentFacade.create(commentDto));
 	}
-	
-	 @PutMapping
-	 public ResponseEntity<CommentDto> update(@RequestBody CommentDto commentDto)
-	 throws DataQueryException {
-	 return ResponseEntity.ok().body(commentFacade.update(commentDto));
-	 } 
-	
-	 @DeleteMapping("/{commentId}")
-	 public ResponseEntity<Void> delete(@PathVariable("commentId") String
-	 commentId) {
-	 commentFacade.delete(commentId);
-	 return ResponseEntity.ok().build();
-	 }
+
+	@PutMapping
+	public ResponseEntity<CommentDto> update(@RequestBody CommentDto commentDto) throws DataQueryException {
+		return ResponseEntity.ok().body(commentFacade.update(commentDto));
+	}
+
+	@DeleteMapping("/{commentId}")
+	public ResponseEntity<Void> delete(@PathVariable("commentId") String commentId) {
+		commentFacade.delete(commentId);
+		return ResponseEntity.ok().build();
+	}
 }

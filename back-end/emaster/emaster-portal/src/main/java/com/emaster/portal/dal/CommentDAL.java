@@ -1,6 +1,5 @@
 package com.emaster.portal.dal;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.emaster.common.dto.CommentDto;
@@ -17,7 +16,5 @@ public interface CommentDAL {
 	CommentDto findOne(String id) throws PortalException;
 
 	void delete(String id) throws PortalException;
-
-	List<CommentDto> findForASession(Optional<String> userId) throws PortalException;
 
 }

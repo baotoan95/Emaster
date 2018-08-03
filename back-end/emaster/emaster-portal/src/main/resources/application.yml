@@ -1,5 +1,7 @@
 server:
   port: 8080
+  servlet:
+    context-path: /portal
 
 spring:
   profiles:
@@ -13,9 +15,7 @@ logging:
   level:
     com:
       emaster: debug
-      
-dataquery:
-  baseUrl: http://localhost:8085/
+
 ---
 spring:
   profiles: prod
