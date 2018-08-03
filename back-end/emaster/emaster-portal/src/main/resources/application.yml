@@ -11,6 +11,9 @@ spring:
 spring:
   profiles: dev
   
+dataquery:
+  baseUrl: http://localhost:8085/dataquery
+  
 logging:
   level:
     com:
