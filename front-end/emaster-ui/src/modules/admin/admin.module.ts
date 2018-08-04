@@ -4,23 +4,26 @@ import { SharedModule } from '../../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { MatSidenavModule } from '@angular/material';
-import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
+import { SidebarMenuModule } from './components/sidebar-menu/sidebar-menu.module';
+import { SidebarService } from '../../shared/services/sidebar.service';
+import { CategoryManagementModule } from './pages/category-management/category-management.module';
 
 @NgModule({
     imports: [
         CommonModule,
         SharedModule,
         AdminRoutingModule,
-        MatSidenavModule
+        MatSidenavModule,
+        SidebarMenuModule,
+        CategoryManagementModule
     ],
     declarations: [
-        AdminComponent,
-        SidebarMenuComponent
+        AdminComponent
     ],
     providers: [
-
+        SidebarService
     ]
 })
 export class AdminModule {
-
+    
 }

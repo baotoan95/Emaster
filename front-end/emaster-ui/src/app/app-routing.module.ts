@@ -12,22 +12,19 @@ const routes: Routes = [
     },
     {
         path: 'courses',
-        loadChildren: '../modules/course/course.module#CourseModule',
-        pathMatch: 'full'
+        loadChildren: '../modules/course/course.module#CourseModule'
     },
     {
         path: 'learn',
-        loadChildren: '../modules/course/pages/learning/learning.module#LearningModule',
-        pathMatch: 'full'
+        loadChildren: '../modules/course/pages/learning/learning.module#LearningModule'
     },
     {
         path: 'admin',
-        loadChildren: '../modules/admin/admin.module#AdminModule',
-        pathMatch: 'full'
+        loadChildren: '../modules/admin/admin.module#AdminModule'
     },
-    {
-        path: '**', redirectTo: 'index'
-    }
+    // {
+    //     path: '**', redirectTo: 'index'
+    // }
 ];
 
 export const ROUTES = RouterModule.forRoot(routes,
