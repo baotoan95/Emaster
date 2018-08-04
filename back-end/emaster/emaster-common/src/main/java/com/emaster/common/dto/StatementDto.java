@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.emaster.common.enums.Language;
 import com.emaster.common.enums.StatementType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StatementDto implements Serializable {
 	/**
 	 * 
@@ -36,6 +39,9 @@ public class StatementDto implements Serializable {
 	private Language language;
 	private String bestAnswer;
 	private Date createdDate;
-	private String createdBy;
-	private String category;
+	@JsonProperty("createdBy")
+	private String createdByEmail;
+	@JsonProperty("category")
+	private String categoryId;
+	private Date updatedDate;
 }

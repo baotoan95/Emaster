@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,6 +23,7 @@ import com.emaster.common.utils.HttpQueryUtils;
 import com.emaster.portal.dal.StatementDAL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Component
 public class StatementDALImpl implements StatementDAL {
 	private RestTemplate restTemplate;
 	private ObjectMapper objectMapper;
@@ -58,7 +60,7 @@ public class StatementDALImpl implements StatementDAL {
 		Map<String, Object> params = new HashMap<>();
 		params.put("page", page.orElse(0));
 		params.put("size", size.orElse(Integer.MAX_VALUE));
-		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.GET_BY_ID.build(), params);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.GET_ALL.build(), params);
 		ParameterizedTypeReference<PageDto<StatementDto>> responseType = new ParameterizedTypeReference<PageDto<StatementDto>>() {
 		};
 		try {
@@ -115,7 +117,7 @@ public class StatementDALImpl implements StatementDAL {
 		params.put(EmasterURL.DataQuery.ID, id);
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.DELETE.build(), params);
 		try {
-			restTemplate.exchange(uri, HttpMethod.GET, null, StatementDto.class);
+			restTemplate.exchange(uri, HttpMethod.DELETE, null, StatementDto.class);
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
 			throw PortalException.builder()

@@ -1,4 +1,4 @@
-package com.emaster.dataquery;
+package com.emaster.dataquery.config;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

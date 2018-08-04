@@ -45,7 +45,9 @@ public class Statement implements Serializable {
 	private String bestAnswer;
 	private Date createdDate;
 	private Date updatedDate;
+	@DBRef
 	private User createdBy;
+	@DBRef
 	private Category category;
 	private boolean actived;
 }

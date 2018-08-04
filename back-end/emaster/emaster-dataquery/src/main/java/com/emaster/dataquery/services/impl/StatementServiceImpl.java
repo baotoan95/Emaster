@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -74,9 +75,15 @@ public class StatementServiceImpl implements StatementService {
 		Optional<Statement> existedStatement = statementRepository.findById(statement.getId());
 		if (existedStatement.isPresent()) {
 			log.info("Start update with id={}", statement.getId());
-			Statement newStatement = existedStatement.get();
-			newStatement.setUpdatedDate(new Date());
-			Statement updatedStatement = statementRepository.save(newStatement);
+			// Remove itself from incorrect and correct list
+			statement.setCorrectAnswers(statement.getCorrectAnswers().stream().filter(stt -> !stt.getId().equals(statement.getId())).collect(Collectors.toList()));
+			statement.setIncorrectAnswers(statement.getIncorrectAnswers().stream().filter(stt -> !stt.getId().equals(statement.getId())).collect(Collectors.toList()));
+			
+			Statement oldStatement = existedStatement.get();
+			statement.setUpdatedDate(new Date());
+			statement.setCreatedDate(oldStatement.getCreatedDate());
+			statement.setCreatedBy(oldStatement.getCreatedBy());
+			Statement updatedStatement = statementRepository.save(statement);
 			log.info("Finish update");
 			return updatedStatement;
 		} else {

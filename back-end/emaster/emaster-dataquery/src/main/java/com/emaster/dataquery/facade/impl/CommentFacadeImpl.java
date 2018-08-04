@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,6 @@ import com.emaster.common.exception.DataQueryException;
 import com.emaster.dataquery.entities.Comment;
 import com.emaster.dataquery.facade.CommentFacade;
 import com.emaster.dataquery.services.CommentService;
-import com.google.common.reflect.TypeToken;
 
 @Component
 public class CommentFacadeImpl implements CommentFacade {
@@ -33,7 +33,6 @@ public class CommentFacadeImpl implements CommentFacade {
 		this.modelMapper = modelMapper;
 	}
 
-	@SuppressWarnings("serial")
 	@Override
 	public PageDto<CommentDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		Type pageDtoType = new TypeToken<PageDto<CommentDto>>() {

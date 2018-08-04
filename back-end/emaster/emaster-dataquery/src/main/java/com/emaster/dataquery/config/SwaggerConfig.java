@@ -1,4 +1,4 @@
-package com.emaster.dataquery;
+package com.emaster.dataquery.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

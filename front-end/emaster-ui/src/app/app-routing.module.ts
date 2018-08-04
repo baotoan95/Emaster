@@ -21,6 +21,11 @@ const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'admin',
+        loadChildren: '../modules/admin/admin.module#AdminModule',
+        pathMatch: 'full'
+    },
+    {
         path: '**', redirectTo: 'index'
     }
 ];

@@ -1,0 +1,15 @@
+<mat-drawer-container class="sidebar" hasBackdrop="true" fullscreen>
+    <mat-drawer #drawer mode="push">
+        <mat-toolbar class="drawer-toolbar">
+            <mat-icon (click)="drawer.toggle()" class="emaster-btn btn-close">close</mat-icon>
+        </mat-toolbar>
+        <emaster-sidebar-menu [items]="menuItems"></emaster-sidebar-menu>
+    </mat-drawer>
+    <mat-drawer-content>
+        <mat-toolbar>
+            <mat-icon (click)="drawer.toggle()" [class.hiden]="drawer.opened" class="emaster-btn">menu</mat-icon>
+        </mat-toolbar>
+
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

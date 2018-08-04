@@ -11,3 +11,4 @@ front-end/emaster-admin-ui/node_modules
 .project
 .classpath
 .vscode
+npm-debug.log

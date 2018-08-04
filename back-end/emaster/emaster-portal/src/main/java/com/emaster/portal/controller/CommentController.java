@@ -2,7 +2,6 @@ package com.emaster.portal.controller;
 
 import java.util.Optional;
 
-import org.hibernate.validator.internal.metadata.aggregated.rule.VoidMethodsMustNotBeReturnValueConstrained;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +22,6 @@ import com.emaster.portal.service.CommentService;
 @RestController
 @RequestMapping("comments")
 public class CommentController {
-
 	private CommentService commentService;
 
 	@Autowired
@@ -35,12 +33,6 @@ public class CommentController {
 	public ResponseEntity<PageDto<CommentDto>> findAll(
 			@RequestParam(value = "page", required = false) Optional<Integer> page,
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws PortalException {
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		return ResponseEntity.ok().body(commentService.findAll(page, size));
 
 	}
@@ -54,10 +46,12 @@ public class CommentController {
 	public ResponseEntity<CommentDto> update(@RequestBody CommentDto commentDto) throws PortalException {
 		return ResponseEntity.ok().body(commentService.update(commentDto));
 	}
+	
 	@GetMapping("/{commentId}")
 	public ResponseEntity<CommentDto> findOne(@PathVariable("commentId") String commentId) throws PortalException{
 		return ResponseEntity.ok().body(commentService.findOne(commentId));
 	}
+	
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<CommentDto> delete(@PathVariable("commentId") String commentID) throws PortalException{
 		commentService.delete(commentID);

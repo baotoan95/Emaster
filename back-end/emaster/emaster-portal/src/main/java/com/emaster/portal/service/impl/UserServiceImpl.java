@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto update(UserDto userDto) throws PortalException {
-		return userDAL.create(userDto);
+		return userDAL.update(userDto);
 	}
 
 	@Override

@@ -1,15 +1,21 @@
 package com.emaster.dataquery.facade.impl;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.StatementDto;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.common.exception.PortalException;
+import com.emaster.dataquery.entities.Statement;
 import com.emaster.dataquery.facade.StatementFacade;
 import com.emaster.dataquery.services.StatementService;
 
@@ -29,32 +35,97 @@ public class StatementFacadeImpl implements StatementFacade {
 	}
 
 	@Override
-	public StatementDto create(StatementDto Statement) throws DataQueryException {
+	public StatementDto create(StatementDto statementDto) throws DataQueryException {
+		Statement statement = modelMapper.map(statementDto, Statement.class);
+		statement.setCorrectAnswers(statementDto.getCorrectAnswers().stream()
+				.map(answer -> {
+					return Statement.builder().id(answer.getId()).build();
+				}).collect(Collectors.toList()));
+		statement.setIncorrectAnswers(statementDto.getIncorrectAnswers().stream()
+				.map(answer -> {
+					return Statement.builder().id(answer.getId()).build();
+				}).collect(Collectors.toList()));
 		
-		return null;
+		statement = statementService.create(statement);
+		StatementDto newStatementDto = modelMapper.map(statement, StatementDto.class);
+		newStatementDto.setCorrectAnswers(statement.getCorrectAnswers().stream()
+				.map(answer -> {
+					return StatementDto.builder().id(answer.getId()).content(answer.getContent()).build();
+				}).collect(Collectors.toList()));
+		newStatementDto.setIncorrectAnswers(statement.getIncorrectAnswers().stream()
+				.map(answer -> {
+					return StatementDto.builder().id(answer.getId()).content(answer.getContent()).build();
+				}).collect(Collectors.toList()));
+		
+		return newStatementDto;
 	}
 
 	@Override
 	public PageDto<StatementDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
-		return null;
+		Page<Statement> pageStatement = statementService.findAll(page, size);
+		Type pageStatementDtoType = new TypeToken<PageDto<StatementDto>>() {}.getType();
+		PageDto<StatementDto> pageStatementDto = modelMapper.map(pageStatement, pageStatementDtoType);
+		pageStatementDto.setContent(pageStatement.getContent().stream().map(statement -> {
+			statement.setIncorrectAnswers(null);
+			statement.setCorrectAnswers(null);
+			return modelMapper.map(statement, StatementDto.class);
+		}).collect(Collectors.toList()));
+		return pageStatementDto;
 	}
 
 	@Override
-	public StatementDto update(StatementDto Statement) throws DataQueryException {
-		// TODO Auto-generated method stub
-		return null;
+	public StatementDto update(StatementDto statementDto) throws DataQueryException {
+		Statement statement = modelMapper.map(statementDto, Statement.class);
+		// Prevent null for collection
+		statementDto.setCorrectAnswers(Objects.nonNull(statementDto.getCorrectAnswers()) ? statementDto.getCorrectAnswers() : Collections.emptyList());
+		statementDto.setIncorrectAnswers(Objects.nonNull(statementDto.getIncorrectAnswers()) ? statementDto.getIncorrectAnswers() : Collections.emptyList());
+		
+		statement.setCorrectAnswers(statementDto.getCorrectAnswers().stream()
+				.map(answer -> {
+					return Statement.builder().id(answer.getId()).build();
+				}).collect(Collectors.toList()));
+		statement.setIncorrectAnswers(statementDto.getIncorrectAnswers().stream()
+				.map(answer -> {
+					return Statement.builder().id(answer.getId()).build();
+				}).collect(Collectors.toList()));
+		
+		statement = statementService.update(statement);
+		StatementDto updatedStatementDto = modelMapper.map(statement, StatementDto.class);
+		updatedStatementDto.setCorrectAnswers(statement.getCorrectAnswers().stream()
+				.map(answer -> {
+					return StatementDto.builder().id(answer.getId()).content(answer.getContent()).build();
+				}).collect(Collectors.toList()));
+		updatedStatementDto.setIncorrectAnswers(statement.getIncorrectAnswers().stream()
+				.map(answer -> {
+					return StatementDto.builder().id(answer.getId()).content(answer.getContent()).build();
+				}).collect(Collectors.toList()));
+		
+		return updatedStatementDto;
 	}
 
 	@Override
 	public StatementDto findOne(String id) {
-		// TODO Auto-generated method stub
+		Statement statement = statementService.findOne(id);
+		if(Objects.nonNull(statement)) {
+			StatementDto statementDto = modelMapper.map(statement, StatementDto.class);
+			statementDto.setCorrectAnswers(statement.getCorrectAnswers().stream().map(answer -> {
+				answer.setCorrectAnswers(null);
+				answer.setIncorrectAnswers(null);
+				return modelMapper.map(answer, StatementDto.class);
+			}).collect(Collectors.toList()));
+			statementDto.setIncorrectAnswers(statement.getIncorrectAnswers().stream().map(answer -> {
+				answer.setCorrectAnswers(null);
+				answer.setIncorrectAnswers(null);
+				return modelMapper.map(answer, StatementDto.class);
+			}).collect(Collectors.toList()));
+			return statementDto;
+		}
 		return null;
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
+		statementService.delete(id);
 	}
 
 }

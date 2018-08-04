@@ -77,14 +77,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User update(User user1) throws DataQueryException {
-		log.debug("Start update with email {}", user1.getEmail());
-		Optional<User> user = userRepository.findByEmail(user1.getEmail());
-		if (user.isPresent()) {
-			User oldUser = user.get();
-			user1.setCreateDate(oldUser.getCreateDate());
-			user1.setUpdatedDate(oldUser.getUpdatedDate());
-			User updatedUser = userRepository.save(user1);
+	public User update(User user) throws DataQueryException {
+		log.debug("Start update with email {}", user.getEmail());
+		Optional<User> existedUser = userRepository.findByEmail(user.getEmail());
+		if (existedUser.isPresent()) {
+			User oldUser = existedUser.get();
+			user.setId(oldUser.getId());
+			user.setCreateDate(oldUser.getCreateDate());
+			user.setUpdatedDate(new Date());
+			User updatedUser = userRepository.save(user);
 			log.debug("Finish update");
 			return updatedUser;
 		} else {

@@ -32,9 +32,14 @@ public class UserController {
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws PortalException {
 		return ResponseEntity.ok().body(userService.getUsers(page, size));
 	}
+	
+	@GetMapping(value = "/{email:.+}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserDto> getUser(@PathVariable("email") String email) throws PortalException {
+		return ResponseEntity.ok().body(userService.findOne(email));
+	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDto> getUsers(@RequestBody UserDto userDto) throws PortalException {
+	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) throws PortalException {
 		return ResponseEntity.ok().body(userService.create(userDto));
 	}
 

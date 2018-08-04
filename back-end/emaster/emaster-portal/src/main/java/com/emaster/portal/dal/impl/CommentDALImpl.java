@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -53,7 +52,6 @@ public class CommentDALImpl implements CommentDAL {
 					responseType);
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
-
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
 			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
 					.message(exception.getMessage()).debugMessage(exception.getDebugMessage()).build();
@@ -116,7 +114,6 @@ public class CommentDALImpl implements CommentDAL {
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.COMMENT.DELETE.build(), params);
 		try {
 			restTemplate.exchange(uri, HttpMethod.DELETE, null, CommentDto.class);
-
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
 			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
