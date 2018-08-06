@@ -5,6 +5,10 @@
     margin: 0;
 }
 
+.full-width {
+    width: 100%;
+}
+
 .enable-scroll-on-device {
     -webkit-overflow-scrolling: touch;
 }
@@ -15,4 +19,8 @@
 
 button {
     outline: none !important;
+}
+
+.emaster-btn {
+    cursor: pointer;
 }

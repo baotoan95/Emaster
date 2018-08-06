@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CategoryManagementComponent } from './category-management.component';
-import { CategoryListComponent } from './components/category-list.component';
-import { CategoryComponent } from './components/category.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
 
 const routes = [
     {
@@ -12,10 +11,6 @@ const routes = [
             {
                 path: '',
                 component: CategoryListComponent
-            },
-            {
-                path: 'category',
-                component: CategoryComponent
             }
         ]
     }

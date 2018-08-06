@@ -9,7 +9,8 @@
         <mat-toolbar>
             <mat-icon (click)="drawer.toggle()" [class.hiden]="drawer.opened" class="emaster-btn">menu</mat-icon>
         </mat-toolbar>
-
-        <router-outlet></router-outlet>
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
     </mat-drawer-content>
 </mat-drawer-container>

@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-12">
+        <button mat-raised-button color="primary" (click)="openDialog(CATEGORY_ACTION.CREATE)">Create new</button>
+        <mat-form-field style="float: right;">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <mat-table [dataSource]="dataSource" matSort class="category-list-container">
+            <!-- Icon Column -->
+            <ng-container matColumnDef="icon">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Icon </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.icon}} </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <!-- CreatedBy Column -->
+            <ng-container matColumnDef="createdBy">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Created By </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.createdBy}} </mat-cell>
+            </ng-container>
+
+            <!-- Default Column -->
+            <ng-container matColumnDef="default">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Is Default </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.default}} </mat-cell>
+            </ng-container>
+
+            <!-- ForkCount Column -->
+            <ng-container matColumnDef="forkCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Fort Count </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.forkCount}} </mat-cell>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <mat-icon class="emaster-btn" matTooltip="Edit" (click)="openDialog(CATEGORY_ACTION.UPDATE, element)">note</mat-icon>
+                    <mat-icon class="emaster-btn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

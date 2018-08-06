@@ -14,10 +14,7 @@ export class AdminComponent implements AfterViewInit {
     @ViewChild('drawer') drawer: MatDrawer;
 
     menuItems: SidebarMenuItem[] = [
-        new SidebarMenuItem('Category management', '', 'menu', false, [
-            new SidebarMenuItem('All', 'admin/category-management'),
-            new SidebarMenuItem('Create new', 'admin/category-management/category')
-        ]),
+        new SidebarMenuItem('Category management', 'admin/category-management'),
         new SidebarMenuItem('User management', '/user-management'),
         new SidebarMenuItem('Statement management', '/statement-management'),
         new SidebarMenuItem('Question management', '/question-management'),

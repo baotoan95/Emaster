@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.emaster.common.constant.MessageContant;
 import com.emaster.common.exception.DataQueryException;
@@ -42,7 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		log.info("Start findAll (page={},size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now())
+			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST)
+			.dateTime(LocalDateTime.now())
 					.message(MessageContant.INVALID_PARAM).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
@@ -77,7 +79,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category update(Category category) throws DataQueryException {
-		if (Objects.nonNull(category)) {
+		if (Objects.nonNull(category) && Objects.nonNull(category.getId())) {
 			log.info("Start update category with id={}", category.getId());
 			Optional<Category> existedCategory = categoryRepository.findById(category.getId());
 			if (existedCategory.isPresent()) {
@@ -86,17 +88,21 @@ public class CategoryServiceImpl implements CategoryService {
 				oldCategory.setDefault(category.isDefault());
 				oldCategory.setDescription(category.getDescription());
 				oldCategory.setForkCount(category.getForkCount());
-				oldCategory.setIcon(category.getIcon());
+				oldCategory.setIcon(!StringUtils.isEmpty(category.getIcon()) ? category.getIcon() : oldCategory.getIcon());
 				oldCategory.setName(category.getName());
 				Category updatedCategory = categoryRepository.save(oldCategory);
 				log.info("Finish update");
 				return updatedCategory;
 			} else {
-				throw DataQueryException.builder().message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
-						.dateTime(LocalDateTime.now()).status(HttpStatus.BAD_REQUEST).build();
+				throw DataQueryException.builder()
+				.message(DataQueryMessage.GIVEN_ID_NOT_EXISTED)
+						.dateTime(LocalDateTime.now())
+						.status(HttpStatus.BAD_REQUEST).build();
 			}
 		} else {
-			throw DataQueryException.builder().message(MessageContant.BODY_REQUIRED).dateTime(LocalDateTime.now())
+			throw DataQueryException.builder()
+			.message(MessageContant.INVALID_PARAM)
+			.dateTime(LocalDateTime.now())
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}

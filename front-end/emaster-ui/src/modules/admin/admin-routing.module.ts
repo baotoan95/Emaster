@@ -8,6 +8,11 @@ const routes = [
         component: AdminComponent,
         children: [
             {
+                path: '',
+                redirectTo: 'category-management',
+                pathMatch: 'full'
+            },
+            {
                 path: 'category-management',
                 loadChildren: './pages/category-management/category-management.module#CategoryManagementModule'
             }

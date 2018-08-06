@@ -1,6 +1,8 @@
 package com.emaster.portal.dal.impl;
 
+import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -21,6 +24,7 @@ import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.exception.PortalException;
 import com.emaster.common.utils.HttpQueryUtils;
+import com.emaster.common.utils.UploadFileUtils;
 import com.emaster.portal.dal.CategoryDAL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -66,7 +70,17 @@ public class CategoryDALImpl implements CategoryDAL {
 
 	@Override
 	public CategoryDto create(CategoryDto categoryDto) throws PortalException {
+		try {
+			categoryDto.setIcon(UploadFileUtils.upload(categoryDto.getIconFile(), ""));
+		} catch (IOException e1) {
+			throw PortalException.builder()
+			.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.message("Can't upload the file")
+			.dateTime(LocalDateTime.now())
+			.build();
+		}
 		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.CATEGORY.CREATE.build(), null);
+		categoryDto.setIconFile(null);
 		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.POST, body, CategoryDto.class);
@@ -80,15 +94,23 @@ public class CategoryDALImpl implements CategoryDAL {
 
 	@Override
 	public CategoryDto update(CategoryDto categoryDto) throws PortalException {
+		try {
+			categoryDto.setIcon(UploadFileUtils.upload(categoryDto.getIconFile(), ""));
+		} catch (IOException e1) {
+			// Do nothing
+		}
 		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.CATEGORY.UPDATE.build(), null);
+		categoryDto.setIconFile(null);
 		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.PUT, body, CategoryDto.class);
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
-			throw PortalException.builder().status(exception.getStatus()).dateTime(exception.getDateTime())
-					.message(exception.getMessage()).debugMessage(exception.getDebugMessage()).build();
+			throw PortalException.builder().status(exception.getStatus())
+				.dateTime(exception.getDateTime())
+					.message(exception.getMessage())
+					.debugMessage(exception.getDebugMessage()).build();
 		}
 	}
 

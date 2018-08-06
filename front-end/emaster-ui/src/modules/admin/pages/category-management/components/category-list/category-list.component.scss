@@ -1,0 +1,14 @@
+:host {
+    .category-list-container {
+        margin-top: 10px;
+    }
+
+    .emaster-btn {
+        margin: 5px;
+        border-radius: 3px;
+
+        &:hover {
+            color: rgb(95, 10, 10);
+        }
+    }
+}

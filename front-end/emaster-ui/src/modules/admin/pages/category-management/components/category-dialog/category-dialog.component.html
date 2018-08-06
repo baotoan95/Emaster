@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Create category</h1>
+<div mat-dialog-content>
+    <form [formGroup]="categoryForm" #form="ngForm">
+        <input type="hidden" formControlName="id">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="Name" required 
+                formControlName="name">
+            <mat-error *ngIf="name.errors?.required">Name is required</mat-error>
+            <mat-error *ngIf="name.errors?.minlength">Name must be more than 4 characters</mat-error>
+        </mat-form-field>
+        <div class="full-width">
+            <label>Icon:</label>
+            <br/>
+            <input type="file" accept="image/x-png,image/gif,image/jpeg"
+                formControlName="iconFile" (change)="onFileChange($event)">
+            <br/>
+        </div>
+        <mat-form-field class="full-width">
+            <textarea rows="3" matInput name="description" 
+                placeholder="Description"
+                formControlName="description"></textarea>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="ok()" [disabled]="!form.valid">Ok</button>
+</div>

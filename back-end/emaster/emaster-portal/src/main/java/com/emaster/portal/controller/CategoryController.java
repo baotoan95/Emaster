@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,22 +32,17 @@ public class CategoryController {
 	public ResponseEntity<PageDto<CategoryDto>> findAll(
 			@RequestParam(value = "page", required = false) Optional<Integer> page,
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws PortalException {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		return ResponseEntity.ok().body(categoryService.findAll(page, size));
 	}
 	
 	@PostMapping
-	public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto) throws PortalException {
+	public ResponseEntity<CategoryDto> create(@ModelAttribute("categoryDto") CategoryDto categoryDto) throws PortalException {
 		return ResponseEntity.ok().body(categoryService.create(categoryDto));
 	}
 
-	@PutMapping
-	public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto category) throws PortalException {
-		return ResponseEntity.ok().body(categoryService.update(category));
+	@PostMapping("/update")
+	public ResponseEntity<CategoryDto> update(@ModelAttribute CategoryDto categoryDto) throws PortalException {
+		return ResponseEntity.ok().body(categoryService.update(categoryDto));
 	}
 
 	@GetMapping("/{categoryId}")

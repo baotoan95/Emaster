@@ -37,7 +37,6 @@ export class SidebarMenuItemComponent {
             this.expanded = !this.expanded;
         } else {
             this.sidebarService.closeDrawer();
-            console.log(item.route);
             this.router.navigate([item.route]);
         }
     }
