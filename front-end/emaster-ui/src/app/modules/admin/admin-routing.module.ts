@@ -15,6 +15,10 @@ const routes = [
             {
                 path: 'category-management',
                 loadChildren: './pages/category-management/category-management.module#CategoryManagementModule'
+            },
+            {
+                path: 'statement-management',
+                loadChildren: './pages/statement-management/statement-management.module#StatementManagementModule'
             }
         ]
     }

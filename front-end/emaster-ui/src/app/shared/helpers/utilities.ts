@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import * as lodash from 'lodash';
-import * as moment from 'moment';
 import { LocalStorageService } from '../services/localStorage.service';
 
 @Injectable()

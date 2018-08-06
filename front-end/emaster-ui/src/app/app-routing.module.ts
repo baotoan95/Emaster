@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { LandingComponent } from '../modules/landing/landing.component';
+import { LandingComponent } from './modules/landing/landing.component';
 
 const routes: Routes = [
     {
@@ -12,15 +12,15 @@ const routes: Routes = [
     },
     {
         path: 'courses',
-        loadChildren: '../modules/course/course.module#CourseModule'
+        loadChildren: './modules/course/course.module#CourseModule'
     },
     {
         path: 'learn',
-        loadChildren: '../modules/course/pages/learning/learning.module#LearningModule'
+        loadChildren: './modules/course/pages/learning/learning.module#LearningModule'
     },
     {
         path: 'admin',
-        loadChildren: '../modules/admin/admin.module#AdminModule'
+        loadChildren: './modules/admin/admin.module#AdminModule'
     },
     // {
     //     path: '**', redirectTo: 'index'

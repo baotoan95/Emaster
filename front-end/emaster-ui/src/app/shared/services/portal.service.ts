@@ -20,7 +20,7 @@ class CategoryService {
     }
 
     getAll(page: number, size: number): Observable<any> {
-        return this._u.req.get('http://localhost:8080/portal/categories', {page: page, size: size});
+        return this._u.req.get('/portal/categories', {page: page, size: size});
     }
 
     create(category: Category): Observable<any> {
@@ -29,11 +29,11 @@ class CategoryService {
         formData.append('name', category.name);
         formData.append('description', category.description);
         formData.append('createdByEmail', category.createdBy);
-        return this._u.req.post('http://localhost:8080/portal/categories', formData);
+        return this._u.req.post('/portal/categories', formData);
     }
 
     delete(id: string): Observable<any> {
-        return this._u.req.delete(`http://localhost:8080/portal/categories/${id}`);
+        return this._u.req.delete(`/portal/categories/${id}`);
     }
 
     update(category: Category): Observable<any> {
@@ -42,6 +42,6 @@ class CategoryService {
         formData.append('iconFile', category.iconFile ? category.iconFile : new File([], ''));
         formData.append('name', category.name);
         formData.append('description', category.description);
-        return this._u.req.post('http://localhost:8080/portal/categories/update', formData);
+        return this._u.req.post('/portal/categories/update', formData);
     }
 }
