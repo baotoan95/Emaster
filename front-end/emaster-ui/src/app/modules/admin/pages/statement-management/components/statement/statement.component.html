@@ -1,0 +1,109 @@
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        <h4>Create new statement</h4>
+                    </mat-card-title>
+                    <mat-card-subtitle>Share To Learn</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <form [formGroup]="statementForm" #form="ngForm">
+                        <mat-form-field class="col-6">
+                            <mat-select placeholder="Category" formControlName="categoryId" required>
+                                <mat-option *ngFor="let category of categories" [value]="category?.id">
+                                    {{category?.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-6">
+                            <mat-select placeholder="Origin Language" formControlName="originLang" required>
+                                <mat-option *ngFor="let lang of languages" [value]="lang.value">
+                                    {{lang.displayName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-6">
+                            <mat-select placeholder="Question Type" formControlName="type" required>
+                                <mat-option *ngFor="let type of questionTypes" [value]="type.value">
+                                    {{type.displayName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-12">
+                            <textarea matInput placeholder="Content" rows="3" required formControlName="content"></textarea>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-12">
+                            <textarea matInput placeholder="Explaination" rows="3" required formControlName="explaination"></textarea>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-12">
+                            <mat-select placeholder="Correct Answers" multiple>
+                                <mat-select-trigger>
+                                    <!-- {{toppings.value ? toppings.value[0] : ''}} -->
+                                    <!-- <span *ngIf="toppings.value?.length > 1" class="example-additional-selection"> -->
+                                    <!-- (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}}) -->
+                                    <!-- </span> -->
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.displayName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-12">
+                            <mat-select placeholder="In-correct Answers" multiple>
+                                <mat-select-trigger>
+                                    <!-- {{toppings.value ? toppings.value[0] : ''}} -->
+                                    <!-- <span *ngIf="toppings.value?.length > 1" class="example-additional-selection"> -->
+                                    <!-- (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}}) -->
+                                    <!-- </span> -->
+                                </mat-select-trigger>
+                                <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.displayName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-button>Cancel</button>
+                    <button mat-button [disabled]="!form.valid">Save</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <div class="col-4">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        <h5>Select Image</h5>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="form-control">
+                        <input type="file">
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="sound">
+                <mat-card-header>
+                    <mat-card-title>
+                        <h5>Select Sound</h5>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="form-control">
+                        <label>Normal Sound</label>
+                        <input type="file">
+                    </div>
+                    <div class="form-control">
+                        <label>Slow Sound</label>
+                        <input type="file">
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

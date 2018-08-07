@@ -19,18 +19,18 @@ export class CategoryDialogComponent implements OnInit {
     iconFile: any;
 
     constructor(public dialogRef: MatDialogRef<CategoryDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public category: Category,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private cd: ChangeDetectorRef) {
     }
 
     ngOnInit() {
         this.categoryForm = new FormGroup({
-            'name': new FormControl(this.category.name, [
+            'name': new FormControl(this.data.category.name, [
                 Validators.required,
                 Validators.minLength(5)
             ]),
-            'description': new FormControl(this.category.description, []),
-            'id': new FormControl(this.category.id),
+            'description': new FormControl(this.data.category.description, []),
+            'id': new FormControl(this.data.category.id),
             'iconFile': new FormControl()
         });
     }

@@ -4,6 +4,7 @@ import { Category } from '../../../../../../shared/models/Category';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MatSnackBar } from '@angular/material';
 import { SpinnerService } from '../../../../../../shared/services/spinner.service';
 import { CategoryDialogComponent } from '../category-dialog/category-dialog.component';
+import { ConfirmDialogComponent } from '../../../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'emaster-category-list-component',
@@ -31,7 +32,7 @@ export class CategoryListComponent implements OnInit {
 
     ngOnInit() {
         this.spinnerService.show();
-        this.portalService.category.getAll(0, 10).subscribe(data => {
+        this.portalService.category.getAll(0, Number.MAX_SAFE_INTEGER).subscribe(data => {
             this.categories = data.content;
             this.setDataSource();
             this.spinnerService.hide();
@@ -48,7 +49,10 @@ export class CategoryListComponent implements OnInit {
             category = new Category();
         }
         const dialogRef = this.dialog.open(CategoryDialogComponent, {
-            data: category
+            data: {
+                category: category,
+                title: `${type === CategoryDialogComponent.TYPE.CREATE ? 'Create new category' : 'Update category'}`
+            }
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -111,16 +115,26 @@ export class CategoryListComponent implements OnInit {
     }
 
     delete(category: Category) {
-        this.spinnerService.show();
-        this.portalService.category.delete(category.id).subscribe(result => {
-            this.categories = this.categories.filter(cate => cate.id != category.id);
-            this.setDataSource();
-            this.spinnerService.hide();
-        }, err => {
-            this.spinnerService.hide();
-            this.snackBar.open(err.error ? err.error.message : err, 'OK', {
-                duration: 6000
-            });
+        const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                title: 'Confirmation',
+                message: 'Are you sure you want to delete?'
+            }
+        });
+        confirmDialog.afterClosed().subscribe(result => {
+            if(result) {
+                this.spinnerService.show();
+                this.portalService.category.delete(category.id).subscribe(result => {
+                    this.categories = this.categories.filter(cate => cate.id != category.id);
+                    this.setDataSource();
+                    this.spinnerService.hide();
+                }, err => {
+                    this.spinnerService.hide();
+                    this.snackBar.open(err.error ? err.error.message : err, 'OK', {
+                        duration: 6000
+                    });
+                });
+            }
         });
     }
 }

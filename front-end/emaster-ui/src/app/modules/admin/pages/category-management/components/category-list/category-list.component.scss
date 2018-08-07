@@ -4,11 +4,15 @@
     }
 
     .emaster-btn {
-        margin: 5px;
+        margin-right: 5px;
         border-radius: 3px;
 
         &:hover {
             color: rgb(95, 10, 10);
         }
+    }
+
+    .cdk-column-action {
+        flex: 0 0 75px;
     }
 }

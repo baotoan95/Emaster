@@ -23,7 +23,8 @@ import {
     MatToolbarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
@@ -47,7 +48,8 @@ const MATERIALNG_DEPENDENCIES = [
     MatSortModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
 ];
 
 export function createTranslateLoader(http: HttpClient) {
@@ -56,6 +58,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
     declarations: [
+
     ],
     imports: [
         ...MATERIALNG_DEPENDENCIES,

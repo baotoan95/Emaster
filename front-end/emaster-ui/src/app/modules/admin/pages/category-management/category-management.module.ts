@@ -8,6 +8,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { PortalService } from '../../../../shared/services/portal.service';
 import { SpinnerService } from '../../../../shared/services/spinner.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
     imports: [
@@ -20,14 +21,16 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     declarations: [
         CategoryManagementComponent,
         CategoryDialogComponent,
-        CategoryListComponent
+        CategoryListComponent,
+        ConfirmDialogComponent
     ],
     providers: [
         PortalService,
         SpinnerService
     ],
     entryComponents: [
-        CategoryDialogComponent
+        CategoryDialogComponent,
+        ConfirmDialogComponent
     ]
 })
 export class CategoryManagementModule {
