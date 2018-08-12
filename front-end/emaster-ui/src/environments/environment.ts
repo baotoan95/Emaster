@@ -8,6 +8,11 @@ export const environment = {
     host: 'http://localhost',
     port: '8080',
     prefix: 'portal'
+  },
+  authorization: {
+    host: 'http://localhost',
+    port: '8086',
+    prefix: 'authorization'
   }
 };
 

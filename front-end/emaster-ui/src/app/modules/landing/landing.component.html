@@ -24,6 +24,9 @@
                 <li class="nav-item" [class.active]="currentSection === SECTIONS.CONTACT">
                     <a class="nav-link" href="#contact" (click)="scrollTo(SECTIONS.CONTACT); false">{{'MENU_CONTACT' | translate}}</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="openLoginDialog()">{{'MENU_LOGIN' | translate}}</a>
+                </li>
                 <li class="nav-item dropdown">
                     <div class="btn-group">
                         <button type="button" class="btn btn-info">{{'LANG' | translate}}: {{selectedLanguage.display | translate}}</button>

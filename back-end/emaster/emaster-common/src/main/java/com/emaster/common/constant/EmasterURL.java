@@ -13,6 +13,7 @@ public class EmasterURL {
 		}
 
 		public static final String ID = "id";
+		public static final String EMAIL = "email";
 
 		public static enum CATEGORY {
 			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
@@ -29,7 +30,7 @@ public class EmasterURL {
 		}
 
 		public static enum USER {
-			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
+			GET_ALL("?page={page}&size={size}"), GET_BY_EMAIL("/{email}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 
 			private String url;
 

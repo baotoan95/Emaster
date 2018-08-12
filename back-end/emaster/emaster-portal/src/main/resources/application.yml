@@ -10,11 +10,17 @@ spring:
 ---
 spring:
   profiles: dev
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
   
 logging:
   level:
     com:
       emaster: debug
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8086/authorization/user/info
 
 ---
 spring:

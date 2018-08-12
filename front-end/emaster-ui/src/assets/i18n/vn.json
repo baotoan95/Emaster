@@ -9,6 +9,13 @@
     "MENU_GUIDE": "Hướng Dẫn",
     "MENU_ABOUT": "Thông Tin",
     "MENU_CONTACT": "Liên Hệ",
+    "MENU_LOGIN": "Đăng Nhập",
 
-    "BTN_START_NOW": "Bắt Đầu Ngay"
+    "BTN_START_NOW": "Bắt Đầu Ngay",
+
+    "LOGIN_FORM_TITLE": "Đăng Nhập",
+    "LOGIN_FORM_EMAIL": "Email",
+    "LOGIN_FORM_PASS": "Mật khẩu",
+    "LOGIN_FORM_SUBMIT": "Đăng Nhập",
+    "LOGIN_FORM_FORGOT_PASS": "Quên mật khẩu?"
 }

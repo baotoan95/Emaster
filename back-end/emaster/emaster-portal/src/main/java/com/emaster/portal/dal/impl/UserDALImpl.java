@@ -74,8 +74,8 @@ public class UserDALImpl implements UserDAL {
 	@Override
 	public UserDto findOne(String email) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
-		params.put(EmasterURL.DataQuery.ID, email);
-		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.USER.GET_BY_ID.build(), params);
+		params.put(EmasterURL.DataQuery.EMAIL, email);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.USER.GET_BY_EMAIL.build(), params);
 
 		try {
 			ResponseEntity<UserDto> response = restTemplate.exchange(uri, HttpMethod.GET, null, UserDto.class);

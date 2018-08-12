@@ -147,8 +147,9 @@ public class CategoryDALImpl implements CategoryDAL {
 
 	@Override
 	public List<CategoryDto> findForASession(Optional<String> userId) throws PortalException {
+		// TODO: need to re-implement
 		Map<String, Object> params = new HashMap<>();
-		params.put("userId", userId.orElse(null));
+		params.put(EmasterURL.DataQuery.ID, userId.orElse(null));
 
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.CATEGORY.GET_BY_ID.build(), params);
 		try {

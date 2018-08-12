@@ -9,6 +9,13 @@
     "MENU_GUIDE": "Guide",
     "MENU_ABOUT": "About",
     "MENU_CONTACT": "Contact",
+    "MENU_LOGIN": "Login",
 
-    "BTN_START_NOW": "Start Now"
+    "BTN_START_NOW": "Start Now",
+
+    "LOGIN_FORM_TITLE": "Login",
+    "LOGIN_FORM_EMAIL": "Email",
+    "LOGIN_FORM_PASS": "Password",
+    "LOGIN_FORM_SUBMIT": "Login",
+    "LOGIN_FORM_FORGOT_PASS": "Forgot password?"
 }

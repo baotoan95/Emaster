@@ -7,7 +7,6 @@ import { StatementManagementComponent } from './statement-management.component';
 import { StatementListComponent } from './components/statement-list/statement-list.component';
 import { StatementComponent } from './components/statement/statement.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { AlertDialogComponent } from '../../../../shared/components/alert-dialog/alert-dialog.component';
 
 const routes: Routes = [
     {
@@ -38,14 +37,10 @@ const routes: Routes = [
     declarations: [
         StatementManagementComponent,
         StatementListComponent,
-        StatementComponent,
-        AlertDialogComponent
+        StatementComponent
     ],
     providers: [
         PortalService
-    ],
-    entryComponents: [
-        AlertDialogComponent
     ]
 })
 export class StatementManagementModule {

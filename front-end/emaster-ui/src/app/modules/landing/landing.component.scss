@@ -1,4 +1,8 @@
 :host {
+    .fixed-top {
+        z-index: 999;
+    }
+        
     .emaster-landing-navbar {
         background-color: rgba(72, 79, 82, 0.1);
 

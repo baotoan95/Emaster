@@ -1,0 +1,26 @@
+server:
+  port: 8086
+  servlet:
+    context-path: /authorization
+
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  
+logging:
+  level:
+    com:
+      emaster: info
+
+---
+spring:
+  profiles: prod
+
+logging:
+  level:
+    com:
+      emaster: info

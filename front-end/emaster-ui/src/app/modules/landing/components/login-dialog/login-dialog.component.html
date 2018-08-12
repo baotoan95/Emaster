@@ -1,0 +1,23 @@
+<div class="login-dialog">
+    <mat-tab-group>
+        <mat-tab label="{{'LOGIN_FORM_TITLE' | translate}}">
+            <form class="login-container" (submit)="login()"
+            [formGroup]="loginForm" #form="ngForm">
+                {{errorMsg}}
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="{{'LOGIN_FORM_EMAIL' | translate}}" formControlName="email" required>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="{{'LOGIN_FORM_PASS' | translate}}" formControlName="password" required
+                     [type]="hidePass ? 'password' : 'text'">
+                    <mat-icon matSuffix (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
+                </mat-form-field>
+                <div class="actions">
+                    <a href="#">{{'LOGIN_FORM_FORGOT_PASS' | translate}}</a>
+                    <button mat-raised-button color="accent" [disabled]="!form.valid" type="submit">{{'LOGIN_FORM_SUBMIT' | translate}}</button>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab label="Register"> Content 2 </mat-tab>
+    </mat-tab-group>
+</div>

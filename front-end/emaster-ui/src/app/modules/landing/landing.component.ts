@@ -10,6 +10,8 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { SupportedLanguages } from "../../shared/models/localization.model";
 import { LocalStorageService } from "../../shared/services/localStorage.service";
+import { MatDialog } from "@angular/material";
+import { LoginDialogComponent } from "./components/login-dialog/login-dialog.component";
 declare var $: any;
 
 @Component({
@@ -64,7 +66,8 @@ export class LandingComponent implements OnInit, AfterViewInit {
     constructor(
         private scrollService: ScrollToService,
         private translateService: TranslateService,
-        private localStorageService: LocalStorageService) {
+        private localStorageService: LocalStorageService,
+        private dialog: MatDialog) {
 
     }
 
@@ -112,6 +115,10 @@ export class LandingComponent implements OnInit, AfterViewInit {
         this.selectedLanguage = language;
         this.translateService.use(this.selectedLanguage.code);
         this.localStorageService.set('selectedLanguage', this.selectedLanguage.code);
+    }
+
+    openLoginDialog() {
+        const loginDialogRef = this.dialog.open(LoginDialogComponent, {});
     }
 }
 

@@ -1,0 +1,10 @@
+:host {
+    .login-container {
+        padding: 20px 0;
+
+        .actions {
+            display: flex;
+            flex-flow: column;
+        }
+    }
+}
