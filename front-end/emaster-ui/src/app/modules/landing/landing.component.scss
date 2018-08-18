@@ -33,6 +33,18 @@
                 }
             }
         }
+
+        #navbarSupportedContent {
+            ul {
+                li {
+                    text-align: center;
+
+                    &:hover {
+                        background-color: #f5ece02b;
+                    }
+                }
+            }
+        }
     }
 
     .main-body {

@@ -43,7 +43,7 @@
             <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <mat-icon class="emaster-btn" matTooltip="Edit" (click)="openDialog(CATEGORY_ACTION.UPDATE, element)">note</mat-icon>
+                    <mat-icon class="emaster-btn" matTooltip="Edit" (click)="edit(element)"">note</mat-icon>
                     <mat-icon class="emaster-btn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
                 </mat-cell>
             </ng-container>

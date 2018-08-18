@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -36,5 +37,6 @@ public class CategoryDto implements Serializable {
 	private String createdByEmail;
 	private int forkCount;
 	private boolean isDefault;
+	@JsonIgnore
 	private MultipartFile iconFile;
 }

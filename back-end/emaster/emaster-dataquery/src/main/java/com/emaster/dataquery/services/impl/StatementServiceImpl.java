@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,9 @@ public class StatementServiceImpl implements StatementService {
 	public Statement create(Statement statement) throws DataQueryException {
 		log.info("Start create");
 		if (Objects.nonNull(statement)) {
+			if(Objects.isNull(statement.getCreatedBy())) {
+				statement.setCreatedBy(User.builder().email(Strings.EMPTY).build());
+			}
 			Optional<User> user = userRepository.findByEmail(statement.getCreatedBy().getEmail());
 			if (user.isPresent()) {
 				statement.setId(null);
@@ -65,7 +69,7 @@ public class StatementServiceImpl implements StatementService {
 					.dateTime(LocalDateTime.now()).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Page<Statement> pageStatement = statementRepository.findAll(pageable);
+		Page<Statement> pageStatement = statementRepository.findAllByOrderByCreatedDateDesc(pageable);
 		log.info("Finish findAll");
 		return pageStatement;
 	}

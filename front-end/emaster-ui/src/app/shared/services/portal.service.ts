@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Utilities } from '../helpers/utilities';
 import { Observable } from 'rxjs/Observable';
 import { Category } from '../models/Category';
+import { Statement } from '../models/Statement';
+import { bloomAdd } from '@angular/core/src/render3/di';
 
 @Injectable()
 export class PortalService {
@@ -57,12 +59,14 @@ class StatementService {
         return this._u.req.get('/portal/statements', {page: page, size: size});
     }
 
-    create(category: Category): Observable<any> {
+    create(statement: Statement): Observable<any> {
         let formData = new FormData();
-        formData.append('iconFile', category.iconFile);
-        formData.append('name', category.name);
-        formData.append('description', category.description);
-        formData.append('createdByEmail', category.createdBy);
+
+        statement.createdBy = 'baotoan.95@gmail.com';
+        formData.append('statement', new Blob([JSON.stringify(statement)], { type: "application/json"}));
+        formData.append('normalSoundFile', statement.normalSoundFile);
+        formData.append('slowSoundFile', statement.slowSoundFile);
+        formData.append('imageFile', statement.imageFile);
         return this._u.req.post('/portal/statements', formData);
     }
 

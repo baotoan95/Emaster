@@ -1,7 +1,12 @@
 package com.emaster.common.constant;
 
+import java.io.File;
+
 public class EmasterURL {
-	private static final String dataQueryBaseUrl = "http://localhost:8085/dataquery";
+	private static final String DATA_QUERY_BASE_URL = "http://localhost:8085/dataquery";
+	
+	public static final String ROOT_PATH = System.getProperty("catalina.home");
+	public static final String UPLOAD_PATH = ROOT_PATH + File.separator + "temp";
 
 	private EmasterURL() {
 		// Prevent create this
@@ -15,13 +20,13 @@ public class EmasterURL {
 		public static final String ID = "id";
 		public static final String EMAIL = "email";
 
-		public static enum CATEGORY {
+		public enum CATEGORY {
 			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 
 			private String url;
 
 			private CATEGORY(String url) {
-				this.url = dataQueryBaseUrl.concat("/categories").concat(url);
+				this.url = DATA_QUERY_BASE_URL.concat("/categories").concat(url);
 			}
 
 			public String build() {
@@ -29,13 +34,13 @@ public class EmasterURL {
 			}
 		}
 
-		public static enum USER {
+		public enum USER {
 			GET_ALL("?page={page}&size={size}"), GET_BY_EMAIL("/{email}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 
 			private String url;
 
 			private USER(String url) {
-				this.url = dataQueryBaseUrl.concat("/users").concat(url);
+				this.url = DATA_QUERY_BASE_URL.concat("/users").concat(url);
 			}
 
 			public String build() {
@@ -43,13 +48,13 @@ public class EmasterURL {
 			}
 		}
 
-		public static enum STATEMENT {
+		public enum STATEMENT {
 			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 
 			private String url;
 
 			private STATEMENT(String url) {
-				this.url = dataQueryBaseUrl.concat("/statements").concat(url);
+				this.url = DATA_QUERY_BASE_URL.concat("/statements").concat(url);
 			}
 
 			public String build() {
@@ -57,12 +62,12 @@ public class EmasterURL {
 			}
 		}
 
-		public static enum COMMENT {
+		public enum COMMENT {
 			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 			private String url;
 
 			private COMMENT(String url) {
-				this.url = dataQueryBaseUrl.concat("/comments").concat(url);
+				this.url = DATA_QUERY_BASE_URL.concat("/comments").concat(url);
 			}
 
 			public String build() {

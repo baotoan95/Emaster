@@ -7,6 +7,7 @@ import { StatementManagementComponent } from './statement-management.component';
 import { StatementListComponent } from './components/statement-list/statement-list.component';
 import { StatementComponent } from './components/statement/statement.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AutocompleteMultiSelectionComponent } from './components/autocomplete-multi-selection/autocomplete-multi-selection.component';
 
 const routes: Routes = [
     {
@@ -37,7 +38,8 @@ const routes: Routes = [
     declarations: [
         StatementManagementComponent,
         StatementListComponent,
-        StatementComponent
+        StatementComponent,
+        AutocompleteMultiSelectionComponent
     ],
     providers: [
         PortalService

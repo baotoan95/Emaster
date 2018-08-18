@@ -12,7 +12,8 @@
             <!-- Icon Column -->
             <ng-container matColumnDef="icon">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Icon </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.icon}} </mat-cell>
+                <mat-cell *matCellDef="let element"> 
+                    <img src="http://localhost:8080/portal/resources/images?url={{element.icon}}"/> </mat-cell>
             </ng-container>
 
             <!-- Name Column -->

@@ -1,13 +1,20 @@
 package com.emaster.portal.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.emaster.common.constant.EmasterURL;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.StatementDto;
 import com.emaster.common.exception.PortalException;
+import com.emaster.common.utils.UploadFileUtils;
 import com.emaster.portal.dal.StatementDAL;
 import com.emaster.portal.service.StatementService;
 
@@ -21,7 +28,21 @@ public class StatementServiceImpl implements StatementService {
 	}
 
 	@Override
-	public StatementDto create(StatementDto statementDto) throws PortalException {
+	public StatementDto create(StatementDto statementDto,
+			MultipartFile imageFile,
+			MultipartFile normalSoundFile,
+			MultipartFile slowSoundFile) throws PortalException {
+		try {
+			statementDto.setImage(UploadFileUtils.upload(imageFile, EmasterURL.UPLOAD_PATH + File.separator + "images"));
+			statementDto.setSound(UploadFileUtils.upload(normalSoundFile, EmasterURL.UPLOAD_PATH + File.separator + "sounds"));
+			statementDto.setSlowSound(UploadFileUtils.upload(slowSoundFile, EmasterURL.UPLOAD_PATH + File.separator + "sounds"));
+		} catch (IOException e1) {
+			throw PortalException.builder()
+			.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.message("Can't upload the file")
+			.dateTime(LocalDateTime.now())
+			.build();
+		}
 		return statementDAL.create(statementDto);
 	}
 

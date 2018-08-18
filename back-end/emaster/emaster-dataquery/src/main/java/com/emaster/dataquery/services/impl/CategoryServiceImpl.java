@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 					.message(MessageContant.INVALID_PARAM).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Page<Category> categoryPage = categoryRepository.findAll(pageable);
+		Page<Category> categoryPage = categoryRepository.findAllByOrderByCreatedDateDesc(pageable);
 		
 		log.info("Finish findAll");
 		return categoryPage;
@@ -130,9 +130,9 @@ public class CategoryServiceImpl implements CategoryService {
 		log.info("Start findForASession({})", email.orElse(null));
 		List<Category> categoriesByUser = new ArrayList<>();
 		if (email.isPresent()) {
-			categoriesByUser = categoryRepository.findByCreatedByEmail(email.get());
+			categoriesByUser = categoryRepository.findByCreatedByEmailOrderByCreatedDateDesc(email.get());
 		}
-		List<Category> systemCategories = categoryRepository.findByIsDefault(true);
+		List<Category> systemCategories = categoryRepository.findByIsDefaultOrderByCreatedDateDesc(true);
 		List<Category> categories = Stream.concat(categoriesByUser.stream(), systemCategories.stream())
 				.collect(Collectors.toList());
 		log.info("Finish findForASession() size: {}", categories.size());

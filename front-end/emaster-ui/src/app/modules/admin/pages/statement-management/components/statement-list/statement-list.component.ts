@@ -4,6 +4,7 @@ import { PortalService } from "../../../../../../shared/services/portal.service"
 import { SpinnerService } from "../../../../../../shared/services/spinner.service";
 import { Statement } from "../../../../../../shared/models/Statement";
 import { ConfirmDialogComponent } from "../../../../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'emaster-statement-list',
@@ -25,7 +26,8 @@ export class StatementListComponent {
     constructor(private portalService: PortalService,
         private spinnerService: SpinnerService,
         public dialog: MatDialog,
-        private snackBar: MatSnackBar) {
+        private snackBar: MatSnackBar,
+        private router: Router) {
     }
 
     ngOnInit() {
@@ -74,5 +76,9 @@ export class StatementListComponent {
                 });
             }
         });
+    }
+
+    edit(element: Statement) {
+
     }
 }

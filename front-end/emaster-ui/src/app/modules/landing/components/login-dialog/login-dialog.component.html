@@ -3,7 +3,7 @@
         <mat-tab label="{{'LOGIN_FORM_TITLE' | translate}}">
             <form class="login-container" (submit)="login()"
             [formGroup]="loginForm" #form="ngForm">
-                {{errorMsg}}
+                <span class="error">{{errorMsg}}</span>
                 <mat-form-field class="full-width">
                     <input matInput placeholder="{{'LOGIN_FORM_EMAIL' | translate}}" formControlName="email" required>
                 </mat-form-field>

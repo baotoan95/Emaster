@@ -14,4 +14,8 @@ export class Statement {
 	createdBy: string;
 	categoryId: string;
 	updatedDate: number;
+
+	imageFile: File;
+	normalSoundFile: File;
+	slowSoundFile: File;
 }

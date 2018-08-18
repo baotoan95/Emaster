@@ -23,11 +23,11 @@ public class UserService implements UserDetailsService {
 	private UserDAL userDAL;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		log.info("Login with username {}", username);
 		try {
 			UserDto user = userDAL.findByUserEmail(username);
-			if(user == null){
+			if(user == null) {
 				throw new UsernameNotFoundException("Invalid username or password.");
 			}
 			return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthority());

@@ -8,7 +8,7 @@
                 <mat-card-subtitle>Share To Learn</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <form [formGroup]="statementForm" #form="ngForm">
+                <form id="statementForm" [formGroup]="statementForm" #form="ngForm" (ngSubmit)="save()">
                     <div class="row">
                         <div class="col-4">
                             <mat-form-field class="full-width">
@@ -46,7 +46,7 @@
                                         </mat-card-header>
                                         <mat-card-content>
                                             <div class="form-control">
-                                                <input type="file">
+                                                <input type="file" formControlName="image" (change)="onFileChange($event, FileType.STATEMENT_IMAGE)">
                                             </div>
                                         </mat-card-content>
                                     </mat-card>
@@ -61,12 +61,15 @@
                                         </mat-card-header>
                                         <mat-card-content>
                                             <div class="form-control">
-                                                <label>Normal Sound</label>
-                                                <input type="file">
+                                                <div>
+                                                    <label>Normal Sound</label>
+                                                    <button mat-button><mat-icon>play_arrow</mat-icon></button>
+                                                </div>
+                                                <input type="file" formControlName="normalSound" (change)="onFileChange($event, FileType.NORMAL_SOUND)">
                                             </div>
                                             <div class="form-control">
                                                 <label>Slow Sound</label>
-                                                <input type="file">
+                                                <input type="file" formControlName="slowSound" (change)="onFileChange($event, FileType.SLOW_SOUND)">
                                             </div>
                                         </mat-card-content>
                                     </mat-card>
@@ -94,20 +97,7 @@
                                     </mat-card-title>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <mat-form-field class="col-12">
-                                        <input type="text" placeholder="Pick one" aria-label="Number" matInput [matAutocomplete]="auto">
-                                        <mat-autocomplete #auto="matAutocomplete">
-                                            <mat-option *ngFor="let lang of languages" [value]="lang">
-                                                {{lang.displayName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-                                    <mat-list>
-                                        <mat-list-item *ngFor="let lang of languages">
-                                            <mat-icon mat-list-icon>folder</mat-icon>
-                                            <p mat-line> {{lang.displayName}} </p>
-                                        </mat-list-item>
-                                    </mat-list>
+                                    <emaster-autocomplete-multi-selection [options]="statements" (change)="correctAnwers = $event"></emaster-autocomplete-multi-selection>
                                 </mat-card-content>
                             </mat-card>
                         </div>
@@ -120,20 +110,7 @@
                                     </mat-card-title>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <mat-form-field class="col-12">
-                                        <mat-select placeholder="Correct Answers" multiple>
-                                            <mat-select-trigger>
-                                            </mat-select-trigger>
-                                            <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.displayName}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-list>
-                                        <mat-list-item *ngFor="let lang of languages">
-                                            <mat-icon mat-list-icon>folder</mat-icon>
-                                            <!-- <h4 mat-line>{{lang.name}}</h4> -->
-                                            <p mat-line> {{lang.displayName}} </p>
-                                        </mat-list-item>
-                                    </mat-list>
+                                    <emaster-autocomplete-multi-selection [options]="statements" (change)="incorrectAnwers = $event"></emaster-autocomplete-multi-selection>
                                 </mat-card-content>
                             </mat-card>
                         </div>
@@ -142,7 +119,7 @@
             </mat-card-content>
             <mat-card-actions align="end">
                 <button mat-button>Cancel</button>
-                <button mat-button [disabled]="!form.valid">Save</button>
+                <button mat-button type="submit" form="statementForm" [disabled]="!form.valid">Save</button>
             </mat-card-actions>
         </mat-card>
     </div>

@@ -33,7 +33,7 @@ public class EmasterPortalApplication {
 	@Bean
 	public RestTemplate restTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 		messageConverters.add(new FormHttpMessageConverter());
 		messageConverters.add(new StringHttpMessageConverter());
 		messageConverters.add(new MappingJackson2HttpMessageConverter());
@@ -43,9 +43,9 @@ public class EmasterPortalApplication {
 
 	@Bean
 	public ObjectMapper objectMapper() {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-		return objectMapper;
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+		return mapper;
 	}
 
 }

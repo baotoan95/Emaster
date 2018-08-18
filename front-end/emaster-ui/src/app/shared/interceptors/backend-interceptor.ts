@@ -18,7 +18,7 @@ export class BackEndInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler) {
-        if(!this.isLogedIn() && request.url !== '/') {
+        if(!this.isLoggedIn() && request.url !== '/') {
             this.router.navigate(['/']);
         }
 
@@ -46,7 +46,7 @@ export class BackEndInterceptor implements HttpInterceptor {
         });
     }
 
-    isLogedIn(): boolean {
+    isLoggedIn(): boolean {
         const expiration_time = this.localStorageService.get('expiration_time');
         this.accessToken = this.localStorageService.get('access_token');
 

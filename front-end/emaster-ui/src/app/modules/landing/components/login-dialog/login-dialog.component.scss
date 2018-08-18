@@ -6,5 +6,9 @@
             display: flex;
             flex-flow: column;
         }
+
+        .error {
+            color: red;
+        }
     }
 }
