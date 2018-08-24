@@ -20,7 +20,11 @@ const routes: Routes = [
                 pathMatch: 'full'
             },
             {
-                path: ':{action}',
+                path: 'create',
+                component: StatementComponent
+            },
+            {
+                path: ':{action}/:{id}',
                 component: StatementComponent
             }
         ]

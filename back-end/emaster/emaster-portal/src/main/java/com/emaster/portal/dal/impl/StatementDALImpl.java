@@ -43,8 +43,6 @@ public class StatementDALImpl implements StatementDAL {
 		HttpEntity<StatementDto> body = new HttpEntity<>(statementDto);
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.CREATE.build(), null);
 		try {
-			String json = objectMapper.writeValueAsString(statementDto);
-			System.out.println(json);
 			ResponseEntity<StatementDto> response = restTemplate.exchange(uri, HttpMethod.POST, body, StatementDto.class);
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
@@ -54,9 +52,6 @@ public class StatementDALImpl implements StatementDAL {
 			.dateTime(exception.getDateTime())
 			.debugMessage(exception.getDebugMessage())
 			.message(exception.getMessage()).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 

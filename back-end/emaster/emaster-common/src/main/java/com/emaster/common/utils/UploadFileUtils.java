@@ -18,12 +18,24 @@ public class UploadFileUtils {
 
 	public static String upload(MultipartFile multipartFile, String destinationPath) throws IOException {
 		if (Objects.nonNull(multipartFile) && multipartFile.getSize() > 0) {
-			destinationPath = destinationPath + File.pathSeparator + multipartFile.getOriginalFilename();
+			// Create folder if not existed
 			log.info("Uploading to {}", destinationPath);
+			
+			File folderContainer = new File(destinationPath);
+			if(!folderContainer.exists()) {
+				log.info("Create folder container {}", folderContainer.mkdirs());
+			}
+			
+			// Create file
+			destinationPath = destinationPath + File.separator + multipartFile.getOriginalFilename();
 			File serverFile = new File(destinationPath);
-			FileCopyUtils.copy(multipartFile.getBytes(), new FileOutputStream(serverFile));
-			return serverFile.getAbsolutePath();
+			if(serverFile.createNewFile()) {
+				FileCopyUtils.copy(multipartFile.getBytes(), new FileOutputStream(serverFile));
+				log.info("Uploaded to {}", serverFile.getPath());
+				return serverFile.getAbsolutePath();
+			}
 		}
+		log.error("Fail to upload file");
 		return "";
 	}
 }

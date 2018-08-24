@@ -48,6 +48,9 @@
                                             <div class="form-control">
                                                 <input type="file" formControlName="image" (change)="onFileChange($event, FileType.STATEMENT_IMAGE)">
                                             </div>
+                                            <div class="thumbnail">
+                                                <img src="http://localhost:8080/portal/resources/images?url={{statement.image}}"/>
+                                            </div>
                                         </mat-card-content>
                                     </mat-card>
                                 </div>

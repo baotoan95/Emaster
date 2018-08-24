@@ -5,7 +5,7 @@ import { Category } from "../../../../../../shared/models/Category";
 import { PortalService } from "../../../../../../shared/services/portal.service";
 import { SpinnerService } from "../../../../../../shared/services/spinner.service";
 import { MatDialog, MatSnackBar } from "@angular/material";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { AlertDialogComponent } from "../../../../../../shared/components/alert-dialog/alert-dialog.component";
 import { FileType } from "../../../../../../shared/enums/FileType";
 
@@ -50,19 +50,35 @@ export class StatementComponent implements OnInit {
     statement: Statement;
     statementForm: FormGroup;
 
-    correctAnwers: any[];
-    incorrectAnwers: any[];
+    correctAnwers: any[] = [];
+    incorrectAnwers: any[] = [];
 
     constructor(private portalService: PortalService,
         private spinnerService: SpinnerService,
         public dialog: MatDialog,
         private snackBar: MatSnackBar,
-        private router: Router) {
-        
+        private router: Router,
+        private activatedRoute: ActivatedRoute) {
+
     }
 
     ngOnInit() {
         this.statement = new Statement();
+        this.initData();
+
+        if (this.activatedRoute.snapshot.params['{action}'] === 'update' && this.activatedRoute.snapshot.params['{id}']) {
+            this.portalService.statement.getById(this.activatedRoute.snapshot.params['{id}']).subscribe(res => {
+                this.statement = res;
+                console.log(this.statement);
+                this.initData();
+            }, err => {
+                this.statement = new Statement();
+                this.initData();
+            });
+        }
+    }
+
+    initData() {
         this.statement.language = this.languages[0].value;
         this.statement.type = this.questionTypes[0].value;
 
@@ -82,7 +98,7 @@ export class StatementComponent implements OnInit {
     private loadCategories() {
         this.portalService.category.getAll(0, Number.MAX_SAFE_INTEGER).subscribe(data => {
             this.categories = data.content;
-            if(this.categories.length <= 0) {
+            if (this.categories.length <= 0) {
                 this.spinnerService.hide();
                 this.dialog.open(AlertDialogComponent, {
                     data: {
@@ -123,8 +139,8 @@ export class StatementComponent implements OnInit {
         if (event.target.files && event.target.files.length) {
             reader.readAsArrayBuffer(event.target.files[0]);
             reader.onload = () => {
-                switch(fileType) {
-                    case FileType.STATEMENT_IMAGE: 
+                switch (fileType) {
+                    case FileType.STATEMENT_IMAGE:
                         this.statement.imageFile = event.target.files[0];
                         break;
                     case FileType.NORMAL_SOUND:
@@ -148,10 +164,27 @@ export class StatementComponent implements OnInit {
         this.statement.explaination = this.statementForm.get('explaination').value;
 
         console.log(this.statement);
-        this.portalService.statement.create(this.statement).subscribe(res => {
-            console.log('ok');
-        }, error => {
-            console.log(error);
-        });
+
+        // Update
+        if (this.statement.id) {
+            this.portalService.statement.update(this.statement).subscribe(res => {
+                this.snackBar.open('Update successfully', 'OK', {
+                    duration: 6000
+                });
+            }, resErr => {
+                this.snackBar.open(resErr.error.message, 'OK', {
+                    duration: 6000
+                });
+            });
+        } else {
+            // Create
+            this.portalService.statement.create(this.statement).subscribe(res => {
+                this.router.navigate(['/admin/statement-management']);
+            }, resErr => {
+                this.snackBar.open(resErr.error.message, 'OK', {
+                    duration: 6000
+                });
+            });
+        }
     }
 }

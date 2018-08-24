@@ -16,7 +16,10 @@ public interface StatementService {
 
 	PageDto<StatementDto> findAll(Optional<Integer> page, Optional<Integer> size) throws PortalException;
 
-	StatementDto update(StatementDto statementDto) throws PortalException;
+	StatementDto update(StatementDto statementDto,
+			MultipartFile imageFile,
+			MultipartFile normalSoundFile,
+			MultipartFile slowSoundFile) throws PortalException;
 
 	StatementDto findOne(String id) throws PortalException;
 

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -48,8 +47,12 @@ public class StatementController {
 	}
 
 	@PutMapping
-	public ResponseEntity<StatementDto> update(@RequestBody StatementDto statementDto) throws PortalException {
-		return ResponseEntity.ok().body(statementService.update(statementDto));
+	public ResponseEntity<StatementDto> update(
+			@RequestPart("statement") StatementDto statement,
+			@RequestPart(value = "normalSoundFile", required = false) MultipartFile normalSoundFile,
+			@RequestPart(value = "slowSoundFile", required = false) MultipartFile slowSoundFile,
+			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws PortalException {
+		return ResponseEntity.ok().body(statementService.update(statement, imageFile, normalSoundFile, slowSoundFile));
 	}
 
 	@GetMapping("/{statementId}")

@@ -5,6 +5,7 @@ import { SpinnerService } from "../../../../../../shared/services/spinner.servic
 import { Statement } from "../../../../../../shared/models/Statement";
 import { ConfirmDialogComponent } from "../../../../../../shared/components/confirm-dialog/confirm-dialog.component";
 import { Router } from "@angular/router";
+import * as moment from 'moment';
 
 @Component({
     selector: 'emaster-statement-list',
@@ -16,6 +17,8 @@ import { Router } from "@angular/router";
 export class StatementListComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
+
+    moment = moment;
 
     pageSizeOptions: number[] = [10, 50, 100];
 
@@ -76,9 +79,5 @@ export class StatementListComponent {
                 });
             }
         });
-    }
-
-    edit(element: Statement) {
-
     }
 }

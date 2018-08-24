@@ -74,12 +74,18 @@ class StatementService {
         return this._u.req.delete(`/portal/statements/${id}`);
     }
 
-    update(category: Category): Observable<any> {
+    update(statement: Statement): Observable<any> {
         let formData = new FormData();
-        formData.append('id', category.id);
-        formData.append('iconFile', category.iconFile ? category.iconFile : new File([], ''));
-        formData.append('name', category.name);
-        formData.append('description', category.description);
-        return this._u.req.post('/portal/statements/update', formData);
+
+        statement.createdBy = 'baotoan.95@gmail.com';
+        formData.append('statement', new Blob([JSON.stringify(statement)], { type: "application/json"}));
+        formData.append('normalSoundFile', statement.normalSoundFile);
+        formData.append('slowSoundFile', statement.slowSoundFile);
+        formData.append('imageFile', statement.imageFile);
+        return this._u.req.put('/portal/statements', formData);
+    }
+
+    getById(id: string): Observable<any> {
+        return this._u.req.get(`/portal/statements/${id}`);
     }
 }

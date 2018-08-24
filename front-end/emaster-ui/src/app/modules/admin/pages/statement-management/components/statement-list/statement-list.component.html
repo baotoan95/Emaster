@@ -30,7 +30,7 @@
             <!-- Default Column -->
             <ng-container matColumnDef="createdDate">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Created Date </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.createdDate}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{moment(element.createdDate).format('DD/MM/YYYY')}} </mat-cell>
             </ng-container>
 
             <!-- ForkCount Column -->
@@ -43,7 +43,7 @@
             <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                    <mat-icon class="emaster-btn" matTooltip="Edit" (click)="edit(element)"">note</mat-icon>
+                    <mat-icon class="emaster-btn" matTooltip="Edit" routerLink="update/{{element.id}}">note</mat-icon>
                     <mat-icon class="emaster-btn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
                 </mat-cell>
             </ng-container>

@@ -52,7 +52,21 @@ public class StatementServiceImpl implements StatementService {
 	}
 
 	@Override
-	public StatementDto update(StatementDto statementDto) throws PortalException {
+	public StatementDto update(StatementDto statementDto,
+			MultipartFile imageFile,
+			MultipartFile normalSoundFile,
+			MultipartFile slowSoundFile) throws PortalException {
+		try {
+			statementDto.setImage(UploadFileUtils.upload(imageFile, EmasterURL.UPLOAD_PATH + File.separator + "images"));
+			statementDto.setSound(UploadFileUtils.upload(normalSoundFile, EmasterURL.UPLOAD_PATH + File.separator + "sounds"));
+			statementDto.setSlowSound(UploadFileUtils.upload(slowSoundFile, EmasterURL.UPLOAD_PATH + File.separator + "sounds"));
+		} catch (IOException e1) {
+			throw PortalException.builder()
+			.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.message("Can't upload the file")
+			.dateTime(LocalDateTime.now())
+			.build();
+		}
 		return statementDAL.update(statementDto);
 	}
 

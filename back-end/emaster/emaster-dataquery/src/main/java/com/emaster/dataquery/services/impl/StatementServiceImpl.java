@@ -84,6 +84,11 @@ public class StatementServiceImpl implements StatementService {
 			statement.setIncorrectAnswers(statement.getIncorrectAnswers().stream().filter(stt -> !stt.getId().equals(statement.getId())).collect(Collectors.toList()));
 			
 			Statement oldStatement = existedStatement.get();
+			// Keep old files path if no new files
+			statement.setImage(statement.getImage().isEmpty() ? oldStatement.getImage() : statement.getImage());
+			statement.setSound(statement.getSound().isEmpty() ? oldStatement.getSound() : statement.getSound());
+			statement.setImage(statement.getSlowSound().isEmpty() ? oldStatement.getSlowSound() : statement.getSlowSound());
+			
 			statement.setUpdatedDate(new Date());
 			statement.setCreatedDate(oldStatement.getCreatedDate());
 			statement.setCreatedBy(oldStatement.getCreatedBy());
