@@ -4,6 +4,7 @@ back-end/emaster/emaster-dataquery/target
 back-end/emaster/emaster-portal/target
 back-end/emaster/emaster-common/target
 back-end/emaster/emaster-authorization/target
+back-end/emaster/emaster-authorization/target/classes/META-INF/maven/com.emaster.authorization/emaster-authorization/pom.properties
 
 front-end/emaster-ui/node_modules
 front-end/emaster-admin-ui/node_modules
