@@ -1,5 +1,6 @@
 package com.emaster.dataquery.facade;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.emaster.common.dto.PageDto;
@@ -16,4 +17,6 @@ public interface StatementFacade {
 	StatementDto findOne(String id);
 
 	void delete(String id);
+	
+	List<StatementDto> search(String content);
 }

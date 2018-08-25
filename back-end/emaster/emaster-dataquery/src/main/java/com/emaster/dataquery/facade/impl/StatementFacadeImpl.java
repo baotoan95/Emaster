@@ -2,6 +2,7 @@ package com.emaster.dataquery.facade.impl;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -126,6 +127,16 @@ public class StatementFacadeImpl implements StatementFacade {
 	@Override
 	public void delete(String id) {
 		statementService.delete(id);
+	}
+
+	@Override
+	public List<StatementDto> search(String content) {
+		List<Statement> searchResult = statementService.searchByContent(content);
+		return searchResult.stream().map(statement -> {
+			statement.setIncorrectAnswers(null);
+			statement.setCorrectAnswers(null);
+			return modelMapper.map(statement, StatementDto.class);
+		}).collect(Collectors.toList());
 	}
 
 }

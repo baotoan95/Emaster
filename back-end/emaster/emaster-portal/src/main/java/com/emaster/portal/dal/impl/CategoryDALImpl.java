@@ -1,6 +1,5 @@
 package com.emaster.portal.dal.impl;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -83,14 +82,10 @@ public class CategoryDALImpl implements CategoryDAL {
 
 	@Override
 	public CategoryDto update(CategoryDto categoryDto) throws PortalException {
-		try {
-			categoryDto.setIcon(UploadFileUtils.upload(categoryDto.getIconFile(), ""));
-		} catch (IOException e1) {
-			// Do nothing
-		}
+		categoryDto.setIcon(UploadFileUtils.upload(categoryDto.getIconFile(), ""));
 		String url = HttpQueryUtils.buildUrl(EmasterURL.DataQuery.CATEGORY.UPDATE.build(), null);
 		categoryDto.setIconFile(null);
-		HttpEntity<CategoryDto> body = new HttpEntity<CategoryDto>(categoryDto);
+		HttpEntity<CategoryDto> body = new HttpEntity<>(categoryDto);
 		try {
 			ResponseEntity<CategoryDto> response = restTemplate.exchange(url, HttpMethod.PUT, body, CategoryDto.class);
 			return response.getBody();

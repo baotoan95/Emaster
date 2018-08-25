@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Statement } from "../../../../../../shared/models/Statement";
 import { Category } from "../../../../../../shared/models/Category";
@@ -8,15 +8,21 @@ import { MatDialog, MatSnackBar } from "@angular/material";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertDialogComponent } from "../../../../../../shared/components/alert-dialog/alert-dialog.component";
 import { FileType } from "../../../../../../shared/enums/FileType";
+import { Location } from '@angular/common';
+
+import * as _ from 'lodash';
 
 @Component({
     selector: 'emaster-statement',
     templateUrl: './statement.component.html',
     styleUrls: [
         './statement.component.scss'
+    ],
+    providers: [
+        Location
     ]
 })
-export class StatementComponent implements OnInit {
+export class StatementComponent implements OnInit, OnDestroy {
     languages: any[] = [
         {
             displayName: 'Việt Nam',
@@ -53,13 +59,17 @@ export class StatementComponent implements OnInit {
     correctAnwers: any[] = [];
     incorrectAnwers: any[] = [];
 
+    audio: any;
+
     constructor(private portalService: PortalService,
         private spinnerService: SpinnerService,
         public dialog: MatDialog,
         private snackBar: MatSnackBar,
         private router: Router,
-        private activatedRoute: ActivatedRoute) {
+        private activatedRoute: ActivatedRoute,
+        private location: Location) {
 
+        this.audio = new Audio();
     }
 
     ngOnInit() {
@@ -69,7 +79,6 @@ export class StatementComponent implements OnInit {
         if (this.activatedRoute.snapshot.params['{action}'] === 'update' && this.activatedRoute.snapshot.params['{id}']) {
             this.portalService.statement.getById(this.activatedRoute.snapshot.params['{id}']).subscribe(res => {
                 this.statement = res;
-                console.log(this.statement);
                 this.initData();
             }, err => {
                 this.statement = new Statement();
@@ -163,14 +172,10 @@ export class StatementComponent implements OnInit {
         this.statement.incorrectAnswers = this.incorrectAnwers;
         this.statement.explaination = this.statementForm.get('explaination').value;
 
-        console.log(this.statement);
-
         // Update
         if (this.statement.id) {
             this.portalService.statement.update(this.statement).subscribe(res => {
-                this.snackBar.open('Update successfully', 'OK', {
-                    duration: 6000
-                });
+                this.router.navigate(['/admin/statement-management']);
             }, resErr => {
                 this.snackBar.open(resErr.error.message, 'OK', {
                     duration: 6000
@@ -186,5 +191,14 @@ export class StatementComponent implements OnInit {
                 });
             });
         }
+    }
+
+    playSound(resourceUrl: string) {
+        this.audio.src = `http://localhost:8080/portal/resources/audio?url=${resourceUrl}`;
+        this.audio.play();
+    }
+
+    ngOnDestroy() {
+        this.audio.pause();
     }
 }

@@ -16,6 +16,14 @@
         margin-bottom: 15px;
     }
 
+    .sound-group {
+        display: flex;
+        
+        &> label {
+            flex: 1;
+        }
+    }
+
     .thumbnail {
         img {
             display: inline-block;

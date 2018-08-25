@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +88,7 @@ public class StatementServiceImpl implements StatementService {
 			// Keep old files path if no new files
 			statement.setImage(statement.getImage().isEmpty() ? oldStatement.getImage() : statement.getImage());
 			statement.setSound(statement.getSound().isEmpty() ? oldStatement.getSound() : statement.getSound());
-			statement.setImage(statement.getSlowSound().isEmpty() ? oldStatement.getSlowSound() : statement.getSlowSound());
+			statement.setSlowSound(statement.getSlowSound().isEmpty() ? oldStatement.getSlowSound() : statement.getSlowSound());
 			
 			statement.setUpdatedDate(new Date());
 			statement.setCreatedDate(oldStatement.getCreatedDate());
@@ -125,6 +126,12 @@ public class StatementServiceImpl implements StatementService {
 		List<Statement> statements = statementRepository.findByCreatedByEmailAndCategoryId(email, categoryId);
 		log.info("Finished getStatementsForASession() size: {}", statements.size());
 		return statements;
+	}
+
+	@Override
+	public List<Statement> searchByContent(String content) {
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase("en").matchingPhrase("english");
+		return statementRepository.findAllBy(criteria);
 	}
 
 }

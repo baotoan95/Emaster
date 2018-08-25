@@ -81,7 +81,7 @@ public class StatementDALImpl implements StatementDAL {
 		HttpEntity<StatementDto> body = new HttpEntity<>(statementDto);
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.UPDATE.build(), null);
 		try {
-			ResponseEntity<StatementDto> response = restTemplate.exchange(uri, HttpMethod.POST, body, StatementDto.class);
+			ResponseEntity<StatementDto> response = restTemplate.exchange(uri, HttpMethod.PUT, body, StatementDto.class);
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);

@@ -17,5 +17,9 @@
     "LOGIN_FORM_EMAIL": "Email",
     "LOGIN_FORM_PASS": "Mật khẩu",
     "LOGIN_FORM_SUBMIT": "Đăng Nhập",
-    "LOGIN_FORM_FORGOT_PASS": "Quên mật khẩu?"
+    "LOGIN_FORM_FORGOT_PASS": "Quên mật khẩu?",
+
+    "ALERT_UPDATE_SUCCESS": "Đã cập nhật thành công",
+    "ALERT_ADD_SUCCESS": "Đã thêm thành công",
+    "ALERT_DELETE_SUCCESS": "Đã xoá thành công"
 }

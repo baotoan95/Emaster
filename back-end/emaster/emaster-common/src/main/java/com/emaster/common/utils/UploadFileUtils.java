@@ -16,10 +16,10 @@ public class UploadFileUtils {
 
 	}
 
-	public static String upload(MultipartFile multipartFile, String destinationPath) throws IOException {
+	public static String upload(MultipartFile multipartFile, String destinationPath) {
 		if (Objects.nonNull(multipartFile) && multipartFile.getSize() > 0) {
 			// Create folder if not existed
-			log.info("Uploading to {}", destinationPath);
+			log.info("Uploading {} to {}", multipartFile.getOriginalFilename(), destinationPath);
 			
 			File folderContainer = new File(destinationPath);
 			if(!folderContainer.exists()) {
@@ -29,13 +29,24 @@ public class UploadFileUtils {
 			// Create file
 			destinationPath = destinationPath + File.separator + multipartFile.getOriginalFilename();
 			File serverFile = new File(destinationPath);
-			if(serverFile.createNewFile()) {
-				FileCopyUtils.copy(multipartFile.getBytes(), new FileOutputStream(serverFile));
-				log.info("Uploaded to {}", serverFile.getPath());
-				return serverFile.getAbsolutePath();
+			try {
+				if(!serverFile.exists()) {
+					if(serverFile.createNewFile()) {
+						return copyFileToServer(multipartFile, serverFile);
+					}
+				}
+				return copyFileToServer(multipartFile, serverFile);
+			} catch (IOException e) {
+				log.error("Error {}", e.toString());
 			}
 		}
 		log.error("Fail to upload file");
 		return "";
+	}
+	
+	private static String copyFileToServer(MultipartFile multipartFile, File serverFile) throws IOException {
+		FileCopyUtils.copy(multipartFile.getBytes(), new FileOutputStream(serverFile));
+		log.info("Uploaded to {}", serverFile.getPath());
+		return serverFile.getAbsolutePath();
 	}
 }

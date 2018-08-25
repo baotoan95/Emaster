@@ -46,7 +46,8 @@
                                         </mat-card-header>
                                         <mat-card-content>
                                             <div class="form-control">
-                                                <input type="file" formControlName="image" (change)="onFileChange($event, FileType.STATEMENT_IMAGE)">
+                                                <input type="file" accept="image/x-png,image/gif,image/jpeg"
+                                                formControlName="image" (change)="onFileChange($event, FileType.STATEMENT_IMAGE)">
                                             </div>
                                             <div class="thumbnail">
                                                 <img src="http://localhost:8080/portal/resources/images?url={{statement.image}}"/>
@@ -64,14 +65,19 @@
                                         </mat-card-header>
                                         <mat-card-content>
                                             <div class="form-control">
-                                                <div>
+                                                <div class="sound-group">
                                                     <label>Normal Sound</label>
-                                                    <button mat-button><mat-icon>play_arrow</mat-icon></button>
+                                                    <button type="button" mat-button [disabled]="!statement.sound"
+                                                        (click)="playSound(statement.sound)"><mat-icon>play_arrow</mat-icon></button>
                                                 </div>
                                                 <input type="file" formControlName="normalSound" (change)="onFileChange($event, FileType.NORMAL_SOUND)">
                                             </div>
                                             <div class="form-control">
-                                                <label>Slow Sound</label>
+                                                <div class="sound-group">
+                                                    <label>Slow Sound</label>
+                                                    <button type="button" mat-button [disabled]="!statement.slowSound"
+                                                        (click)="playSound(statement.slowSound)"><mat-icon>play_arrow</mat-icon></button>
+                                                </div>
                                                 <input type="file" formControlName="slowSound" (change)="onFileChange($event, FileType.SLOW_SOUND)">
                                             </div>
                                         </mat-card-content>
@@ -121,7 +127,7 @@
                 </form>
             </mat-card-content>
             <mat-card-actions align="end">
-                <button mat-button>Cancel</button>
+                <button mat-button (click)="location.back()">Cancel</button>
                 <button mat-button type="submit" form="statementForm" [disabled]="!form.valid">Save</button>
             </mat-card-actions>
         </mat-card>

@@ -17,5 +17,9 @@
     "LOGIN_FORM_EMAIL": "Email",
     "LOGIN_FORM_PASS": "Password",
     "LOGIN_FORM_SUBMIT": "Login",
-    "LOGIN_FORM_FORGOT_PASS": "Forgot password?"
+    "LOGIN_FORM_FORGOT_PASS": "Forgot password?",
+
+    "ALERT_UPDATE_SUCCESS": "Update successfully",
+    "ALERT_ADD_SUCCESS": "Add successfully",
+    "ALERT_DELETE_SUCCESS": "Delete successfully"
 }

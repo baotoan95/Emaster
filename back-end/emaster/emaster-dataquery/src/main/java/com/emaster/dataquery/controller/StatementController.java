@@ -1,5 +1,6 @@
 package com.emaster.dataquery.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,10 @@ public class StatementController {
 	public ResponseEntity<Void> delete(@PathVariable("statementId") String statementId) {
 		statementFacade.delete(statementId);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<StatementDto>> search(@RequestParam("content") String content) {
+		return ResponseEntity.ok(statementFacade.search(content));
 	}
 }

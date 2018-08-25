@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ResourceController {
 	
 	@GetMapping("images")
-	public void responseData(@RequestParam("url") String path, HttpServletResponse response) {
+	public void responseImage(@RequestParam("url") String path, HttpServletResponse response) {
 		FileInputStream inputStream = null;
 		try {
 			File file = new File(path);
@@ -41,7 +41,32 @@ public class ResourceController {
 					inputStream.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error(e.toString());
+			}
+		}
+	}
+	
+	@GetMapping("audio")
+	public void responseAudio(@RequestParam("url") String path, HttpServletResponse response) {
+		FileInputStream inputStream = null;
+		try {
+			File file = new File(path);
+
+			byte[] rs = new byte[(int) file.length()];
+			inputStream = new FileInputStream(file);
+			inputStream.read(rs);
+			response.setContentType("audio/mpeg");
+			response.getOutputStream().write(rs);
+			response.getOutputStream().close();
+		} catch (IOException e) {
+			log.error("Error: " + e.getMessage());
+		} finally {
+			try {
+				if(Objects.nonNull(inputStream)) {
+					inputStream.close();
+				}
+			} catch (IOException e) {
+				log.error(e.toString());
 			}
 		}
 	}
