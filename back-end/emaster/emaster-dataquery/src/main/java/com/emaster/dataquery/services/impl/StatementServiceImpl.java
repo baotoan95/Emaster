@@ -107,6 +107,7 @@ public class StatementServiceImpl implements StatementService {
 		log.info("Start findOne ({})", id);
 		Optional<Statement> result = statementRepository.findById(id);
 		if (result.isPresent()) {
+//			result.get().getCorrectAnswers();
 			log.info("Finish findOne");
 			return result.get();
 		}

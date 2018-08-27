@@ -33,9 +33,9 @@ public class Statement implements Serializable {
 	private String id;
 	private StatementType type;
 	private String content;
-	@DBRef
+	@DBRef(lazy = true)
 	private List<Statement> correctAnswers;
-	@DBRef
+	@DBRef(lazy = true)
 	private List<Statement> incorrectAnswers;
 	private String explaination;
 	private String sound;

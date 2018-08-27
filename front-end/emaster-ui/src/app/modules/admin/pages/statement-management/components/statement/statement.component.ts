@@ -79,6 +79,8 @@ export class StatementComponent implements OnInit, OnDestroy {
         if (this.activatedRoute.snapshot.params['{action}'] === 'update' && this.activatedRoute.snapshot.params['{id}']) {
             this.portalService.statement.getById(this.activatedRoute.snapshot.params['{id}']).subscribe(res => {
                 this.statement = res;
+                this.correctAnwers = this.statement.correctAnswers;
+                this.incorrectAnwers = this.statement.incorrectAnswers;
                 this.initData();
             }, err => {
                 this.statement = new Statement();

@@ -1,16 +1,9 @@
 package com.emaster.portal;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,11 +26,11 @@ public class EmasterPortalApplication {
 	@Bean
 	public RestTemplate restTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-		messageConverters.add(new FormHttpMessageConverter());
-		messageConverters.add(new StringHttpMessageConverter());
-		messageConverters.add(new MappingJackson2HttpMessageConverter());
-		restTemplate.setMessageConverters(messageConverters);
+//		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+//		messageConverters.add(new FormHttpMessageConverter());
+//		messageConverters.add(new StringHttpMessageConverter());
+//		messageConverters.add(new MappingJackson2HttpMessageConverter());
+//		restTemplate.setMessageConverters(messageConverters);
 		return restTemplate;
 	}
 

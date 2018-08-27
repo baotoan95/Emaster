@@ -20,10 +20,10 @@ export class AutocompleteMultiSelectionComponent implements OnInit, OnChanges {
     @ViewChild("autoCompleteComponent") autoCompleteComponent: MatAutocomplete;
 
     filterOptions: Observable<any>;
-    selectedItems: any[] = [];
+    @Input("defaultSelected") selectedItems: any[] = [];
 
     ngOnChanges(changes: SimpleChanges) {
-        if(!changes.options.firstChange) {
+        if(changes.options && !changes.options.firstChange) {
             this.options = changes.options.currentValue;
             this.filterOptions = this.filterInput.valueChanges.pipe(
                 startWith(''),
@@ -52,7 +52,6 @@ export class AutocompleteMultiSelectionComponent implements OnInit, OnChanges {
 
     removeSelectedItem(item: any) {
         this.selectedItems = this.selectedItems.filter(element => element.id !== item.id);
-        console.log(this.selectedItems);
         this.change.emit(this.selectedItems);
     }
 }
