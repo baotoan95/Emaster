@@ -19,7 +19,9 @@ public interface StatementService {
 
 	void delete(String id);
 
-	List<Statement> getStatementsForASession(String email, String categoryId);
-	
 	List<Statement> searchByContent(String content);
+	
+	List<Statement> findTopByCategory(int limit, String categoryId);
+	
+	Page<Statement> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 }

@@ -25,18 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class StatementDALImpl implements StatementDAL {
+	@Autowired
 	private RestTemplate restTemplate;
+	@Autowired
 	private ObjectMapper objectMapper;
-	
-	@Autowired
-	public void setRestTemplate(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
-	}
-	
-	@Autowired
-	public void setObjectMapper(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
 
 	@Override
 	public StatementDto create(StatementDto statementDto) throws PortalException {
@@ -118,6 +110,29 @@ public class StatementDALImpl implements StatementDAL {
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.DELETE.build(), params);
 		try {
 			restTemplate.exchange(uri, HttpMethod.DELETE, null, StatementDto.class);
+		} catch (HttpClientErrorException e) {
+			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
+			throw PortalException.builder()
+			.status(exception.getStatus())
+			.dateTime(exception.getDateTime())
+			.debugMessage(exception.getDebugMessage())
+			.message(exception.getMessage()).build();
+		}
+	}
+
+	@Override
+	public PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size)
+			throws PortalException {
+		Map<String, Object> params = new HashMap<>();
+		params.put("page", page.orElse(0));
+		params.put("size", size.orElse(Integer.MAX_VALUE));
+		params.put("categoryId", categoryId);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.GET_BY_CATEGORY_ID.build(), params);
+		ParameterizedTypeReference<PageDto<StatementDto>> responseType = new ParameterizedTypeReference<PageDto<StatementDto>>() {
+		};
+		try {
+			ResponseEntity<PageDto<StatementDto>> response = restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
 			throw PortalException.builder()

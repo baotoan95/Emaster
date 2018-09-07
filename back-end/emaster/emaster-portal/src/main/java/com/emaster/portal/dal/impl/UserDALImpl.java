@@ -1,9 +1,7 @@
 package com.emaster.portal.dal.impl;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,10 +10,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -46,11 +40,11 @@ public class UserDALImpl implements UserDAL {
 
 	@Override
 	public PageDto<UserDto> getUsers(Optional<Integer> page, Optional<Integer> size) throws PortalException {
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-		messageConverters.add(new FormHttpMessageConverter());
-		messageConverters.add(new StringHttpMessageConverter());
-		messageConverters.add(new MappingJackson2HttpMessageConverter());
-		restTemplate.setMessageConverters(messageConverters);
+//		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+//		messageConverters.add(new FormHttpMessageConverter());
+//		messageConverters.add(new StringHttpMessageConverter());
+//		messageConverters.add(new MappingJackson2HttpMessageConverter());
+//		restTemplate.setMessageConverters(messageConverters);
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("page", page.orElse(0));

@@ -13,4 +13,6 @@ public interface StatementRepository extends MongoRepository<Statement, String> 
 	List<Statement> findByCreatedByEmailAndCategoryId(String email, String categoryId);
 	Page<Statement> findAllByOrderByCreatedDateDesc(Pageable pageable);
 	List<Statement> findAllBy(TextCriteria criteria);
+	List<Statement> findTopByCategoryId(int limit, String categoryId);
+	Page<Statement> findByCategoryId(String categoryId, Pageable pageable);
 }

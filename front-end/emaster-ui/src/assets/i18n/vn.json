@@ -21,5 +21,12 @@
 
     "ALERT_UPDATE_SUCCESS": "Đã cập nhật thành công",
     "ALERT_ADD_SUCCESS": "Đã thêm thành công",
-    "ALERT_DELETE_SUCCESS": "Đã xoá thành công"
+    "ALERT_DELETE_SUCCESS": "Đã xoá thành công",
+
+    "COURSE_PRACTICE": "Tập Luyện",
+    "COURSE_PRACTICE_DESCRIBE": "Tập luyện với các câu hỏi ngẫu nhiên từ nhiều thể loại",
+    "COURSE_TOIEC": "Thi TOIEC",
+    "COURSE_TOIEC_DESCRIBE": "Thi thử TOIEC",
+    "COURSE_BY_CATEGORY": "Luyện tập theo thể loại",
+    "COURSE_BY_CATEGORY_DESCRIBE": "Luyện tập với các câu hỏi được phân theo thể loại"
 }

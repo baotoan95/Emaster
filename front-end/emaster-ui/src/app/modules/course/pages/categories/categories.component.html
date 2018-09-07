@@ -1,0 +1,11 @@
+<div class="categories">
+    <div class="card-wrapper" *ngFor="let category of categories">
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar class="header-image"></div>
+                <mat-card-title><a routerLink="/learn">{{category.name}}</a></mat-card-title>
+                <mat-card-subtitle>{{category.description}}</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+    </div>
+</div>

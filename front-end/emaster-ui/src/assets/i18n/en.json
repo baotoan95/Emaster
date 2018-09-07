@@ -21,5 +21,12 @@
 
     "ALERT_UPDATE_SUCCESS": "Update successfully",
     "ALERT_ADD_SUCCESS": "Add successfully",
-    "ALERT_DELETE_SUCCESS": "Delete successfully"
+    "ALERT_DELETE_SUCCESS": "Delete successfully",
+
+    "COURSE_PRACTICE": "Practice",
+    "COURSE_PRACTICE_DESCRIBE": "Random questions in many categories",
+    "COURSE_TOIEC": "TOIEC Test",
+    "COURSE_TOIEC_DESCRIBE": "Try to test with TOIEC",
+    "COURSE_BY_CATEGORY": "Practice By Category",
+    "COURSE_BY_CATEGORY_DESCRIBE": "Practice with questions in a specially category"
 }

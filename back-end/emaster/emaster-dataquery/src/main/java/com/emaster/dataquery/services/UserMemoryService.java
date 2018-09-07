@@ -17,7 +17,9 @@ public interface UserMemoryService {
 
 	UserMemory findByUserAndStatement(String userId, String statementId);
 	
-	UserMemory create(UserMemory userMemory) throws DataQueryException;
+	UserMemory create(String userId, String statementId) throws DataQueryException;
 	
 	void updateCorrectCount(String userId, String statementId, int correctCount) throws DataQueryException;
+	
+	List<UserMemory> findMissing(String userId, String categoryId, int pointLimit, int limitResult);
 }

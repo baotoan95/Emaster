@@ -45,7 +45,6 @@ public class StatementDto implements Serializable {
 	private Date createdDate;
 	@JsonProperty("createdBy")
 	private String createdByEmail;
-	@JsonProperty("category")
 	private String categoryId;
 	private Date updatedDate;
 }

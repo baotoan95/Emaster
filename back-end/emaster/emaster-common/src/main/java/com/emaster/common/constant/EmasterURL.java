@@ -7,6 +7,7 @@ public class EmasterURL {
 	
 	public static final String ROOT_PATH = System.getProperty("catalina.home");
 	public static final String UPLOAD_PATH = ROOT_PATH + File.separator + "temp";
+	private static final String PAGING = "?page={page}&size={size}";
 
 	private EmasterURL() {
 		// Prevent create this
@@ -21,7 +22,7 @@ public class EmasterURL {
 		public static final String EMAIL = "email";
 
 		public enum CATEGORY {
-			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
+			GET_ALL(PAGING), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 
 			private String url;
 
@@ -35,7 +36,7 @@ public class EmasterURL {
 		}
 
 		public enum USER {
-			GET_ALL("?page={page}&size={size}"), GET_BY_EMAIL("/{email}"), CREATE(""), UPDATE(""), DELETE("/{id}");
+			GET_ALL(PAGING), GET_BY_EMAIL("/{email}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 
 			private String url;
 
@@ -49,7 +50,8 @@ public class EmasterURL {
 		}
 
 		public enum STATEMENT {
-			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
+			GET_ALL(PAGING), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}"),
+			GET_BY_CATEGORY_ID("category?id={categoryId}&page={page}&size={size}");
 
 			private String url;
 
@@ -63,7 +65,7 @@ public class EmasterURL {
 		}
 
 		public enum COMMENT {
-			GET_ALL("?page={page}&size={size}"), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
+			GET_ALL(PAGING), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}");
 			private String url;
 
 			private COMMENT(String url) {
@@ -73,7 +75,21 @@ public class EmasterURL {
 			public String build() {
 				return url;
 			}
-
+		}
+		
+		public enum USER_MEMORY {
+			GET_MISSING_STATEMENTS("/missingStatments?userId={userId}&categoryId={categoryId}&pointLimit={pointLimit}&limitResult={limitResult}"),
+			ADD_TO_MEMORY("/addToMemory");
+			
+			private String url;
+			
+			private USER_MEMORY(String url) {
+				this.url = DATA_QUERY_BASE_URL.concat("/userMemory").concat(url);
+			}
+			
+			public String build() {
+				return url;
+			}
 		}
 	}
 

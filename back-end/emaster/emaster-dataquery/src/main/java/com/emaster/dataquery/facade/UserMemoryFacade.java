@@ -4,19 +4,21 @@ import java.util.List;
 import java.util.Optional;
 
 import com.emaster.common.dto.PageDto;
+import com.emaster.common.dto.UserMemoryDto;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.dataquery.entities.UserMemory;
 
 public interface UserMemoryFacade {
-	PageDto<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	PageDto<UserMemoryDto> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 
-	UserMemory findByUser(String userId);
+	UserMemoryDto findByUser(String userId);
 
-	List<UserMemory> findByUserAndCategory(String userId, String categoryId);
+	List<UserMemoryDto> findByUserAndCategory(String userId, String categoryId);
 
-	UserMemory findByUserAndStatement(String userId, String statementId);
+	UserMemoryDto findByUserAndStatement(String userId, String statementId);
 	
-	UserMemory create(UserMemory userMemory) throws DataQueryException;
+	UserMemoryDto create(String userId, String statementId) throws DataQueryException;
 	
 	void updateCorrectCount(String userId, String statementId, int correctCount) throws DataQueryException;
+	
+	List<UserMemoryDto> findMissing(String userId, String categoryId, int pointLimit, int limitResult);
 }

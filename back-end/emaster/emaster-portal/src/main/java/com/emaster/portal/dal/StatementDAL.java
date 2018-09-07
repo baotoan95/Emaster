@@ -16,4 +16,6 @@ public interface StatementDAL {
 	StatementDto findOne(String id) throws PortalException;
 
 	void delete(String id) throws PortalException;
+	
+	PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws PortalException;
 }

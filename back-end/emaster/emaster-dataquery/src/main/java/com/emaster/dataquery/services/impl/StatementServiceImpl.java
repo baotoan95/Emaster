@@ -107,7 +107,6 @@ public class StatementServiceImpl implements StatementService {
 		log.info("Start findOne ({})", id);
 		Optional<Statement> result = statementRepository.findById(id);
 		if (result.isPresent()) {
-//			result.get().getCorrectAnswers();
 			log.info("Finish findOne");
 			return result.get();
 		}
@@ -122,17 +121,33 @@ public class StatementServiceImpl implements StatementService {
 	}
 
 	@Override
-	public List<Statement> getStatementsForASession(String email, String categoryId) {
-		log.info("Start getStatementsForASession({}, {})", email, categoryId);
-		List<Statement> statements = statementRepository.findByCreatedByEmailAndCategoryId(email, categoryId);
-		log.info("Finished getStatementsForASession() size: {}", statements.size());
-		return statements;
-	}
-
-	@Override
 	public List<Statement> searchByContent(String content) {
 		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingPhrase("en").matchingPhrase("english");
 		return statementRepository.findAllBy(criteria);
 	}
 
+	@Override
+	public List<Statement> findTopByCategory(int limit, String categoryId) {
+		log.info("Start find to by category id={} limit={}", categoryId, limit);
+		List<Statement> statements = statementRepository.findTopByCategoryId(limit, categoryId);
+		log.info("Finish find to by category");
+		return statements;
+	}
+
+	@Override
+	public Page<Statement> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+		int pageNum = page.orElse(0);
+		int pageSize = size.orElse(Integer.MAX_VALUE);
+		log.info("Start findByCategoryId(id={},page={},size={})", categoryId, pageNum, pageSize);
+		if (!PaginationValidator.validate(pageNum, pageSize)) {
+			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
+					.dateTime(LocalDateTime.now()).build();
+		}
+		Pageable pageable = PageRequest.of(pageNum, pageSize);
+		Page<Statement> pageStatement = statementRepository.findByCategoryId(categoryId, pageable);
+		log.info("Finish findByCategoryId");
+		return pageStatement;
+	}
+
+	
 }

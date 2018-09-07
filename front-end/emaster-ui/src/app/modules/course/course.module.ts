@@ -5,19 +5,22 @@ import { CourseComponent } from './course.component';
 import { PortalService } from '../../shared/services/portal.service';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
         SharedModule,
         CourseRoutingModule,
-        CommonModule
+        CommonModule,
+        TranslateModule.forChild({})
     ],
     declarations: [
         CourseComponent,
         NavbarComponent
     ],
     providers: [
-        PortalService
+        PortalService,
+        TranslateService
     ]
 })
 export class CourseModule {

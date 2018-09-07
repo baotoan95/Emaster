@@ -1,23 +1,21 @@
 package com.emaster.dataquery.services.impl;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.emaster.common.constant.MessageContant;
 import com.emaster.common.exception.DataQueryException;
-import com.emaster.common.validator.PaginationValidator;
-import com.emaster.dataquery.entities.QuestionBank;
-import com.emaster.dataquery.repositories.QuestionBankRepository;
+import com.emaster.dataquery.entities.Statement;
+import com.emaster.dataquery.entities.UserMemory;
 import com.emaster.dataquery.services.QuestionBankService;
+import com.emaster.dataquery.services.StatementService;
+import com.emaster.dataquery.services.UserMemoryService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,81 +23,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class QuestionBankServiceImpl implements QuestionBankService {
 	@Autowired
-	private QuestionBankRepository questionBankRepository;
-
+	private UserMemoryService userMemoryService;
+	@Autowired
+	private StatementService statementService;
+	
 	@Override
-	public Page<QuestionBank> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
-		int pageNum = page.orElse(0);
-		int pageSize = size.orElse(Integer.MAX_VALUE);
-		log.info("Start findAll(page={}, size={})", pageNum, pageSize);
-		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
-					.dateTime(LocalDateTime.now()).build();
-		}
-
-		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Page<QuestionBank> pageQuestionBanks = questionBankRepository.findAll(pageable);
-		log.info("Finish findAll()");
-		return pageQuestionBanks;
-	}
-
-	@Override
-	public QuestionBank findOne(String id) {
-		log.info("Start findOne({})", id);
-		Optional<QuestionBank> questionBank = questionBankRepository.findById(id);
-		if (questionBank.isPresent()) {
-			log.info("Finish findOne()");
-			return questionBank.get();
-		}
-		return null;
-	}
-
-	@Override
-	public QuestionBank create(QuestionBank questionBank) throws DataQueryException {
-		if (isValid(questionBank)) {
-			log.info("Start create by {} with statement {}", 
-					questionBank.getCreatedBy().getEmail(),
-					questionBank.getStatement().getId());
-			
-					questionBank.getCategory().getId();
-					questionBank.setCreatedDate(new Date());
-					QuestionBank createdQuestionBank = questionBankRepository.save(questionBank);
-
-			log.info("End create");
-			return createdQuestionBank;
-		} else {
-			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
-					.dateTime(LocalDateTime.now()).build();
-		}
-	}
-
-	private boolean isValid(QuestionBank questionBank) {
-		return Objects.nonNull(questionBank) && Objects.nonNull(questionBank.getCategory())
-				&& Objects.nonNull(questionBank.getStatement()) && Objects.nonNull(questionBank.getCreatedBy());
-	}
-
-	@Override
-	public void delete(String id) {
-		log.info("Start delete {}", id);
-		questionBankRepository.deleteById(id);
-		log.info("Finish delete");
-	}
-
-	@Override
-	public QuestionBank update(QuestionBank questionBank) throws DataQueryException {
-		// TODO: try update without primary key
-		if (isValid(questionBank)) {
-			log.info("Start update createdBy={} statement={} category={}",
-					questionBank.getCreatedBy().getEmail(),
-					questionBank.getStatement().getId(),
-					questionBank.getCategory().getId());
-			questionBank.setCreatedDate(questionBank.getCreatedDate());
-			QuestionBank updatedQuestionBank = questionBankRepository.save(questionBank);
-			return updatedQuestionBank;
-		} else {
-			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
-					.dateTime(LocalDateTime.now()).build();
-		}
+	public List<Statement> generateQuestionByCategory(String userId, String categoryId, int numOfQuestions) throws DataQueryException {
+		log.info("Start generate question by category id={} with userId={}", categoryId, userId);
+		// Get missing statements
+		List<UserMemory> inMemoryStatements = userMemoryService.findMissing(userId, categoryId, 10, numOfQuestions);
+		List<Statement> missingStatements = inMemoryStatements.stream().map(userMemory -> {
+			return statementService.findOne(userMemory.getStatement().getId());
+		}).filter(userMemory -> Objects.nonNull(userMemory)).collect(Collectors.toList());
+		// If missing statements not enough for a session, then get new statements
+		List<Statement> newStatements = statementService.findByCategory(categoryId, Optional.of(0), Optional.of(numOfQuestions - missingStatements.size())).getContent();
+		
+		List<Statement> learningNeeded = new ArrayList<>();
+		Stream.of(missingStatements, newStatements).forEach(learningNeeded::addAll);
+		
+		log.info("Finish generate question by category id with {} statements", learningNeeded.size());
+		return learningNeeded;
 	}
 
 }

@@ -64,4 +64,9 @@ public class StatementServiceImpl implements StatementService {
 		statementDAL.delete(id);
 	}
 
+	@Override
+	public PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws PortalException {
+		return statementDAL.findByCategory(categoryId, page, size);
+	}
+
 }

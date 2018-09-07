@@ -18,7 +18,9 @@ import com.emaster.common.constant.MessageContant;
 import com.emaster.common.constant.Point;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
+import com.emaster.dataquery.entities.Statement;
 import com.emaster.dataquery.entities.UserMemory;
+import com.emaster.dataquery.repositories.StatementRepository;
 import com.emaster.dataquery.repositories.UserMemoryRepository;
 import com.emaster.dataquery.services.UserMemoryService;
 
@@ -29,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserMemorySerivceImpl implements UserMemoryService {
 	@Autowired
 	private UserMemoryRepository userMemoryRepository;
+	@Autowired
+	private StatementRepository statementRepository;
 
 	@Override
 	public Page<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
@@ -70,19 +74,27 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	}
 
 	@Override
-	public UserMemory create(UserMemory userMemory) throws DataQueryException {
-		if (Objects.isNull(userMemory) || StringUtils.isEmpty(userMemory.getStatement().getId())
-				|| StringUtils.isEmpty(userMemory.getUser().getId())) {
+	public UserMemory create(String userId, String statementId) throws DataQueryException {
+		if (Objects.isNull(userId) || StringUtils.isEmpty(statementId)) {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST)
 					.message("Statement ID and User ID are required").dateTime(LocalDateTime.now()).build();
 		}
-		log.info("Start create with statementId = {}, userId = {}", userMemory.getStatement().getId(),
-				userMemory.getUser().getId());
-		userMemory.setStartLearnDate(new Date());
-		userMemory.setLastLearnTime(new Date());
-		UserMemory createdUserMemory = userMemoryRepository.save(userMemory);
-		log.info("Finish create");
-		return createdUserMemory;
+		log.info("Start create with statementId = {}, userId = {}", statementId,
+				userId);
+		Optional<Statement> statement = statementRepository.findById(statementId);
+		if(statement.isPresent()) {
+			UserMemory createdUserMemory = userMemoryRepository.save(UserMemory.builder().correctCount(0)
+					.incorrectCount(0)
+					.point(0).startLearnDate(new Date()).lastLearnTime(new Date())
+					.statement(statement.get()).build());
+			log.info("Finish create");
+			return createdUserMemory;
+		} else {
+			throw DataQueryException.builder()
+			.status(HttpStatus.BAD_REQUEST)
+			.message("Can't found statement")
+			.dateTime(LocalDateTime.now()).build();
+		}
 	}
 
 	@Override
@@ -103,6 +115,13 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 		}
 		throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
 				.debugMessage(log.getName()).status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	}
+
+	@Override
+	public List<UserMemory> findMissing(String userId, String categoryId, int pointLimit, int limitResult) {
+		log.info("Find missing with user id = {}, category id = {}, point limit = {}, limit result = {}", 
+				userId, categoryId, pointLimit, limitResult);
+		return userMemoryRepository.findTopByUserIdAndStatementCategoryIdAndPointLessThan(limitResult, userId, categoryId, pointLimit);
 	}
 
 }
