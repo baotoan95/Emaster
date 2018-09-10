@@ -21,5 +21,5 @@ public interface UserMemoryService {
 	
 	void updateCorrectCount(String userId, String statementId, int correctCount) throws DataQueryException;
 	
-	List<UserMemory> findMissing(String userId, String categoryId, int pointLimit, int limitResult);
+	List<UserMemory> findMissing(String userId, String categoryId, int pointLimit);
 }

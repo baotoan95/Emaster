@@ -8,13 +8,15 @@ import { bloomAdd } from '@angular/core/src/render3/di';
 @Injectable()
 export class PortalService {
     category: CategoryService;
-    statement: StatementService
+    statement: StatementService;
+    question: GenerateQuestionService;
 
     constructor(
         private _u: Utilities
     ) {
         this.category = new CategoryService(_u);
         this.statement = new StatementService(_u);
+        this.question = new GenerateQuestionService(_u);
     }
 }
 
@@ -87,5 +89,15 @@ class StatementService {
 
     getById(id: string): Observable<any> {
         return this._u.req.get(`/portal/statements/${id}`);
+    }
+}
+
+class GenerateQuestionService {
+    constructor(private _u: Utilities) {
+
+    }
+
+    generateByCategory(categoryId: string): Observable<any> {
+        return this._u.req.get(`/portal/questionBank/generateByCategory?categoryId=${categoryId}`);
     }
 }

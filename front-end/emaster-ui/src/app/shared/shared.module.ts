@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 // i18n
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { NgProgressModule } from 'ngx-progressbar';

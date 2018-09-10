@@ -68,7 +68,7 @@
                                                 <div class="sound-group">
                                                     <label>Normal Sound</label>
                                                     <button type="button" mat-button [disabled]="!statement.sound"
-                                                        (click)="playSound(statement.sound)"><mat-icon>play_arrow</mat-icon></button>
+                                                        (click)="mediaPlayer.playSound(statement.sound)"><mat-icon>play_arrow</mat-icon></button>
                                                 </div>
                                                 <input type="file" formControlName="normalSound" (change)="onFileChange($event, FileType.NORMAL_SOUND)">
                                             </div>
@@ -76,7 +76,7 @@
                                                 <div class="sound-group">
                                                     <label>Slow Sound</label>
                                                     <button type="button" mat-button [disabled]="!statement.slowSound"
-                                                        (click)="playSound(statement.slowSound)"><mat-icon>play_arrow</mat-icon></button>
+                                                        (click)="mediaPlayer.playSound(statement.slowSound)"><mat-icon>play_arrow</mat-icon></button>
                                                 </div>
                                                 <input type="file" formControlName="slowSound" (change)="onFileChange($event, FileType.SLOW_SOUND)">
                                             </div>

@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.emaster.common.constant.MessageContant;
+import com.emaster.common.constant.MessageConstant;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST)
 			.dateTime(LocalDateTime.now())
-					.message(MessageContant.INVALID_PARAM).build();
+					.message(MessageConstant.INVALID_PARAM).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<Category> categoryPage = categoryRepository.findAllByOrderByCreatedDateDesc(pageable);
@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
 						.dateTime(LocalDateTime.now()).status(HttpStatus.FORBIDDEN).build();
 			}
 		} else {
-			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+			throw DataQueryException.builder().message(MessageConstant.INVALID_PARAM).dateTime(LocalDateTime.now())
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
@@ -101,7 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
 			}
 		} else {
 			throw DataQueryException.builder()
-			.message(MessageContant.INVALID_PARAM)
+			.message(MessageConstant.INVALID_PARAM)
 			.dateTime(LocalDateTime.now())
 					.status(HttpStatus.BAD_REQUEST).build();
 		}

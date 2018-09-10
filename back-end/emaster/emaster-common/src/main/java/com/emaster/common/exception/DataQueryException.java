@@ -18,10 +18,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class DataQueryException extends Exception {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1309709483751032123L;
+	
 	private HttpStatus status;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime dateTime;

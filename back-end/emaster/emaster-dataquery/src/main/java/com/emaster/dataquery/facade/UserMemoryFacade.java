@@ -20,5 +20,5 @@ public interface UserMemoryFacade {
 	
 	void updateCorrectCount(String userId, String statementId, int correctCount) throws DataQueryException;
 	
-	List<UserMemoryDto> findMissing(String userId, String categoryId, int pointLimit, int limitResult);
+	List<UserMemoryDto> findMissing(String userId, String categoryId, int pointLimit);
 }

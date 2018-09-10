@@ -1,32 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MediaPlayerService } from '../../../../shared/services/mediaPlayer.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 @Component({
     selector: 'emaster-multiple-chooses',
     templateUrl: './multiple-chooses.component.html',
     styleUrls: ['./multiple-chooses.component.scss']
 })
-export class MultipleChoosesComponent {
-    answers: any[] = [
-        {
-            content: 'The doctor had assumed that was her car 1.'
-        },
-        {
-            content: 'The lawyer had finished that was her car 2.'
-        },
-        {
-            content: 'The lawyer had assumed that was her car 3.'
-        },
-        {
-            content: 'The doctor had assumed that was her car 4.'
-        },
-        {
-            content: 'The lawyer had finished that was her car. The lawyer had finished that was her car.'
-        },
-        {
-            content: 'The lawyer had assumed that was her car 5.'
-        }
-    ]
+export class MultipleChoosesComponent implements OnInit{
+    @Input() question;
     selectedAnswer: any;
+
+    constructor(
+        private mediaPlayer: MediaPlayerService,
+        private spinner: SpinnerService) {
+        spinner.show();
+    }
+
+    ngOnInit() {
+        console.log(this.question);
+        this.spinner.hide();
+    }
 
     setAnswer(selectedAnswer) {
         this.selectedAnswer = selectedAnswer;

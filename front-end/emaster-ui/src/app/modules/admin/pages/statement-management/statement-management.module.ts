@@ -8,6 +8,7 @@ import { StatementListComponent } from './components/statement-list/statement-li
 import { StatementComponent } from './components/statement/statement.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AutocompleteMultiSelectionComponent } from './components/autocomplete-multi-selection/autocomplete-multi-selection.component';
+import { MediaPlayerService } from '../../../../shared/services/mediaPlayer.service';
 
 const routes: Routes = [
     {
@@ -46,7 +47,8 @@ const routes: Routes = [
         AutocompleteMultiSelectionComponent
     ],
     providers: [
-        PortalService
+        PortalService,
+        MediaPlayerService
     ]
 })
 export class StatementManagementModule {

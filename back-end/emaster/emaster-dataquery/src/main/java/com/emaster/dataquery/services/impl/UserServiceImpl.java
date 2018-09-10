@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.emaster.common.constant.MessageContant;
+import com.emaster.common.constant.MessageConstant;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 		log.debug("Start findAll (page={}, size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now())
-					.message(MessageContant.INVALID_PARAM).build();
+					.message(MessageConstant.INVALID_PARAM).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<User> pageUser = userRepository.findAll(pageable);
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User create(User user) throws DataQueryException {
 		if (user == null || StringUtils.isEmpty(user.getEmail())) {
-			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
+			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageConstant.INVALID_PARAM)
 					.dateTime(LocalDateTime.now()).build();
 		}
 		log.debug("Start create with email {}", user.getEmail());
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 			return createdUser;
 		} catch (DuplicateKeyException e) {
 			throw DataQueryException.builder().status(HttpStatus.CONFLICT)
-			.message(MessageContant.INVALID_PARAM)
+			.message(MessageConstant.INVALID_PARAM)
 			.dateTime(LocalDateTime.now()).build();
 		}
 	}

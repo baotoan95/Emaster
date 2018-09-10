@@ -1,6 +1,5 @@
 package com.emaster.portal.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +40,4 @@ public class CommentServiceImpl implements CommentService {
 	public void delete(String id) throws PortalException {
 		commentDAL.delete(id);
 	}
-
-	@Override
-	public List<CommentDto> findForASession(Optional<String> userId) throws PortalException {
-		return null;
-	}
-
 }

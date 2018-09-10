@@ -137,4 +137,18 @@ public class StatementFacadeImpl implements StatementFacade {
 		}).collect(Collectors.toList());
 	}
 
+	@Override
+	public PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
+		Page<Statement> pageStatement = statementService.findByCategory(categoryId, page, size);
+		Type pageStatementDtoType = new TypeToken<PageDto<StatementDto>>() {
+		}.getType();
+		PageDto<StatementDto> pageStatementDto = modelMapper.map(pageStatement, pageStatementDtoType);
+		pageStatementDto.setContent(pageStatement.getContent().stream().map(statement -> {
+			statement.setIncorrectAnswers(null);
+			statement.setCorrectAnswers(null);
+			return modelMapper.map(statement, StatementDto.class);
+		}).collect(Collectors.toList()));
+		return pageStatementDto;
+	}
+
 }

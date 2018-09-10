@@ -6,6 +6,8 @@ import { PortalService } from '../../shared/services/portal.service';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CourseMenuComponent } from './pages/course-menu/course-menu.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
 
 @NgModule({
     imports: [
@@ -16,7 +18,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     ],
     declarations: [
         CourseComponent,
-        NavbarComponent
+        NavbarComponent,
+        CourseMenuComponent,
+        CategoriesComponent
     ],
     providers: [
         PortalService,

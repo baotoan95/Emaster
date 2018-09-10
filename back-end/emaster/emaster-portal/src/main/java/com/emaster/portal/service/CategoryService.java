@@ -1,6 +1,5 @@
 package com.emaster.portal.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.emaster.common.dto.CategoryDto;
@@ -18,5 +17,4 @@ public interface CategoryService {
 
 	void delete(String id) throws PortalException;
 
-	List<CategoryDto> findForASession(Optional<String> userId) throws PortalException;
 }

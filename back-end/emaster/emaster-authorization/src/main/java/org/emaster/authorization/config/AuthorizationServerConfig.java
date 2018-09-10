@@ -57,7 +57,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
-		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		EmasterTokenConverter converter = new EmasterTokenConverter();
 		converter.setSigningKey("btit95");
 		return converter;
 	}

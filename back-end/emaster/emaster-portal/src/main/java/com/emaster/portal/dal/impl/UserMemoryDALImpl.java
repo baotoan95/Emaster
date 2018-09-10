@@ -31,12 +31,11 @@ public class UserMemoryDALImpl implements UserMemoryDAL {
 	private ObjectMapper objectMapper;
 
 	@Override
-	public List<UserMemoryDto> findMissing(String userId, String categoryId, int pointLimit, int limitResult) throws PortalException {
+	public List<UserMemoryDto> findMissing(String userId, String categoryId, int pointLimit) throws PortalException {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userId", userId);
 		params.put("categoryId", categoryId);
 		params.put("pointLimit", pointLimit);
-		params.put("limitResult", limitResult);
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.USER_MEMORY.GET_MISSING_STATEMENTS.build(), params);
 
 		ParameterizedTypeReference<List<UserMemoryDto>> responseType = new ParameterizedTypeReference<List<UserMemoryDto>>() {

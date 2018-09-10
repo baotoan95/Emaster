@@ -51,7 +51,7 @@ public class EmasterURL {
 
 		public enum STATEMENT {
 			GET_ALL(PAGING), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}"),
-			GET_BY_CATEGORY_ID("category?id={categoryId}&page={page}&size={size}");
+			GET_BY_CATEGORY_ID("/category?id={categoryId}&page={page}&size={size}");
 
 			private String url;
 
@@ -78,7 +78,7 @@ public class EmasterURL {
 		}
 		
 		public enum USER_MEMORY {
-			GET_MISSING_STATEMENTS("/missingStatments?userId={userId}&categoryId={categoryId}&pointLimit={pointLimit}&limitResult={limitResult}"),
+			GET_MISSING_STATEMENTS("/missingStatments?userId={userId}&categoryId={categoryId}&pointLimit={pointLimit}"),
 			ADD_TO_MEMORY("/addToMemory");
 			
 			private String url;

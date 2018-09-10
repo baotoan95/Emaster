@@ -1,6 +1,5 @@
 package com.emaster.portal.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.emaster.common.dto.CommentDto;
@@ -18,6 +17,4 @@ public interface CommentService {
 	
 	void delete (String id) throws PortalException;
 	
-	List<CommentDto> findForASession(Optional<String> userId) throws PortalException;
-
 }

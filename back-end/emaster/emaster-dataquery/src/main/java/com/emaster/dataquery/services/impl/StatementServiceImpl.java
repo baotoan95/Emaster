@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.emaster.common.constant.MessageContant;
+import com.emaster.common.constant.MessageConstant;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -56,7 +56,7 @@ public class StatementServiceImpl implements StatementService {
 						.message(DataQueryMessage.DONT_HAVE_PERMIT_CREATE).dateTime(LocalDateTime.now()).build();
 			}
 		}
-		throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageContant.INVALID_PARAM)
+		throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).message(MessageConstant.INVALID_PARAM)
 				.dateTime(LocalDateTime.now()).build();
 	}
 
@@ -66,7 +66,7 @@ public class StatementServiceImpl implements StatementService {
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		log.info("Start findAll(page={},size={})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
+			throw DataQueryException.builder().message(MessageConstant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
 					.dateTime(LocalDateTime.now()).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
@@ -140,7 +140,7 @@ public class StatementServiceImpl implements StatementService {
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		log.info("Start findByCategoryId(id={},page={},size={})", categoryId, pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
+			throw DataQueryException.builder().message(MessageConstant.INVALID_PARAM).status(HttpStatus.BAD_REQUEST)
 					.dateTime(LocalDateTime.now()).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);

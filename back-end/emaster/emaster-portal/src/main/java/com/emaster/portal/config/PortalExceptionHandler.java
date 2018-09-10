@@ -16,7 +16,7 @@ public class PortalExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<EmasterException> handleException(PortalException ex, WebRequest request) {
 		EmasterException exception = EmasterException.builder().status(ex.getStatus()).message(ex.getMessage())
 				.debugMessage(ex.getDebugMessage()).dateTime(ex.getDateTime()).build();
-		return new ResponseEntity<EmasterException>(exception, exception.getStatus());
+		return new ResponseEntity<>(exception, exception.getStatus());
 	}
 
 	// @ExceptionHandler(value = { Exception.class })

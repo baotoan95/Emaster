@@ -1,31 +1,5 @@
 <div class="container-fluid">
     <emaster-navbar></emaster-navbar>
 
-    <div class="categories">
-        <div class="card-wrapper">
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="header-image"></div>
-                    <mat-card-title><a routerLink="/learn">{{'COURSE_PRACTICE' | translate}}</a></mat-card-title>
-                    <mat-card-subtitle>{{'COURSE_PRACTICE_DESCRIBE' | translate}}</mat-card-subtitle>
-                </mat-card-header>
-            </mat-card>
-
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="header-image"></div>
-                    <mat-card-title><a routerLink="/learn">{{'COURSE_TOIEC' | translate}}</a></mat-card-title>
-                    <mat-card-subtitle>{{'COURSE_TOIEC_DESCRIBE' | translate}}</mat-card-subtitle>
-                </mat-card-header>
-            </mat-card>
-
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="header-image"></div>
-                    <mat-card-title><a routerLink="/learn">{{'COURSE_BY_CATEGORY' | translate}}</a></mat-card-title>
-                    <mat-card-subtitle>{{'COURSE_BY_CATEGORY_DESCRIBE' | translate}}</mat-card-subtitle>
-                </mat-card-header>
-            </mat-card>
-        </div>
-    </div>
+    <router-outlet></router-outlet>
 </div>

@@ -27,6 +27,8 @@ public class UserMemory implements Serializable {
 	@DBRef
 	private Statement statement;
 	@DBRef
+	private Category category;
+	@DBRef
 	private User user;
 	private long point;
 	private Date startLearnDate;

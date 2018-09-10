@@ -31,7 +31,7 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 	public List<Statement> generateQuestionByCategory(String userId, String categoryId, int numOfQuestions) throws DataQueryException {
 		log.info("Start generate question by category id={} with userId={}", categoryId, userId);
 		// Get missing statements
-		List<UserMemory> inMemoryStatements = userMemoryService.findMissing(userId, categoryId, 10, numOfQuestions);
+		List<UserMemory> inMemoryStatements = userMemoryService.findMissing(userId, categoryId, 10);
 		List<Statement> missingStatements = inMemoryStatements.stream().map(userMemory -> {
 			return statementService.findOne(userMemory.getStatement().getId());
 		}).filter(userMemory -> Objects.nonNull(userMemory)).collect(Collectors.toList());

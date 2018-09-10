@@ -14,14 +14,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.emaster.common.constant.MessageContant;
+import com.emaster.common.constant.MessageConstant;
 import com.emaster.common.constant.Point;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.entities.Statement;
+import com.emaster.dataquery.entities.User;
 import com.emaster.dataquery.entities.UserMemory;
 import com.emaster.dataquery.repositories.StatementRepository;
 import com.emaster.dataquery.repositories.UserMemoryRepository;
+import com.emaster.dataquery.repositories.UserRepository;
 import com.emaster.dataquery.services.UserMemoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,8 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 	private UserMemoryRepository userMemoryRepository;
 	@Autowired
 	private StatementRepository statementRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public Page<UserMemory> findAll(Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
@@ -41,7 +45,7 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 		log.info("Start findAll({}, {})", pageNum, pageSize);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST).dateTime(LocalDateTime.now())
-					.message(MessageContant.INVALID_PARAM).build();
+					.message(MessageConstant.INVALID_PARAM).build();
 		}
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<UserMemory> pageUserMemory = userMemoryRepository.findAll(pageable);
@@ -79,15 +83,25 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 			throw DataQueryException.builder().status(HttpStatus.BAD_REQUEST)
 					.message("Statement ID and User ID are required").dateTime(LocalDateTime.now()).build();
 		}
-		log.info("Start create with statementId = {}, userId = {}", statementId,
-				userId);
+		log.info("Start create with statementId = {}, userId = {}", statementId, userId);
 		Optional<Statement> statement = statementRepository.findById(statementId);
+		Optional<User> user = userRepository.findById(userId);
+		if(!user.isPresent()) {
+			throw DataQueryException.builder()
+			.status(HttpStatus.BAD_REQUEST)
+			.message("You does not have permission to create user memory statement")
+			.dateTime(LocalDateTime.now()).build();
+		}
 		if(statement.isPresent()) {
 			UserMemory createdUserMemory = userMemoryRepository.save(UserMemory.builder().correctCount(0)
 					.incorrectCount(0)
+					.user(user.get())
 					.point(0).startLearnDate(new Date()).lastLearnTime(new Date())
-					.statement(statement.get()).build());
-			log.info("Finish create");
+					.statement(statement.get())
+					.category(statement.get().getCategory())
+					.build());
+			createdUserMemory.setStatement(Statement.builder().id(createdUserMemory.getStatement().getId()).build());
+			log.info("Finish create user memory statement");
 			return createdUserMemory;
 		} else {
 			throw DataQueryException.builder()
@@ -113,15 +127,15 @@ public class UserMemorySerivceImpl implements UserMemoryService {
 			}
 			log.info("Finish updateCorrectCount");
 		}
-		throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+		throw DataQueryException.builder().message(MessageConstant.INVALID_PARAM).dateTime(LocalDateTime.now())
 				.debugMessage(log.getName()).status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 	@Override
-	public List<UserMemory> findMissing(String userId, String categoryId, int pointLimit, int limitResult) {
-		log.info("Find missing with user id = {}, category id = {}, point limit = {}, limit result = {}", 
-				userId, categoryId, pointLimit, limitResult);
-		return userMemoryRepository.findTopByUserIdAndStatementCategoryIdAndPointLessThan(limitResult, userId, categoryId, pointLimit);
+	public List<UserMemory> findMissing(String userId, String categoryId, int pointLimit) {
+		log.info("Find missing with user id = {}, category id = {}, point limit = {}", 
+				userId, categoryId, pointLimit);
+		return userMemoryRepository.findTop10ByUserIdAndCategoryIdAndPointLessThan(userId, categoryId, pointLimit);
 	}
-
+	
 }

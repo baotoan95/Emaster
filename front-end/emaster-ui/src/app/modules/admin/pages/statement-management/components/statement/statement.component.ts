@@ -11,6 +11,7 @@ import { FileType } from "../../../../../../shared/enums/FileType";
 import { Location } from '@angular/common';
 
 import * as _ from 'lodash';
+import { MediaPlayerService } from "../../../../../../shared/services/mediaPlayer.service";
 
 @Component({
     selector: 'emaster-statement',
@@ -59,17 +60,14 @@ export class StatementComponent implements OnInit, OnDestroy {
     correctAnwers: any[] = [];
     incorrectAnwers: any[] = [];
 
-    audio: any;
-
     constructor(private portalService: PortalService,
         private spinnerService: SpinnerService,
         public dialog: MatDialog,
         private snackBar: MatSnackBar,
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private location: Location) {
-
-        this.audio = new Audio();
+        private location: Location,
+        private mediaPlayer: MediaPlayerService) {
     }
 
     ngOnInit() {
@@ -195,12 +193,7 @@ export class StatementComponent implements OnInit, OnDestroy {
         }
     }
 
-    playSound(resourceUrl: string) {
-        this.audio.src = `http://localhost:8080/portal/resources/audio?url=${resourceUrl}`;
-        this.audio.play();
-    }
-
     ngOnDestroy() {
-        this.audio.pause();
+        this.mediaPlayer.pause();
     }
 }

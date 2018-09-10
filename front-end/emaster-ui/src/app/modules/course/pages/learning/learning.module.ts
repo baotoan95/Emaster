@@ -5,10 +5,11 @@ import { MultipleChoosesComponent } from '../../components/multiple-chooses/mult
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateComponent } from '../../components/translation/translation.component';
+import { MediaPlayerService } from '../../../../shared/services/mediaPlayer.service';
 
 const routes = [
     {
-        path: '',
+        path: ':categoryId',
         component: LearningComponent,
         pathMath: 'full'
     }
@@ -24,6 +25,9 @@ const routes = [
         LearningComponent,
         MultipleChoosesComponent,
         TranslateComponent
+    ],
+    providers: [
+        MediaPlayerService
     ]
 })
 export class LearningModule {

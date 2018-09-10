@@ -26,9 +26,8 @@ public class UserMemoryController {
 	public ResponseEntity<List<UserMemoryDto>> getMessingStatements(
 			@RequestParam("userId") String userId,
 			@RequestParam("categoryId") String categoryId,
-			@RequestParam("pointLimit") int pointLimit,
-			@RequestParam("limitResult") int limitResult) {
-		return ResponseEntity.ok(userMemoryFacade.findMissing(userId, categoryId, pointLimit, limitResult));
+			@RequestParam("pointLimit") int pointLimit) {
+		return ResponseEntity.ok(userMemoryFacade.findMissing(userId, categoryId, pointLimit));
 	}
 	
 	@PostMapping("addToMemory")

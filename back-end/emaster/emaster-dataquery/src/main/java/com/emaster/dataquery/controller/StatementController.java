@@ -57,4 +57,12 @@ public class StatementController {
 	public ResponseEntity<List<StatementDto>> search(@RequestParam("content") String content) {
 		return ResponseEntity.ok(statementFacade.search(content));
 	}
+	
+	@GetMapping("/category")
+	public ResponseEntity<PageDto<StatementDto>> findByCategory(
+			@RequestParam(value = "id", required = false) String categoryId,
+			@RequestParam(value = "page", required = false) Optional<Integer> page, 
+			@RequestParam(value = "size", required = false) Optional<Integer> size) throws DataQueryException {
+		return ResponseEntity.ok(statementFacade.findByCategory(categoryId, page, size));
+	}
 }

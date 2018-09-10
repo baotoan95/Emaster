@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.UserMemoryDto;
 import com.emaster.common.exception.DataQueryException;
+import com.emaster.dataquery.entities.Statement;
 import com.emaster.dataquery.entities.UserMemory;
 import com.emaster.dataquery.facade.UserMemoryFacade;
 import com.emaster.dataquery.services.UserMemoryService;
@@ -58,9 +59,13 @@ public class UserMemoryFacadeImpl implements UserMemoryFacade {
 	}
 
 	@Override
-	public List<UserMemoryDto> findMissing(String email, String categoryId, int lessThanOrEqual, int limitResult) {
-		List<UserMemory> memories = userMemoryService.findMissing(email, categoryId, lessThanOrEqual, limitResult);
+	public List<UserMemoryDto> findMissing(String userId, String categoryId, int lessThanOrEqual) {
+		List<UserMemory> memories = userMemoryService.findMissing(userId, categoryId, lessThanOrEqual);
 		return memories.stream().map(userMemory -> {
+			Statement statement = Statement.builder()
+					.id(userMemory.getStatement().getId())
+					.content(userMemory.getStatement().getContent()).build();
+			userMemory.setStatement(statement);
 			return modelMapper.map(userMemory, UserMemoryDto.class);
 		}).collect(Collectors.toList());
 	}

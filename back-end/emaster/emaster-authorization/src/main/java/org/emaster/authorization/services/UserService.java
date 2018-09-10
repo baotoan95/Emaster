@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.emaster.authorization.dal.UserDAL;
+import org.emaster.authorization.entities.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
 			if(user == null) {
 				throw new UsernameNotFoundException("Invalid username or password.");
 			}
-			return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthority());
+			return new UserDetails(user.getId(), user.getEmail(), user.getPassword(), getAuthority());
 		} catch (PortalException e) {
 			log.error(e.getMessage());
 			return null;

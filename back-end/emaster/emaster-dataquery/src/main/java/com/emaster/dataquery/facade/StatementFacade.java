@@ -19,4 +19,6 @@ public interface StatementFacade {
 	void delete(String id);
 	
 	List<StatementDto> search(String content);
+	
+	public PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
 }

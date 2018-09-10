@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.emaster.common.constant.MessageContant;
+import com.emaster.common.constant.MessageConstant;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
 		if (!PaginationValidator.validate(pageNum, pageSize)) {
-			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+			throw DataQueryException.builder().message(MessageConstant.INVALID_PARAM).dateTime(LocalDateTime.now())
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 		log.info("Start findAll(page={},size={})", pageNum, pageSize);
@@ -76,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
 						.dateTime(LocalDateTime.now()).status(HttpStatus.FORBIDDEN).build();
 			}
 		} else {
-			throw DataQueryException.builder().message(MessageContant.INVALID_PARAM).dateTime(LocalDateTime.now())
+			throw DataQueryException.builder().message(MessageConstant.INVALID_PARAM).dateTime(LocalDateTime.now())
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
