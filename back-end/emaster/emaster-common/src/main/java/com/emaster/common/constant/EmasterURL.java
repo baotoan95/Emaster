@@ -51,7 +51,8 @@ public class EmasterURL {
 
 		public enum STATEMENT {
 			GET_ALL(PAGING), GET_BY_ID("/{id}"), CREATE(""), UPDATE(""), DELETE("/{id}"),
-			GET_BY_CATEGORY_ID("/category?id={categoryId}&page={page}&size={size}");
+			GET_BY_CATEGORY_ID("/category?id={categoryId}&page={page}&size={size}"),
+			GET_BY_CATEGORY_ID_EXCEPTING("/categoryExcept?id={categoryId}&limit={limit}&excepted={excepted}");
 
 			private String url;
 

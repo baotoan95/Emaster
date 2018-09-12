@@ -16,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.emaster.common.constant.EmasterURL;
 import com.emaster.common.dto.CreateUserMemoryDto;
-import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.UserMemoryDto;
+import com.emaster.common.exception.EmasterException;
 import com.emaster.common.exception.PortalException;
 import com.emaster.common.utils.HttpQueryUtils;
 import com.emaster.portal.dal.UserMemoryDAL;

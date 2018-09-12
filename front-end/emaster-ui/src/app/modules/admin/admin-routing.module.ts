@@ -19,6 +19,10 @@ const routes = [
             {
                 path: 'statement-management',
                 loadChildren: './pages/statement-management/statement-management.module#StatementManagementModule'
+            },
+            {
+                path: 'user-management',
+                loadChildren: './pages/user-management/user-management.module#UserManagementModule'
             }
         ]
     }

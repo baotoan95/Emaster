@@ -1,5 +1,6 @@
 package com.emaster.dataquery.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,9 +61,18 @@ public class StatementController {
 	
 	@GetMapping("/category")
 	public ResponseEntity<PageDto<StatementDto>> findByCategory(
-			@RequestParam(value = "id", required = false) String categoryId,
+			@RequestParam(value = "id", required = true) String categoryId,
 			@RequestParam(value = "page", required = false) Optional<Integer> page, 
 			@RequestParam(value = "size", required = false) Optional<Integer> size) throws DataQueryException {
 		return ResponseEntity.ok(statementFacade.findByCategory(categoryId, page, size));
+	}
+	
+	@GetMapping("/categoryExcept")
+	public ResponseEntity<PageDto<StatementDto>> findByCategory(
+			@RequestParam(value = "id", required = true) String categoryId,
+			@RequestParam(value = "limit", required = true) int limit, 
+			@RequestParam(value = "excepted", required = true) String excepted) throws DataQueryException {
+				List<String> exceptedList = Arrays.asList(excepted.split(","));
+		return ResponseEntity.ok(statementFacade.findByCategoryExcepting(categoryId, limit, exceptedList));
 	}
 }

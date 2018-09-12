@@ -2,17 +2,22 @@ package com.emaster.portal.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.emaster.common.constant.MessageConstant;
+import com.emaster.common.dto.AnswerDto;
+import com.emaster.common.dto.QuestionDto;
 import com.emaster.common.dto.StatementDto;
 import com.emaster.common.dto.UserMemoryDto;
 import com.emaster.common.exception.PortalException;
@@ -32,11 +37,13 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 	private StatementService statementService;
 	@Autowired
 	private UserSession userSession;
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	private static final int NUMBER_OF_QUESTION = 20;
 	
 	@Override
-	public List<StatementDto> generateQuestionByCategory(String categoryId) throws PortalException {
+	public List<QuestionDto> generateQuestionByCategory(String categoryId) throws PortalException {
 		String userId = userSession.getUserId();
 		if(Objects.isNull(userId)) {
 			throw PortalException.builder()
@@ -57,7 +64,11 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 		}).filter(userMemory -> Objects.nonNull(userMemory)).collect(Collectors.toList());
 		
 		// If missing statements not enough for a session, then get new statements
-		List<StatementDto> newStatements = statementService.findByCategory(categoryId, Optional.of(0), Optional.of(NUMBER_OF_QUESTION - missingStatements.size())).getContent();
+		List<String> ids = missingStatements.stream().map(statement -> {
+			return statement.getId();
+		}).collect(Collectors.toList());
+		String excepted = StringUtils.join(ids, ",");
+		List<StatementDto> newStatements = statementService.findByCategoryExcepting(categoryId, NUMBER_OF_QUESTION - missingStatements.size(), excepted).getContent();
 		
 		// Add new statements to memory
 		newStatements.stream().forEach(newStatement -> {
@@ -71,8 +82,47 @@ public class QuestionBankServiceImpl implements QuestionBankService {
 		List<StatementDto> learningNeeded = new ArrayList<>();
 		Stream.of(missingStatements, newStatements).forEach(learningNeeded::addAll);
 		
+		// Shuffle questions
+		Collections.shuffle(learningNeeded);
+		
 		log.info("Finish generate question by category id with {} statements", learningNeeded.size());
-		return learningNeeded;
+		return convertToQuestionDtos(learningNeeded);
 	}
-
+	
+	private List<QuestionDto> convertToQuestionDtos(List<StatementDto> statements) {
+		return statements.stream().map(statement -> {
+			return convertToQuestionDto(statement);
+		}).collect(Collectors.toList());
+	}
+	
+	private QuestionDto convertToQuestionDto(StatementDto statement) {
+		// Join correct answers and incorrect answers
+		List<AnswerDto> answers = Stream.of(
+				statement.getCorrectAnswers().stream().map(answer -> {
+					AnswerDto answerDto = modelMapper.map(answer, AnswerDto.class);
+					answerDto.setCorrect(true);
+					return answerDto;
+				}).collect(Collectors.toList()), 
+				statement.getIncorrectAnswers().stream().map(answer -> {
+					AnswerDto answerDto = modelMapper.map(answer, AnswerDto.class);
+					answerDto.setCorrect(false);
+					return answerDto;
+				}).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+		
+		// Shuffle list answers
+		Collections.shuffle(answers);
+		
+		// Remove correct answers and incorrect answers for convert statement to question DTO
+		statement.setCorrectAnswers(null);
+		statement.setIncorrectAnswers(null);
+		
+		// Convert statement to question DTO
+		QuestionDto questionDto = modelMapper.map(statement, QuestionDto.class);
+		questionDto.setAnswers(answers);
+		
+		// TODO random question type
+		
+		return questionDto;
+	}
+	
 }

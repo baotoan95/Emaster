@@ -15,9 +15,9 @@ export class AdminComponent implements AfterViewInit {
 
     menuItems: SidebarMenuItem[] = [
         new SidebarMenuItem('Category management', 'admin/category-management'),
-        new SidebarMenuItem('User management', '/user-management'),
+        new SidebarMenuItem('User management', 'admin/user-management'),
         new SidebarMenuItem('Statement management', 'admin/statement-management'),
-        new SidebarMenuItem('Question management', '/question-management'),
+        new SidebarMenuItem('Question management', 'admin/question-management')
     ];
 
     constructor(private sidebarService: SidebarService) {

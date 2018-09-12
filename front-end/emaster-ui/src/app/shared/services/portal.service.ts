@@ -3,13 +3,13 @@ import { Utilities } from '../helpers/utilities';
 import { Observable } from 'rxjs/Observable';
 import { Category } from '../models/Category';
 import { Statement } from '../models/Statement';
-import { bloomAdd } from '@angular/core/src/render3/di';
 
 @Injectable()
 export class PortalService {
     category: CategoryService;
     statement: StatementService;
     question: GenerateQuestionService;
+    user: UserService;
 
     constructor(
         private _u: Utilities
@@ -17,6 +17,7 @@ export class PortalService {
         this.category = new CategoryService(_u);
         this.statement = new StatementService(_u);
         this.question = new GenerateQuestionService(_u);
+        this.user = new UserService(_u);
     }
 }
 
@@ -99,5 +100,15 @@ class GenerateQuestionService {
 
     generateByCategory(categoryId: string): Observable<any> {
         return this._u.req.get(`/portal/questionBank/generateByCategory?categoryId=${categoryId}`);
+    }
+}
+
+class UserService {
+    constructor(private _u: Utilities) {
+
+    }
+
+    getAll(page: number, size: number): Observable<any> {
+        return this._u.req.get('/portal/users', {params: {page: page, size: size}});
     }
 }

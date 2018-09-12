@@ -17,4 +17,14 @@ export class MediaPlayerService {
     pause() {
         this.audio.pause();
     }
+
+    playWrongSound() {
+        this.audio.src = '../../../assets/audio/depth.mp3';
+        this.audio.play();
+    }
+
+    playCorrectSound() {
+        this.audio.src = '../../../assets/audio/depth.mp3';
+        this.audio.play();
+    }
 }

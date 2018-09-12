@@ -17,8 +17,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.emaster.common.constant.EmasterURL;
 import com.emaster.common.dto.CategoryDto;
-import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.PageDto;
+import com.emaster.common.exception.EmasterException;
 import com.emaster.common.exception.PortalException;
 import com.emaster.common.utils.HttpQueryUtils;
 import com.emaster.common.utils.UploadFileUtils;

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.emaster.common.constant.MessageConstant;
+import com.emaster.common.enums.StatementType;
 import com.emaster.common.exception.DataQueryException;
 import com.emaster.common.validator.PaginationValidator;
 import com.emaster.dataquery.constant.DataQueryMessage;
@@ -127,14 +128,6 @@ public class StatementServiceImpl implements StatementService {
 	}
 
 	@Override
-	public List<Statement> findTopByCategory(int limit, String categoryId) {
-		log.info("Start find to by category id={} limit={}", categoryId, limit);
-		List<Statement> statements = statementRepository.findTopByCategoryId(limit, categoryId);
-		log.info("Finish find to by category");
-		return statements;
-	}
-
-	@Override
 	public Page<Statement> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException {
 		int pageNum = page.orElse(0);
 		int pageSize = size.orElse(Integer.MAX_VALUE);
@@ -146,6 +139,17 @@ public class StatementServiceImpl implements StatementService {
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Page<Statement> pageStatement = statementRepository.findByCategoryId(categoryId, pageable);
 		log.info("Finish findByCategoryId");
+		return pageStatement;
+	}
+
+	@Override
+	public Page<Statement> findByCategoryExcepting(String categoryId, int limit, List<String> excepted)
+			throws DataQueryException {
+		log.info("Find by category id = {}, limit = {}", categoryId, limit);
+		limit = limit <= 0 ? 0 : limit;
+		Pageable pageable = PageRequest.of(0, limit);
+		Page<Statement> pageStatement = statementRepository.findByCategoryIdAndIdNotInAndTypeNot(categoryId, excepted, StatementType.WRONG, pageable);
+		log.info("Finish find by category excepting with {} items", pageStatement.getContent().size());
 		return pageStatement;
 	}
 

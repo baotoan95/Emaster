@@ -3,6 +3,7 @@ import { PortalService } from '../../../../shared/services/portal.service';
 import { SpinnerService } from '../../../../shared/services/spinner.service';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
+import { MediaPlayerService } from '../../../../shared/services/mediaPlayer.service';
 
 @Component({
     selector: 'emaster-learning',
@@ -20,7 +21,8 @@ export class LearningComponent implements OnInit {
         private questionGenerateService: PortalService,
         private spinner: SpinnerService,
         private snackBar: MatSnackBar,
-        private activatedRoute: ActivatedRoute) {
+        private activatedRoute: ActivatedRoute,
+        private mediaPlayer: MediaPlayerService) {
 
     }
 
@@ -40,5 +42,9 @@ export class LearningComponent implements OnInit {
                 duration: 6000
             });
         });
+    }
+
+    checkAnswer() {
+        this.mediaPlayer.playCorrectSound();
     }
 }

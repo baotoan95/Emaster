@@ -21,7 +21,7 @@ public interface StatementService {
 
 	List<Statement> searchByContent(String content);
 	
-	List<Statement> findTopByCategory(int limit, String categoryId);
-	
 	Page<Statement> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	
+	Page<Statement> findByCategoryExcepting(String categoryId, int limit, List<String> excepted) throws DataQueryException;
 }

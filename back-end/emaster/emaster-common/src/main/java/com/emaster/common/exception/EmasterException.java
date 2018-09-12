@@ -1,4 +1,4 @@
-package com.emaster.common.dto;
+package com.emaster.common.exception;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -37,7 +35,7 @@ public class EmasterException implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8531839552937130341L;
 	private HttpStatus status;
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	@JsonSerialize(using = JsonDateSerializer.class)
@@ -47,8 +45,8 @@ public class EmasterException implements Serializable {
 	private String debugMessage;
 	
 	@JsonCreator
-	public static EmasterException Create(String jsonString)
-			throws JsonParseException, JsonMappingException, IOException {
+	public static EmasterException create(String jsonString)
+			throws IOException {
 		ObjectMapper mapper = JsonMapperUtils.getObjectMapper();
 		return mapper.readValue(jsonString, EmasterException.class);
 	}

@@ -20,5 +20,7 @@ public interface StatementFacade {
 	
 	List<StatementDto> search(String content);
 	
-	public PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	PageDto<StatementDto> findByCategory(String categoryId, Optional<Integer> page, Optional<Integer> size) throws DataQueryException;
+	
+	PageDto<StatementDto> findByCategoryExcepting(String categoryId, int limit, List<String> excepted) throws DataQueryException;
 }

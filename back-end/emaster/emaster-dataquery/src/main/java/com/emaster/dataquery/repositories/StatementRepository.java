@@ -7,12 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import com.emaster.common.enums.StatementType;
 import com.emaster.dataquery.entities.Statement;
 
 public interface StatementRepository extends MongoRepository<Statement, String> {
 	List<Statement> findByCreatedByEmailAndCategoryId(String email, String categoryId);
 	Page<Statement> findAllByOrderByCreatedDateDesc(Pageable pageable);
 	List<Statement> findAllBy(TextCriteria criteria);
-	List<Statement> findTopByCategoryId(int limit, String categoryId);
 	Page<Statement> findByCategoryId(String categoryId, Pageable pageable);
+	Page<Statement> findByCategoryIdAndIdNotInAndTypeNot(String categoryId, List<String> excepted, StatementType type, Pageable pageable);
 }

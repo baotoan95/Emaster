@@ -151,4 +151,19 @@ public class StatementFacadeImpl implements StatementFacade {
 		return pageStatementDto;
 	}
 
+	@Override
+	public PageDto<StatementDto> findByCategoryExcepting(String categoryId, int limit, List<String> excepted)
+			throws DataQueryException {
+		Page<Statement> pageStatement = statementService.findByCategoryExcepting(categoryId, limit, excepted);
+		Type pageStatementDtoType = new TypeToken<PageDto<StatementDto>>() {
+		}.getType();
+		PageDto<StatementDto> pageStatementDto = modelMapper.map(pageStatement, pageStatementDtoType);
+		pageStatementDto.setContent(pageStatement.getContent().stream().map(statement -> {
+			statement.setIncorrectAnswers(null);
+			statement.setCorrectAnswers(null);
+			return modelMapper.map(statement, StatementDto.class);
+		}).collect(Collectors.toList()));
+		return pageStatementDto;
+	}
+
 }

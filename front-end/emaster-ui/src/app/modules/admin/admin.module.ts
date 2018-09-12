@@ -7,6 +7,7 @@ import { MatSidenavModule } from '@angular/material';
 import { SidebarMenuModule } from './components/sidebar-menu/sidebar-menu.module';
 import { SidebarService } from '../../shared/services/sidebar.service';
 import { CategoryManagementModule } from './pages/category-management/category-management.module';
+import { UserManagementModule } from './pages/user-management/user-management.module';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { CategoryManagementModule } from './pages/category-management/category-m
         AdminRoutingModule,
         MatSidenavModule,
         SidebarMenuModule,
-        CategoryManagementModule
+        CategoryManagementModule,
+        UserManagementModule
     ],
     declarations: [
         AdminComponent

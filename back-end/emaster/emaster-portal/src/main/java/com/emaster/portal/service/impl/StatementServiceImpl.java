@@ -69,4 +69,10 @@ public class StatementServiceImpl implements StatementService {
 		return statementDAL.findByCategory(categoryId, page, size);
 	}
 
+	@Override
+	public PageDto<StatementDto> findByCategoryExcepting(String categoryId, int limit, String excepted)
+			throws PortalException {
+		return statementDAL.findByCategoryExcepting(categoryId, limit, excepted);
+	}
+
 }

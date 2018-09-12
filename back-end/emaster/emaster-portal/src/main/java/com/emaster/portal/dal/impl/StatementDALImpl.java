@@ -15,9 +15,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.emaster.common.constant.EmasterURL;
-import com.emaster.common.dto.EmasterException;
 import com.emaster.common.dto.PageDto;
 import com.emaster.common.dto.StatementDto;
+import com.emaster.common.exception.EmasterException;
 import com.emaster.common.exception.PortalException;
 import com.emaster.common.utils.HttpQueryUtils;
 import com.emaster.portal.dal.StatementDAL;
@@ -128,6 +128,29 @@ public class StatementDALImpl implements StatementDAL {
 		params.put("size", size.orElse(Integer.MAX_VALUE));
 		params.put("categoryId", categoryId);
 		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.GET_BY_CATEGORY_ID.build(), params);
+		ParameterizedTypeReference<PageDto<StatementDto>> responseType = new ParameterizedTypeReference<PageDto<StatementDto>>() {
+		};
+		try {
+			ResponseEntity<PageDto<StatementDto>> response = restTemplate.exchange(uri, HttpMethod.GET, null, responseType);
+			return response.getBody();
+		} catch (HttpClientErrorException e) {
+			EmasterException exception = objectMapper.convertValue(e.getResponseBodyAsString(), EmasterException.class);
+			throw PortalException.builder()
+			.status(exception.getStatus())
+			.dateTime(exception.getDateTime())
+			.debugMessage(exception.getDebugMessage())
+			.message(exception.getMessage()).build();
+		}
+	}
+
+	@Override
+	public PageDto<StatementDto> findByCategoryExcepting(String categoryId, int limit, String excepted)
+			throws PortalException {
+		Map<String, Object> params = new HashMap<>();
+		params.put("categoryId", categoryId);
+		params.put("limit", limit);
+		params.put("excepted", excepted);
+		URI uri = HttpQueryUtils.buildURI(EmasterURL.DataQuery.STATEMENT.GET_BY_CATEGORY_ID_EXCEPTING.build(), params);
 		ParameterizedTypeReference<PageDto<StatementDto>> responseType = new ParameterizedTypeReference<PageDto<StatementDto>>() {
 		};
 		try {

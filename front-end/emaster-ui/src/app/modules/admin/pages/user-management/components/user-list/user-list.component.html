@@ -1,0 +1,10 @@
+<div class="users">
+<div infinite-scroll
+      [infiniteScrollContainer]="infiniteContainer"
+      [fromRoot]="true"
+      (scrolled)="showMore()">
+  <p *ngFor="let user of users">
+    {{ user.email }}
+  </p>
+</div>
+</div>

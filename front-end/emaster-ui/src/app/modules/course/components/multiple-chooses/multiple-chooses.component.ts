@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { MediaPlayerService } from '../../../../shared/services/mediaPlayer.service';
 import { SpinnerService } from '../../../../shared/services/spinner.service';
 
@@ -9,6 +9,8 @@ import { SpinnerService } from '../../../../shared/services/spinner.service';
 })
 export class MultipleChoosesComponent implements OnInit{
     @Input() question;
+    @Output() correct = new EventEmitter();
+
     selectedAnswer: any;
 
     constructor(
@@ -18,12 +20,10 @@ export class MultipleChoosesComponent implements OnInit{
     }
 
     ngOnInit() {
-        console.log(this.question);
         this.spinner.hide();
     }
 
     setAnswer(selectedAnswer) {
         this.selectedAnswer = selectedAnswer;
-        console.log(this.selectedAnswer);
     }
 }
