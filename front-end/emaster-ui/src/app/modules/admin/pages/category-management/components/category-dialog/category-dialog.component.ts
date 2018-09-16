@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Category } from '../../../../../../shared/models/Category';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 enum DialogAction {

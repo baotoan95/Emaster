@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Utilities } from "../helpers/utilities";
 import { Observable } from "rxjs";
-import { RequestOptions, Headers } from "@angular/http";
-import { HttpHeaders, HttpParams } from "@angular/common/http";
 
 @Injectable()
 export class AuthoriztionSevice {

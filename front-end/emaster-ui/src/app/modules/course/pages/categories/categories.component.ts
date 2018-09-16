@@ -31,8 +31,6 @@ export class CategoriesComponent implements OnInit {
             this.snackBar.open('Already', 'OK', {
                 duration: 6000
             });
-        }, error => {
-            this.spinner.hide();
         });
     }
 }

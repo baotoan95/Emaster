@@ -13,6 +13,7 @@ import { Utilities } from './shared/helpers/utilities';
 import { PortalService } from './shared/services/portal.service';
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 import { BackEndInterceptor } from './shared/interceptors/backend-interceptor';
+import { SpinnerService } from './shared/services/spinner.service';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { BackEndInterceptor } from './shared/interceptors/backend-interceptor';
   providers: [
     TranslateService,
     LocalStorageService,
+    SpinnerService,
     Utilities,
     PortalService,
     {

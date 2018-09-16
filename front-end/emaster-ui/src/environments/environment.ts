@@ -13,6 +13,9 @@ export const environment = {
     host: 'http://localhost',
     port: '8086',
     prefix: 'authorization'
+  },
+  constants: {
+    promptTimeout: 6000
   }
 };
 

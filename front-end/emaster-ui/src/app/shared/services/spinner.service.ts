@@ -13,6 +13,12 @@ export class SpinnerService {
     }
 
     hide() {
-        this.spinner.children[0].classList.add('undisplayed');
+        if(!this.spinner) {
+            this.spinner = document.getElementsByTagName('emaster-spinner')[0];
+        }
+        
+        if(this.spinner) {
+            this.spinner.children[0].classList.add('undisplayed');
+        }
     }
 }
