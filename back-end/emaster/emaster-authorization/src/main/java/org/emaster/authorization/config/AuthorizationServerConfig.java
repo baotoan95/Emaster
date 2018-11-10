@@ -54,6 +54,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
 	}
+	
+//	For store token to redis
+//	@Bean
+//	public TokenStore tokenStore(RedisConnectionFactory redisConnectionFactory) {
+//		return new RedisTokenStore(redisConnectionFactory);
+//	}
 
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {

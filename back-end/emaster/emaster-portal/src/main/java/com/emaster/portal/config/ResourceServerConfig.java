@@ -6,12 +6,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-         // static resources
-         http.authorizeRequests().antMatchers("/resources").permitAll();
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		// static resources
+		http.authorizeRequests().antMatchers("/resources").permitAll();
+		http.authorizeRequests().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+				"/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll();
 
-         http.authorizeRequests().anyRequest().authenticated();
+		http.authorizeRequests().anyRequest().authenticated();
 
-     }
+	}
 }

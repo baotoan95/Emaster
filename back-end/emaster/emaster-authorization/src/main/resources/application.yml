@@ -6,6 +6,11 @@ server:
 spring:
   profiles:
     active: dev
+    
+  redis:
+    host: localhost
+    port: 6379
+    password: root
 
 ---
 spring:

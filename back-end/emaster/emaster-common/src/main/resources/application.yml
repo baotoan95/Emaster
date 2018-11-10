@@ -5,3 +5,10 @@ logging:
       
 dataquery:
   baseUrl: http://localhost:8085/dataquery
+  
+spring:
+  mail:
+    host: localhost
+    port: 25
+    protocol: smtp
+    defaultEncoding: UTF-8
